@@ -4,10 +4,9 @@
   var nav = document.getElementById('hauptmenue');
   if (toggle && nav) {
     toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-      toggle.textContent = open ? '✕' : '☰';
+      var offen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(offen));
+      toggle.setAttribute('aria-label', offen ? 'Menü schließen' : 'Menü öffnen');
     });
   }
   var jahr = document.getElementById('jahr');
