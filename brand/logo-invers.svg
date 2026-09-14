@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80" role="img" aria-label="Gashini Dienstleistungen">
+  <title>Gashini Dienstleistungen</title>
+  <g>
+    <rect x="0" y="4" width="72" height="72" rx="18" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.25"/>
+    <path d="M52 27a19 19 0 1 0 0 26" fill="none" stroke="#F26A1B" stroke-width="9" stroke-linecap="square"/>
+    <rect x="36" y="35.5" width="20" height="9" fill="#FFFFFF"/>
+  </g>
+  <g fill="#FFFFFF" font-family="Barlow Condensed, Oswald, Arial Narrow, sans-serif">
+    <text x="88" y="44" font-size="34" font-weight="700" letter-spacing="2.5">GASHINI</text>
+    <text x="89" y="64" font-size="14.5" font-weight="500" letter-spacing="4.2" fill="#A9B7C4">DIENSTLEISTUNGEN</text>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+<title>E-Mail-Signatur – Gashini Dienstleistungen</title>
+<link rel="stylesheet" href="print.css">
+<style>
+body{background:#F6F3EE;padding:24px;font-family:Arial,sans-serif}
+.panel{max-width:760px;margin:0 auto 24px;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.panel h2{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+pre{background:#0F1E2E;color:#D5DEE6;padding:16px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+</style></head><body>
+<div class="panel">
+  <h2>Vorschau der Signatur</h2>
+  <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#0F1E2E;line-height:1.5">
+    <tr>
+      <td style="padding-right:16px;border-right:3px solid #F26A1B;vertical-align:top">
+        <img src="../brand/signet.svg" width="64" height="64" alt="Gashini Dienstleistungen" style="display:block">
+      </td>
+      <td style="padding-left:16px;vertical-align:top">
+        <div style="font-size:15px;font-weight:bold;color:#0F1E2E">{{INHABER}}</div>
+        <div style="font-size:12px;color:#5B6B7B;letter-spacing:1px;text-transform:uppercase">Gashini Dienstleistungen · Inhaber</div>
+        <div style="height:8px"></div>
+        <div>Tel. <a href="tel:{{TELEFON_LINK}}" style="color:#0F1E2E;text-decoration:none">{{TELEFON}}</a> · <a href="mailto:{{EMAIL}}" style="color:#0F1E2E;text-decoration:none">{{EMAIL}}</a></div>
+        <div>{{STRASSE}}, {{PLZ_ORT}}</div>
+        <div><a href="https://{{DOMAIN}}" style="color:#D2550C;text-decoration:none">{{DOMAIN}}</a> · <a href="{{MYHAMMER_URL}}" style="color:#D2550C;text-decoration:none">Bewertungen auf MyHammer</a></div>
+        <div style="height:10px"></div>
+        <div style="font-size:11px;color:#5B6B7B">Gebäudereinigung · Hausmeisterservice · Umzug &amp; Entrümpelung · Renovierung</div>
+        <div style="font-size:10px;color:#8A97A3;margin-top:8px">Steuernummer {{STEUERNUMMER}} · USt-IdNr. {{USTID}}</div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="panel">
+  <h2>HTML zum Einfügen</h2>
+  <p style="font-size:13px;line-height:1.6">In Outlook, Thunderbird oder Gmail eine HTML-Signatur anlegen und den folgenden Code einfügen. Das Logo muss dafür unter einer öffentlichen Adresse liegen – Pfad <code>../brand/signet.svg</code> vorher durch <code>https://{{DOMAIN}}/brand/signet.png</code> ersetzen (PNG, 128 px, da manche Mail-Programme SVG nicht anzeigen).</p>
+  <pre id="code"></pre>
+</div>
+<script>
+var t = document.querySelector('.panel table');
+document.getElementById('code').textContent = t.outerHTML;
+</script>
+</body></html>

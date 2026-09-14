@@ -1,0 +1,144 @@
+/* Gashini Dienstleistungen — Corporate Design Stylesheet */
+:root{
+  --ink:#0F1E2E;
+  --ink-2:#16293D;
+  --ink-soft:#5B6B7B;
+  --orange:#F26A1B;
+  --orange-dark:#D2550C;
+  --sand:#F6F3EE;
+  --paper:#FFFFFF;
+  --line:#E3DED6;
+  --ok:#1E7A54;
+  --radius:14px;
+  --maxw:1120px;
+  --font-head:"Barlow Condensed","Oswald","Arial Narrow",sans-serif;
+  --font-body:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font-body);color:var(--ink);background:var(--paper);line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:var(--orange-dark);text-underline-offset:3px}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:700;line-height:1.08;letter-spacing:.5px;margin:0 0 .5em;text-transform:uppercase}
+h1{font-size:clamp(2.4rem,6vw,4.1rem)}
+h2{font-size:clamp(1.8rem,4vw,2.7rem)}
+h3{font-size:1.3rem;letter-spacing:.3px}
+p{margin:0 0 1em}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+.eyebrow{font-family:var(--font-head);text-transform:uppercase;letter-spacing:3px;font-size:.95rem;color:var(--orange-dark);font-weight:600;margin-bottom:.6em;display:block}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.55em;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.4px;font-weight:700;font-size:1.05rem;padding:.78em 1.5em;border-radius:8px;text-decoration:none;border:2px solid transparent;transition:.15s ease;cursor:pointer}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dark)}
+.btn-ghost{border-color:currentColor;color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-light{border-color:rgba(255,255,255,.5);color:#fff}
+.btn-light:hover{background:#fff;color:var(--ink);border-color:#fff}
+
+/* ---------- Header ---------- */
+.topbar{background:var(--ink);color:#C9D4DE;font-size:.88rem}
+.topbar .wrap{display:flex;flex-wrap:wrap;gap:.4em 1.5em;justify-content:space-between;padding-block:7px}
+.topbar a{color:#fff;text-decoration:none}
+.topbar a:hover{color:var(--orange)}
+header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand img{height:46px;display:block}
+nav.main ul{display:flex;gap:24px;list-style:none;margin:0;padding:0}
+nav.main a{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.3px;font-weight:600;font-size:1.05rem;color:var(--ink);text-decoration:none;padding-block:4px;border-bottom:3px solid transparent}
+nav.main a:hover,nav.main a[aria-current="page"]{border-color:var(--orange)}
+.nav-toggle{display:none;background:none;border:2px solid var(--line);border-radius:8px;padding:8px 10px;font-size:1.3rem;line-height:1;cursor:pointer}
+.header-cta{display:flex;gap:10px;align-items:center}
+
+/* ---------- Hero ---------- */
+.hero{background:linear-gradient(140deg,var(--ink) 0%,var(--ink-2) 60%,#0B1826 100%);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -10% -40% 55%;height:420px;background:var(--orange);opacity:.14;transform:skewY(-12deg)}
+.hero .wrap{position:relative;z-index:1;padding-block:clamp(56px,9vw,110px);max-width:900px;margin-inline:auto}
+.hero h1{color:#fff}
+.hero h1 span{color:var(--orange)}
+.hero .lead{font-size:1.18rem;color:#D5DEE6;max-width:62ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.trustbar{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.16);font-size:.97rem;color:#C9D4DE}
+.trustbar span{display:flex;gap:.5em;align-items:center}
+.trustbar b{color:var(--orange);font-size:1.1em}
+
+/* ---------- Sections ---------- */
+section{padding-block:clamp(48px,7vw,86px)}
+section.alt{background:var(--sand)}
+.section-head{max-width:70ch;margin-bottom:40px}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column}
+.card .ico{width:48px;height:48px;border-radius:12px;background:var(--ink);color:var(--orange);display:grid;place-items:center;font-size:1.5rem;margin-bottom:16px}
+.card h3{margin-bottom:.4em}
+.card ul{margin:0 0 18px;padding-left:1.1em;color:var(--ink-soft)}
+.card ul li{margin-bottom:.3em}
+.card .more{margin-top:auto;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;text-decoration:none}
+
+.step{border-top:4px solid var(--orange);padding-top:16px}
+.step b{font-family:var(--font-head);font-size:2.2rem;color:var(--line);display:block;line-height:1}
+
+.quote{background:var(--paper);border-left:5px solid var(--orange);border-radius:0 var(--radius) var(--radius) 0;padding:24px 26px}
+.quote p{font-size:1.05rem;font-style:italic}
+.quote cite{font-style:normal;font-weight:600;font-size:.93rem;color:var(--ink-soft)}
+.stars{color:var(--orange);letter-spacing:2px}
+
+/* ---------- MyHammer block ---------- */
+.mh{background:var(--ink);color:#fff;border-radius:var(--radius);padding:clamp(26px,4vw,44px);display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:center}
+.mh h2{color:#fff;margin-bottom:.3em}
+.mh p{color:#C9D4DE}
+.mh .badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:20px;text-align:center}
+.mh .badge .score{font-family:var(--font-head);font-size:3.2rem;color:var(--orange);line-height:1}
+
+/* ---------- Forms ---------- */
+form.kontakt{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+form.kontakt .full{grid-column:1/-1}
+label{font-weight:600;font-size:.95rem;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(242,106,27,.35);border-color:var(--orange)}
+.hint{font-size:.87rem;color:var(--ink-soft)}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{width:auto;margin-top:5px}
+
+/* ---------- Tables / legal ---------- */
+.legal{max-width:78ch}
+.legal h2{margin-top:1.6em}
+.legal h3{margin-top:1.4em}
+dl.facts{display:grid;grid-template-columns:max-content 1fr;gap:8px 24px;margin:0}
+dl.facts dt{font-weight:700}
+dl.facts dd{margin:0}
+
+/* ---------- Footer ---------- */
+footer.site{background:var(--ink);color:#A9B7C4;padding-block:52px 26px;font-size:.95rem}
+footer.site a{color:#fff;text-decoration:none}
+footer.site a:hover{color:var(--orange)}
+footer.site h4{font-family:var(--font-head);color:#fff;text-transform:uppercase;letter-spacing:1.6px;font-size:1.05rem;margin:0 0 14px}
+footer.site ul{list-style:none;margin:0;padding:0}
+footer.site li{margin-bottom:8px}
+.footgrid{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.copy{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;font-size:.88rem}
+
+/* ---------- Sticky mobile call bar ---------- */
+.callbar{display:none}
+
+@media(max-width:820px){
+  nav.main{display:none;width:100%}
+  nav.main.open{display:block}
+  nav.main ul{flex-direction:column;gap:0;padding-block:8px}
+  nav.main li{border-top:1px solid var(--line)}
+  nav.main a{display:block;padding:12px 2px;border-bottom:none}
+  header.site .wrap{flex-wrap:wrap}
+  .header-cta .btn{display:none}
+  .nav-toggle{display:block}
+  body{padding-bottom:64px}
+  .callbar{display:flex;position:fixed;inset:auto 0 0 0;z-index:60;background:var(--ink);border-top:2px solid var(--orange)}
+  .callbar a{flex:1;text-align:center;padding:16px 8px;color:#fff;text-decoration:none;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
+  .callbar a+a{border-left:1px solid rgba(255,255,255,.2);background:var(--orange)}
+}
+@media print{
+  header.site,footer.site,.callbar,.topbar,.hero-actions{display:none}
+  body{font-size:11pt}
+}

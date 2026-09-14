@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+<title>Briefbogen – Gashini Dienstleistungen</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="print.css">
+<style>
+@page{size:A4;margin:0}
+.blatt{width:210mm;height:297mm;padding:20mm 20mm 15mm}
+.kopf{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5pt solid var(--orange);padding-bottom:5mm}
+.kopf img{height:18mm}
+.kopf .kontakt{text-align:right;font-size:8pt;line-height:1.6;color:var(--ink-soft)}
+.fenster{margin-top:12mm;font-size:10.5pt;line-height:1.5}
+.absenderzeile{font-size:6.8pt;color:var(--ink-soft);border-bottom:.5pt solid var(--line);padding-bottom:1mm;margin-bottom:3mm;letter-spacing:.3pt}
+.meta{position:absolute;right:20mm;top:72mm;font-size:8.5pt;line-height:1.8;color:var(--ink-soft)}
+.betreff{margin-top:18mm;font-weight:700;font-size:11pt}
+.text{margin-top:6mm;font-size:10.5pt;line-height:1.75;max-width:150mm}
+.fuss{position:absolute;left:20mm;right:20mm;bottom:12mm;border-top:.75pt solid var(--line);padding-top:3mm;display:flex;gap:8mm;font-size:7pt;line-height:1.6;color:var(--ink-soft)}
+.fuss div{flex:1}
+.fuss b{color:var(--ink);display:block;font-family:var(--font-head);letter-spacing:.8pt;text-transform:uppercase;font-size:7.5pt;margin-bottom:1mm}
+</style></head><body>
+<div class="hinweis"><h1>Briefbogen · DIN A4</h1>
+<p>Geschäftsbrief nach DIN 5008 (Adressfeld im Fensterbereich, Falzmarken über die Druckerei). Für den Versand als PDF exportieren; für den Alltag kann die Datei auch als Word-/Google-Docs-Vorlage nachgebaut werden. Pflichtangaben im Fuß (Inhaber, Anschrift, Steuernummer, Bank) nach § 14 UStG bzw. GewO ergänzen.</p></div>
+<div class="blatt">
+  <div class="kopf">
+    <img src="../brand/logo.svg" alt="Gashini Dienstleistungen">
+    <div class="kontakt">{{STRASSE}} · {{PLZ_ORT}}<br>{{TELEFON}} · {{EMAIL}}<br>{{DOMAIN}}</div>
+  </div>
+  <div class="fenster">
+    <div class="absenderzeile">Gashini Dienstleistungen · {{STRASSE}} · {{PLZ_ORT}}</div>
+    Firma / Name<br>Ansprechpartner<br>Straße und Hausnummer<br>PLZ Ort
+  </div>
+  <div class="meta">
+    Ihr Zeichen: —<br>Unser Zeichen: —<br>Ansprechpartner: {{INHABER}}<br>Telefon: {{TELEFON}}<br>Datum: TT.MM.JJJJ
+  </div>
+  <div class="betreff">Betreff eintragen</div>
+  <div class="text">
+    <p>Sehr geehrte Damen und Herren,</p>
+    <p>hier steht der Brieftext. Absätze bleiben kurz, Aufzählungen erleichtern das Lesen. Für Angebote empfiehlt sich eine Tabelle mit Position, Leistung, Menge, Einzelpreis und Gesamtpreis sowie ein Hinweis auf die Gültigkeitsdauer des Angebots.</p>
+    <p>Mit freundlichen Grüßen</p>
+    <p style="margin-top:14mm">{{INHABER}}<br>Gashini Dienstleistungen</p>
+  </div>
+  <div class="fuss">
+    <div><b>Anschrift</b>Gashini Dienstleistungen<br>Inhaber {{INHABER}}<br>{{STRASSE}}<br>{{PLZ_ORT}}</div>
+    <div><b>Kontakt</b>{{TELEFON}}<br>{{EMAIL}}<br>{{DOMAIN}}</div>
+    <div><b>Steuer</b>Steuernummer {{STEUERNUMMER}}<br>USt-IdNr. {{USTID}}<br>{{KAMMER}}</div>
+    <div><b>Bank</b>{{BANK}}<br>IBAN {{IBAN}}<br>BIC {{BIC}}</div>
+  </div>
+</div>
+</body></html>

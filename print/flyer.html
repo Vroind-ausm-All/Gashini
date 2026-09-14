@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+<title>Flyer – Gashini Dienstleistungen</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="print.css">
+<style>
+@page{size:A5;margin:0}
+.blatt{width:148mm;height:210mm}
+.vs{height:100%;background:var(--ink);color:#fff;padding:14mm 12mm;display:flex;flex-direction:column;position:relative}
+.vs .keil{position:absolute;left:0;right:0;bottom:-18mm;height:60mm;background:var(--orange);opacity:.16;transform:skewY(-11deg)}
+.vs img{height:16mm;align-self:flex-start;position:relative;z-index:1}
+.vs h1{font-size:30pt;line-height:1.02;margin-top:auto;position:relative;z-index:1}
+.vs p{font-size:10.5pt;line-height:1.6;color:#C9D4DE;position:relative;z-index:1;max-width:100mm}
+.vs .leistungen{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm 5mm;margin:7mm 0;font-family:var(--font-head);text-transform:uppercase;letter-spacing:.8pt;font-size:11pt;position:relative;z-index:1}
+.vs .leistungen span::before{content:"▸ ";color:var(--orange)}
+.vs .cta{position:relative;z-index:1;border-top:1pt solid rgba(255,255,255,.25);padding-top:5mm;font-family:var(--font-head);font-size:13pt;letter-spacing:.8pt;text-transform:uppercase}
+.vs .cta b{color:var(--orange)}
+.rs{height:100%;padding:14mm 12mm;display:flex;flex-direction:column}
+.rs h2{font-size:19pt;margin-bottom:4mm}
+.rs .box{border:1pt solid var(--line);border-radius:3mm;padding:6mm;margin-bottom:5mm}
+.rs .box h3{font-size:11.5pt;color:var(--orange);margin-bottom:2mm}
+.rs ul{margin:0;padding-left:5mm;font-size:9pt;line-height:1.65}
+.rs .vorteile{display:grid;grid-template-columns:1fr 1fr;gap:4mm;font-size:9pt;line-height:1.5}
+.rs .vorteile b{display:block;font-family:var(--font-head);text-transform:uppercase;letter-spacing:.7pt;font-size:10.5pt}
+.rs .kontaktbox{margin-top:auto;background:var(--ink);color:#fff;border-radius:3mm;padding:7mm;text-align:center}
+.rs .kontaktbox .tel{font-family:var(--font-head);font-size:20pt;color:var(--orange);letter-spacing:.8pt}
+.rs .kontaktbox small{color:#C9D4DE;font-size:8pt;display:block;margin-top:2mm;line-height:1.6}
+</style></head><body>
+<div class="hinweis"><h1>Flyer · DIN A5, zweiseitig</h1>
+<p>Blatt 1 = Vorderseite, Blatt 2 = Rückseite (beidseitiger Druck, lange Kante). Geeignet für Briefkasteneinwurf, Auslage bei Hausverwaltungen und als Beilage zum Angebot. Für den Druck: 3 mm Beschnitt beim Anbieter einstellen, 250–300 g Bilderdruck matt.</p></div>
+<div class="blatt"><div class="vs">
+  <div class="keil"></div>
+  <img src="../brand/logo-invers.svg" alt="Gashini Dienstleistungen">
+  <h1>Sauber.<br>Gepflegt.<br><span class="orange">Termintreu.</span></h1>
+  <p>Ihr Betrieb für Reinigung, Hausmeisterservice, Umzüge und Renovierung in {{ORT}} und Umgebung.</p>
+  <div class="leistungen"><span>Gebäudereinigung</span><span>Hausmeisterservice</span><span>Umzug &amp; Entrümpelung</span><span>Renovierung &amp; Maler</span></div>
+  <div class="cta">Kostenloses Angebot:<br><b>{{TELEFON}}</b></div>
+</div></div>
+<div class="blatt"><div class="rs">
+  <h2>Was wir für Sie<br>übernehmen</h2>
+  <div class="box"><h3>Reinigung &amp; Objektpflege</h3>
+    <ul><li>Treppenhaus- und Unterhaltsreinigung nach Plan</li><li>Bauschluss- und Grundreinigung</li><li>Glas- und Fensterreinigung</li><li>Grünpflege, Laubentfernung, Winterdienst</li></ul></div>
+  <div class="box"><h3>Umzug, Entrümpelung &amp; Renovierung</h3>
+    <ul><li>Privat- und Büroumzüge inkl. Möbelmontage</li><li>Haushaltsauflösung mit fachgerechter Entsorgung</li><li>Maler-, Boden- und Trockenbauarbeiten</li><li>Wohnungsübergabe besenrein oder renoviert</li></ul></div>
+  <div class="vorteile">
+    <div><b>Festpreis</b>Verbindlich nach kostenloser Besichtigung.</div>
+    <div><b>Versichert</b>Betriebshaftpflicht für Ihren Auftrag.</div>
+    <div><b>24 Stunden</b>Angebot in der Regel binnen eines Tages.</div>
+    <div><b>Bewertet</b>Geprüftes Profil auf MyHammer.</div>
+  </div>
+  <div class="kontaktbox">
+    <div class="tel">{{TELEFON}}</div>
+    <small>{{EMAIL}} · {{DOMAIN}}<br>{{STRASSE}}, {{PLZ_ORT}} · Mo–Sa 7–20 Uhr<br>Bewertungen und Anfrage auch über MyHammer</small>
+  </div>
+</div></div>
+</body></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+<title>Visitenkarte – Gashini Dienstleistungen</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="print.css">
+<style>
+@page{size:85mm 55mm;margin:0}
+.blatt{width:85mm;height:55mm}
+.vk{padding:7mm 7mm 6mm;display:flex;flex-direction:column;height:100%}
+.vk .logo{height:12mm;margin-bottom:auto}
+.vk .name{font-family:var(--font-head);font-size:13pt;font-weight:700;letter-spacing:.6pt;text-transform:uppercase}
+.vk .rolle{font-size:7pt;letter-spacing:1.2pt;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2.4mm}
+.vk .daten{font-size:7.4pt;line-height:1.55}
+.vk .daten b{color:var(--orange)}
+.rueck{background:var(--ink);color:#fff;padding:7mm;display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.rueck .claim{font-family:var(--font-head);font-size:15pt;line-height:1.1;text-transform:uppercase;letter-spacing:.6pt}
+.rueck ul{margin:3mm 0 0;padding-left:4mm;font-size:7.2pt;line-height:1.7;color:#C9D4DE}
+.rueck .fuss{font-size:6.6pt;color:#A9B7C4;letter-spacing:.4pt}
+.streifen{position:absolute;right:-14mm;bottom:-10mm;width:44mm;height:44mm;background:var(--orange);opacity:.18;transform:rotate(28deg)}
+</style></head><body>
+<div class="hinweis"><h1>Visitenkarte · 85 × 55 mm</h1>
+<p>Zwei Seiten: Blatt 1 = Vorderseite, Blatt 2 = Rückseite. Für die Druckerei als PDF exportieren (Druckdialog → „Als PDF sichern“, Ränder 0, Skalierung 100 %). Für Offsetdruck 3 mm Beschnittzugabe beim Anbieter einstellen und Farben nach CMYK wandeln: Anthrazitblau ≈ C88 M74 Y50 K56, Orange ≈ C0 M70 Y92 K0.</p></div>
+
+<div class="blatt"><div class="vk">
+  <img class="logo" src="../brand/logo.svg" alt="Gashini Dienstleistungen">
+  <div class="name">{{INHABER}}</div>
+  <div class="rolle">Inhaber</div>
+  <div class="daten">
+    <b>T</b> {{TELEFON}} &nbsp;·&nbsp; <b>M</b> {{EMAIL}}<br>
+    {{STRASSE}} · {{PLZ_ORT}}<br>
+    {{DOMAIN}} &nbsp;·&nbsp; Profil: MyHammer
+  </div>
+</div></div>
+
+<div class="blatt"><div class="rueck">
+  <div class="streifen"></div>
+  <div class="claim">Sauber.<br>Gepflegt.<br><span class="orange">Termintreu.</span></div>
+  <div>
+    <ul><li>Gebäudereinigung</li><li>Hausmeisterservice</li><li>Umzug &amp; Entrümpelung</li><li>Renovierung &amp; Maler</li></ul>
+  </div>
+  <div class="fuss">Kostenloses Angebot · {{TELEFON}} · {{DOMAIN}}</div>
+</div></div>
+</body></html>
