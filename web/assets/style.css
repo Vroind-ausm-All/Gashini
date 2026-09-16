@@ -52,9 +52,9 @@ p{margin:0 0 1em;max-width:68ch}
 .topbar a:hover{color:var(--orange-dark)}
 header.site{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(16,32,47,.04)}
 header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
-.brand img{height:46px;display:block}
-nav.main ul{display:flex;gap:20px;flex-wrap:wrap;list-style:none;margin:0;padding:0}
-nav.main a{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.1px;font-weight:600;font-size:1.08rem;white-space:nowrap;color:var(--ink);text-decoration:none;padding-block:6px;border-bottom:3px solid transparent}
+.brand img{height:46px;width:auto;display:block}
+nav.main ul{display:flex;gap:18px;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+nav.main a{font-family:var(--font-head);text-transform:uppercase;letter-spacing:.8px;font-weight:600;font-size:1.02rem;white-space:nowrap;color:var(--ink);text-decoration:none;padding-block:6px;border-bottom:3px solid transparent}
 nav.main a:hover,nav.main a[aria-current="page"]{border-color:var(--orange);color:var(--orange-dark)}
 .nav-toggle{display:none;align-items:center;gap:.5em;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:11px 16px;font-family:var(--font-head);font-size:1.1rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;line-height:1;cursor:pointer;box-shadow:0 2px 0 var(--orange-dark)}
 .nav-toggle:hover{background:var(--orange-dark);box-shadow:none}
@@ -105,27 +105,63 @@ section.alt{background:var(--sand);border-block:1px solid var(--line-soft)}
 .quote cite{font-style:normal;font-weight:600;font-size:.93rem;color:var(--ink-soft)}
 .stars{color:var(--orange);letter-spacing:2px}
 
-/* ---------- MyHammer-Block ---------- */
-.mh{
-  max-width:640px;margin-inline:auto;background:var(--paper);
-  border:1px solid var(--line);border-top:5px solid var(--orange);
-  border-radius:var(--radius);padding:clamp(26px,4.5vw,42px);
-  box-shadow:0 2px 10px rgba(16,32,47,.06);text-align:left;
-}
-.mh h2{margin-bottom:.35em}
-.mh p{color:var(--ink-soft);max-width:56ch}
-.mh .eyebrow{margin-bottom:.5em}
-.mh-bewertung{
-  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-soft);
-}
-.mh-note{
-  font-family:var(--font-head);font-size:3.1rem;font-weight:700;line-height:1;
-  color:var(--orange-dark);font-variant-numeric:tabular-nums;
-}
-.mh-sterne{color:var(--orange);font-size:1.35rem;letter-spacing:3px;line-height:1}
-.mh-anzahl{font-size:.95rem;line-height:1.45;color:var(--ink-soft)}
-.mh-aktionen{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+/* ---------- Bausteine der Anlass- und Beweisseiten ---------- */
+.skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--ink);color:#fff;padding:12px 18px;border-radius:0 0 8px 0}
+.skiplink:focus{left:0}
+
+.hero-fuss{margin-top:20px;font-size:.98rem;color:var(--ink-soft);max-width:60ch}
+
+.vertrauensband{background:var(--ink);color:#fff;padding-block:18px;border-bottom:4px solid var(--orange)}
+.vertrauensband ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 30px;list-style:none;margin:0;padding:0;font-size:.96rem;color:#D3DCE4}
+.vertrauensband li{display:grid;grid-template-columns:auto 1fr;gap:.5em;align-items:baseline}
+.vertrauensband li::before{content:"✓";color:#FF8A3D;font-weight:700}
+.vertrauensband strong{color:#fff}
+
+.anlaesse .anlass{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;text-decoration:none;color:inherit;transition:.15s ease;box-shadow:0 1px 2px rgba(16,32,47,.04);position:relative}
+.anlaesse .anlass:hover{border-color:var(--orange);box-shadow:0 6px 18px rgba(16,32,47,.1);transform:translateY(-2px)}
+.anlaesse .anlass p{color:var(--ink-soft);max-width:none}
+.anlass-label{position:absolute;top:-11px;left:24px;background:var(--orange);color:#fff;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.3px;font-size:.82rem;font-weight:700;padding:3px 10px;border-radius:5px}
+.anlass .more{margin-top:auto;color:var(--orange-dark);font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.1px;font-weight:700;font-size:1.05rem}
+
+.paket{list-style:none;margin:0;padding:0;display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));counter-reset:paket}
+.paket li{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative}
+.paket-nr{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-head);font-size:1.25rem;font-weight:700;margin-bottom:14px}
+.paket li p{color:var(--ink-soft);max-width:none;margin:0}
+.paket-fuss{margin-top:22px;font-size:1rem}
+
+.zeitplan{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:760px}
+.zeitplan li{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line)}
+.zeitplan li:last-child{border-bottom:1px solid var(--line)}
+.zeitplan b{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.2px;color:var(--orange-dark);font-size:1.1rem}
+
+.karte-hervor{border-top:5px solid var(--orange)}
+.faktoren{margin:0;padding-left:1.15em;color:var(--ink-soft)}
+.faktoren li{margin-bottom:.55em}
+.faktoren b{color:var(--ink)}
+
+.tabelle-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.preise{width:100%;border-collapse:collapse;min-width:520px;background:var(--paper)}
+table.preise caption{text-align:left;font-size:.9rem;color:var(--ink-soft);padding-bottom:8px}
+table.preise th,table.preise td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line)}
+table.preise thead th{background:var(--ink);color:#fff;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.1px;font-size:1rem;border-bottom:none}
+table.preise td:last-child{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.preise tbody tr:nth-child(even){background:var(--sand-2)}
+
+.beispiel .beispiel-preis{margin-top:auto;font-family:var(--font-head);font-size:1.6rem;color:var(--orange-dark);font-variant-numeric:tabular-nums}
+.bildplatz{display:grid;place-items:center;text-align:center;aspect-ratio:3/2;max-width:100%;background:var(--sand);border:1.5px dashed var(--line);border-radius:10px;color:var(--ink-soft);font-size:.9rem;padding:16px;margin-bottom:16px}
+.mh-note-klein{font-family:var(--font-head);font-size:2.4rem;color:var(--orange-dark);line-height:1;margin-bottom:.15em;font-variant-numeric:tabular-nums}
+.mh-sterne{color:var(--orange);font-size:1.15rem;letter-spacing:2px}
+
+.abschluss{background:var(--sand);border-top:4px solid var(--orange);text-align:center}
+.abschluss .wrap{max-width:660px}
+.abschluss p{margin-inline:auto;color:var(--ink-soft)}
+.abschluss-aktionen{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
+
+.fehler-links{list-style:none;padding:0;margin:0 0 24px;display:flex;flex-wrap:wrap;gap:10px 22px;font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.1px;font-size:1.08rem}
+
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.vor-absenden{font-size:.95rem;color:var(--ink-soft);margin-bottom:14px;padding-left:1.5em;position:relative}
+.vor-absenden::before{content:"✓";position:absolute;left:0;color:var(--orange-dark);font-weight:700}
 
 /* ---------- Formulare ---------- */
 form.kontakt{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
@@ -160,7 +196,7 @@ footer.site li{margin-bottom:9px}
 /* ---------- Mobile Anrufleiste ---------- */
 .callbar{display:none}
 
-@media(max-width:1000px){
+@media(max-width:1150px){
   nav.main{display:none;width:100%;order:3}
   nav.main.open{display:block}
   nav.main ul{flex-direction:column;gap:0;padding-block:6px}
@@ -179,8 +215,8 @@ footer.site li{margin-bottom:9px}
   .topbar .wrap{justify-content:flex-start;flex-direction:column;gap:2px}
   .card{padding:22px}
   .btn{width:100%}
-  .mh-bewertung{gap:12px}
-  .mh-note{font-size:2.7rem}
+  .zeitplan li{grid-template-columns:1fr;gap:2px}
+  .mh-note-klein{font-size:2.1rem}
   .hero-actions,.check{width:100%}
   dl.facts{grid-template-columns:1fr;gap:2px}
   dl.facts dd{margin-bottom:10px}

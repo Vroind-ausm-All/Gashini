@@ -3,51 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kontakt &amp; Angebot | Gashini Dienstleistungen</title>
-<meta name="description" content="Kostenloses Angebot von Gashini Dienstleistungen anfordern – telefonisch, per E-Mail, über das Formular oder über MyHammer.">
+<title>Festpreis anfragen – kostenlos und unverbindlich | Gashini Dienstleistungen</title>
+<meta name="description" content="Anfrage an Gashini Dienstleistungen in {{ORT}}: kostenlose Besichtigung, Festpreis in der Regel binnen 24 Stunden. Telefon, WhatsApp oder Formular.">
 <link rel="icon" href="../brand/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://{{DOMAIN}}/kontakt.html">
-<meta property="og:title" content="Kontakt &amp; Angebot | Gashini Dienstleistungen">
-<meta property="og:description" content="Kostenloses Angebot von Gashini Dienstleistungen anfordern – telefonisch, per E-Mail, über das Formular oder über MyHammer.">
+<meta property="og:title" content="Festpreis anfragen – kostenlos und unverbindlich | Gashini Dienstleistungen">
+<meta property="og:description" content="Anfrage an Gashini Dienstleistungen in {{ORT}}: kostenlose Besichtigung, Festpreis in der Regel binnen 24 Stunden. Telefon, WhatsApp oder Formular.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
 <div class="topbar">
   <div class="wrap">
-    <span>Mo–Sa 7–20 Uhr · Kostenloses Angebot innerhalb von 24 Stunden</span>
+    <span>Mo–Sa 7–20 Uhr · Rückmeldung am selben Werktag</span>
     <span><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
   </div>
 </div>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="index.html"><img src="../brand/logo.svg" alt="Gashini Dienstleistungen – Startseite"></a>
+    <a class="brand" href="index.html"><img src="../brand/logo.svg" width="320" height="80" alt="Gashini Dienstleistungen – Startseite"></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="hauptmenue"><span class="balken"><span></span></span>Menü</button>
     <nav class="main" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
-        <li><a href="index.html">Start</a></li>
+        <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
+        <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
         <li><a href="leistungen.html">Leistungen</a></li>
-        <li><a href="ablauf.html">Ablauf</a></li>
-        <li><a href="ueber-uns.html">Über uns</a></li>
-        <li><a href="referenzen.html">Referenzen</a></li>
+        <li><a href="preise.html">Preise</a></li>
         <li><a href="kontakt.html" aria-current="page">Kontakt</a></li>
       </ul>
     </nav>
-    <div class="header-cta">
-      <a class="btn btn-primary" href="kontakt.html">Angebot anfordern</a>
-    </div>
+    <div class="header-cta"><a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a></div>
   </div>
 </header>
 <main id="inhalt">
 <section class="hero">
   <div class="wrap">
     <span class="eyebrow">Kontakt</span>
-    <h1>Angebot anfordern –<br><span>kostenlos</span></h1>
-    <p class="lead">Beschreiben Sie kurz, was ansteht. Wir melden uns in der Regel innerhalb von 24 Stunden mit einem Festpreis oder einem Besichtigungstermin.</p>
+    <h1>Festpreis anfragen –<br><span>kostenlos und unverbindlich</span></h1>
+    <p class="lead">Beschreiben Sie kurz, was ansteht und bis wann es fertig sein muss. Sie bekommen am selben Werktag eine Rückmeldung – entweder direkt eine Einschätzung oder einen Vorschlag für die Besichtigung.</p>
   </div>
 </section>
 <section>
@@ -55,49 +54,67 @@
     <div class="grid g2" style="gap:44px;align-items:start">
       <div>
         <h2>Anfrageformular</h2>
+        <p class="hint">Vier Pflichtfelder – mehr brauchen wir für den Anfang nicht.</p>
         <form class="kontakt" action="{{FORMULAR_ENDPOINT}}" method="post">
           <div><label for="name">Name *</label><input id="name" name="name" required autocomplete="name"></div>
           <div><label for="telefon">Telefon *</label><input id="telefon" name="telefon" type="tel" required autocomplete="tel"></div>
-          <div><label for="email">E-Mail *</label><input id="email" name="email" type="email" required autocomplete="email"></div>
-          <div><label for="ort">PLZ / Ort des Objekts *</label><input id="ort" name="ort" required></div>
-          <div class="full"><label for="leistung">Gewünschte Leistung</label>
-            <select id="leistung" name="leistung">
+          <div><label for="ort">PLZ / Ort des Objekts *</label><input id="ort" name="ort" required autocomplete="postal-code"></div>
+          <div><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="email"><span class="hint">Freiwillig – für das schriftliche Angebot</span></div>
+          <div class="full"><label for="anlass">Worum geht es?</label>
+            <select id="anlass" name="anlass">
+              <option>Wohnungsübergabe (räumen, streichen, reinigen)</option>
+              <option>Haushaltsauflösung / Entrümpelung</option>
               <option>Gebäudereinigung</option>
               <option>Hausmeisterservice</option>
-              <option>Umzug / Entrümpelung</option>
               <option>Renovierung / Malerarbeiten</option>
-              <option>Mehreres / noch unklar</option>
+              <option>Umzug</option>
+              <option>Noch unklar</option>
             </select></div>
+          <div class="full"><label for="termin">Bis wann muss es fertig sein?</label>
+            <input id="termin" name="termin" type="text" placeholder="z. B. Übergabe am 30.10. oder „noch offen“"></div>
           <div class="full"><label for="nachricht">Was steht an? *</label>
-            <textarea id="nachricht" name="nachricht" rows="6" required placeholder="z. B. 3-Zimmer-Wohnung, 78 m², Entrümpelung und anschließend streichen, Übergabe am 30.10."></textarea></div>
+            <textarea id="nachricht" name="nachricht" rows="5" required placeholder="z. B. 3-Zimmer-Wohnung, 78 m², 2. OG ohne Aufzug. Entrümpeln, streichen und Endreinigung."></textarea></div>
+          <div class="full"><label for="quelle">Wie sind Sie auf uns aufmerksam geworden?</label>
+            <select id="quelle" name="quelle">
+              <option value="">Bitte auswählen</option>
+              <option>Google-Suche</option>
+              <option>Google-Unternehmensprofil / Karte</option>
+              <option>MyHammer</option>
+              <option>Empfehlung</option>
+              <option>Fahrzeug oder Flyer gesehen</option>
+              <option>Social Media</option>
+              <option>Sonstiges</option>
+            </select></div>
+          <p class="hp" aria-hidden="true"><label for="website">Dieses Feld bitte frei lassen</label><input id="website" name="website" tabindex="-1" autocomplete="off"></p>
           <div class="full check">
             <input id="dsgvo" name="dsgvo" type="checkbox" required>
             <label for="dsgvo" style="font-weight:400">Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</label>
           </div>
-          <div class="full"><button class="btn btn-primary" type="submit">Anfrage absenden</button>
-          <p class="hint" style="margin-top:10px">* Pflichtfeld. Ihre Daten verwenden wir ausschließlich zur Beantwortung dieser Anfrage.</p></div>
+          <div class="full">
+            <p class="vor-absenden">Kostenlos und unverbindlich. Rückmeldung am selben Werktag. Keine Weitergabe Ihrer Daten.</p>
+            <button class="btn btn-primary" type="submit">Anfrage abschicken</button>
+          </div>
         </form>
       </div>
       <div>
-        <div class="card">
-          <h3>Direkter Draht</h3>
+        <div class="card karte-hervor">
+          <h3>Schneller geht es telefonisch</h3>
+          <p>Bei Fristsachen ist der Anruf der kürzere Weg – dann klären wir in drei Minuten, ob wir Ihren Termin halten können.</p>
+          <p><a class="btn btn-primary" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></p>
           <dl class="facts">
-            <dt>Telefon</dt><dd><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></dd>
             <dt>WhatsApp</dt><dd><a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Fotos direkt schicken</a></dd>
             <dt>E-Mail</dt><dd><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></dd>
             <dt>Anschrift</dt><dd>{{STRASSE}}<br>{{PLZ_ORT}}</dd>
             <dt>Zeiten</dt><dd>Mo–Sa 7:00–20:00 Uhr</dd>
           </dl>
-          <p style="margin-top:20px"><a class="btn btn-primary" href="tel:{{TELEFON_LINK}}">Jetzt anrufen</a></p>
         </div>
         <div class="card" style="margin-top:22px">
-          <h3>Lieber über MyHammer?</h3>
-          <p>Sie können Ihren Auftrag auch über unser geprüftes MyHammer-Profil ausschreiben. Dort sehen Sie zusätzlich unsere Bewertungen aus vermittelten Aufträgen.</p>
-          <p><a class="btn btn-ghost" href="{{MYHAMMER_URL}}" rel="noopener">Zum MyHammer-Profil ↗</a></p>
+          <h3>Angebot ohne Besichtigung</h3>
+          <p>Schicken Sie uns per WhatsApp zwei bis drei Fotos je Raum und die ungefähre Quadratmeterzahl. Bei vielen Aufträgen können wir damit direkt kalkulieren – das spart beiden Seiten einen Termin.</p>
         </div>
         <div class="card" style="margin-top:22px">
-          <h3>Schnellere Angebote</h3>
-          <p>Schicken Sie uns zwei bis drei Fotos vom Objekt sowie die ungefähre Quadratmeterzahl – damit können wir bei vielen Aufträgen ohne Besichtigung kalkulieren.</p>
+          <h3>Lieber über ein Portal?</h3>
+          <p>Sie können Ihren Auftrag auch über unser <a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer-Profil</a> ausschreiben. Dort sehen Sie zusätzlich unsere Bewertungen aus vermittelten Aufträgen. Der Preis ist derselbe.</p>
         </div>
       </div>
     </div>
@@ -108,24 +125,26 @@
   <div class="wrap">
     <div class="footgrid">
       <div>
-        <img src="../brand/logo-invers.svg" alt="Gashini Dienstleistungen" style="height:58px">
-        <p style="margin-top:16px">Ihr Partner für Gebäudereinigung, Hausmeisterservice, Umzüge und Renovierung – zuverlässig, versichert und pünktlich.</p>
+        <img src="../brand/logo-invers.svg" width="320" height="80" alt="Gashini Dienstleistungen" style="height:58px;width:auto">
+        <p style="margin-top:16px">Wir räumen, renovieren und reinigen Ihre Immobilie bis zum vereinbarten Übergabetermin – ein Auftrag, ein Festpreis, ein Ansprechpartner.</p>
       </div>
       <div>
-        <h4>Leistungen</h4>
+        <h4>Anlässe</h4>
         <ul>
+          <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
+          <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
           <li><a href="leistungen.html#reinigung">Gebäudereinigung</a></li>
           <li><a href="leistungen.html#hausmeister">Hausmeisterservice</a></li>
-          <li><a href="leistungen.html#umzug">Umzug &amp; Entrümpelung</a></li>
           <li><a href="leistungen.html#renovierung">Renovierung &amp; Maler</a></li>
         </ul>
       </div>
       <div>
         <h4>Unternehmen</h4>
         <ul>
-          <li><a href="ueber-uns.html">Über uns</a></li>
-          <li><a href="ablauf.html">So arbeiten wir</a></li>
+          <li><a href="preise.html">Preise</a></li>
+          <li><a href="ablauf.html">Ablauf &amp; Fragen</a></li>
           <li><a href="referenzen.html">Referenzen</a></li>
+          <li><a href="ueber-uns.html">Über uns</a></li>
           <li><a href="impressum.html">Impressum</a></li>
           <li><a href="datenschutz.html">Datenschutz</a></li>
         </ul>
@@ -136,19 +155,20 @@
           <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
           <li><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></li>
           <li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>
-          <li><a href="{{MYHAMMER_URL}}" rel="noopener">Unser MyHammer-Profil ↗</a></li>
+          <li><a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer-Profil ↗</a></li>
+          <li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Profil ↗</a></li>
         </ul>
       </div>
     </div>
     <div class="copy">
       <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · Inhaber {{INHABER}}</span>
-      <span>Bewertet auf <a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer</a></span>
+      <span>Einsatzgebiet: {{EINSATZGEBIET}}</span>
     </div>
   </div>
 </footer>
 <div class="callbar">
-  <a href="tel:{{TELEFON_LINK}}">📞 Anrufen</a>
-  <a href="kontakt.html">Angebot →</a>
+  <a href="tel:{{TELEFON_LINK}}">Anrufen</a>
+  <a href="kontakt.html">Festpreis anfragen</a>
 </div>
 <script src="assets/main.js"></script>
 </body>

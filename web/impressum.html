@@ -13,33 +13,32 @@
 <meta property="og:locale" content="de_DE">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
 <div class="topbar">
   <div class="wrap">
-    <span>Mo–Sa 7–20 Uhr · Kostenloses Angebot innerhalb von 24 Stunden</span>
+    <span>Mo–Sa 7–20 Uhr · Rückmeldung am selben Werktag</span>
     <span><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
   </div>
 </div>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="index.html"><img src="../brand/logo.svg" alt="Gashini Dienstleistungen – Startseite"></a>
+    <a class="brand" href="index.html"><img src="../brand/logo.svg" width="320" height="80" alt="Gashini Dienstleistungen – Startseite"></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="hauptmenue"><span class="balken"><span></span></span>Menü</button>
     <nav class="main" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
-        <li><a href="index.html">Start</a></li>
+        <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
+        <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
         <li><a href="leistungen.html">Leistungen</a></li>
-        <li><a href="ablauf.html">Ablauf</a></li>
-        <li><a href="ueber-uns.html">Über uns</a></li>
-        <li><a href="referenzen.html">Referenzen</a></li>
+        <li><a href="preise.html">Preise</a></li>
         <li><a href="kontakt.html">Kontakt</a></li>
       </ul>
     </nav>
-    <div class="header-cta">
-      <a class="btn btn-primary" href="kontakt.html">Angebot anfordern</a>
-    </div>
+    <div class="header-cta"><a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a></div>
   </div>
 </header>
 <main id="inhalt">
@@ -89,24 +88,26 @@
   <div class="wrap">
     <div class="footgrid">
       <div>
-        <img src="../brand/logo-invers.svg" alt="Gashini Dienstleistungen" style="height:58px">
-        <p style="margin-top:16px">Ihr Partner für Gebäudereinigung, Hausmeisterservice, Umzüge und Renovierung – zuverlässig, versichert und pünktlich.</p>
+        <img src="../brand/logo-invers.svg" width="320" height="80" alt="Gashini Dienstleistungen" style="height:58px;width:auto">
+        <p style="margin-top:16px">Wir räumen, renovieren und reinigen Ihre Immobilie bis zum vereinbarten Übergabetermin – ein Auftrag, ein Festpreis, ein Ansprechpartner.</p>
       </div>
       <div>
-        <h4>Leistungen</h4>
+        <h4>Anlässe</h4>
         <ul>
+          <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
+          <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
           <li><a href="leistungen.html#reinigung">Gebäudereinigung</a></li>
           <li><a href="leistungen.html#hausmeister">Hausmeisterservice</a></li>
-          <li><a href="leistungen.html#umzug">Umzug &amp; Entrümpelung</a></li>
           <li><a href="leistungen.html#renovierung">Renovierung &amp; Maler</a></li>
         </ul>
       </div>
       <div>
         <h4>Unternehmen</h4>
         <ul>
-          <li><a href="ueber-uns.html">Über uns</a></li>
-          <li><a href="ablauf.html">So arbeiten wir</a></li>
+          <li><a href="preise.html">Preise</a></li>
+          <li><a href="ablauf.html">Ablauf &amp; Fragen</a></li>
           <li><a href="referenzen.html">Referenzen</a></li>
+          <li><a href="ueber-uns.html">Über uns</a></li>
           <li><a href="impressum.html">Impressum</a></li>
           <li><a href="datenschutz.html">Datenschutz</a></li>
         </ul>
@@ -117,19 +118,20 @@
           <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
           <li><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></li>
           <li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>
-          <li><a href="{{MYHAMMER_URL}}" rel="noopener">Unser MyHammer-Profil ↗</a></li>
+          <li><a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer-Profil ↗</a></li>
+          <li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Profil ↗</a></li>
         </ul>
       </div>
     </div>
     <div class="copy">
       <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · Inhaber {{INHABER}}</span>
-      <span>Bewertet auf <a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer</a></span>
+      <span>Einsatzgebiet: {{EINSATZGEBIET}}</span>
     </div>
   </div>
 </footer>
 <div class="callbar">
-  <a href="tel:{{TELEFON_LINK}}">📞 Anrufen</a>
-  <a href="kontakt.html">Angebot →</a>
+  <a href="tel:{{TELEFON_LINK}}">Anrufen</a>
+  <a href="kontakt.html">Festpreis anfragen</a>
 </div>
 <script src="assets/main.js"></script>
 </body>

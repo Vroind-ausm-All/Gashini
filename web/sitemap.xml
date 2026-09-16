@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://{{DOMAIN}}/</loc><priority>1.0</priority></url>
-  <url><loc>https://{{DOMAIN}}/leistungen.html</loc><priority>0.9</priority></url>
-  <url><loc>https://{{DOMAIN}}/ablauf.html</loc><priority>0.6</priority></url>
-  <url><loc>https://{{DOMAIN}}/ueber-uns.html</loc><priority>0.6</priority></url>
-  <url><loc>https://{{DOMAIN}}/referenzen.html</loc><priority>0.6</priority></url>
-  <url><loc>https://{{DOMAIN}}/kontakt.html</loc><priority>0.9</priority></url>
-  <url><loc>https://{{DOMAIN}}/impressum.html</loc><priority>0.6</priority></url>
-  <url><loc>https://{{DOMAIN}}/datenschutz.html</loc><priority>0.6</priority></url>
+  <url><loc>https://{{DOMAIN}}/</loc><lastmod>{{STAND_ISO}}</lastmod><priority>1.0</priority></url>
+  <url><loc>https://{{DOMAIN}}/wohnungsuebergabe.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.9</priority></url>
+  <url><loc>https://{{DOMAIN}}/haushaltsaufloesung.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.9</priority></url>
+  <url><loc>https://{{DOMAIN}}/leistungen.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.8</priority></url>
+  <url><loc>https://{{DOMAIN}}/preise.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.8</priority></url>
+  <url><loc>https://{{DOMAIN}}/kontakt.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.9</priority></url>
+  <url><loc>https://{{DOMAIN}}/ablauf.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.6</priority></url>
+  <url><loc>https://{{DOMAIN}}/referenzen.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.6</priority></url>
+  <url><loc>https://{{DOMAIN}}/ueber-uns.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.5</priority></url>
+  <url><loc>https://{{DOMAIN}}/impressum.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.2</priority></url>
+  <url><loc>https://{{DOMAIN}}/datenschutz.html</loc><lastmod>{{STAND_ISO}}</lastmod><priority>0.2</priority></url>
 </urlset>
