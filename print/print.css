@@ -3,18 +3,18 @@
    Wichtig: Im Druckdialog Ränder auf "Keine"/0 und Skalierung auf 100 % stellen,
    Hintergrundgrafiken aktivieren. */
 :root{
-  --ink:#0F1E2E; --ink-2:#16293D; --ink-soft:#5B6B7B;
-  --orange:#F26A1B; --sand:#F6F3EE; --line:#E3DED6;
+  --ink:#0E0E0E; --ink-2:#1A1A1A; --ink-soft:#595959;
+  --akzent:#1E3AC8; --flaeche:#F4F4F4; --line:#DCDCDC;
   --font-head:"Barlow Condensed","Oswald","Arial Narrow",sans-serif;
   --font-body:"Inter","Segoe UI",Arial,sans-serif;
 }
 *{box-sizing:border-box}
-body{margin:0;background:#9AA5AE;font-family:var(--font-body);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.hinweis{max-width:760px;margin:24px auto;padding:16px 20px;background:#fff;border-left:5px solid var(--orange);font-size:14px;line-height:1.6}
+body{margin:0;background:#8C8C8C;font-family:var(--font-body);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hinweis{max-width:760px;margin:24px auto;padding:16px 20px;background:#fff;border-left:5px solid var(--akzent);font-size:14px;line-height:1.6}
 .hinweis h1{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.5px;font-size:20px;margin:0 0 8px}
 .blatt{background:#fff;margin:20px auto;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.25)}
 h1,h2,h3,.head{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1px;margin:0}
-.orange{color:var(--orange)}
+.akzent{color:var(--akzent)}
 .dunkel{background:var(--ink);color:#fff}
 @media print{
   body{background:#fff}

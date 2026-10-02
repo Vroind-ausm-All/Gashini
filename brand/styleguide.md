@@ -13,17 +13,30 @@
 **Nicht erlaubt:** verzerren, drehen, Farben tauschen, Schatten hinzufügen, auf unruhigen Fotos ohne abdunkelnde Fläche platzieren.
 
 ## Farben
+
+Der Auftritt kommt mit **Schwarz, Weiß und einer einzigen Akzentfarbe** aus:
+**Schlagschnur-Blau** – das Pigment des blauen Kreidestrichs, mit dem im Trockenbau
+angerissen und gelotet wird. Die Farbe steht für Maßhaltigkeit, nicht für Dekoration.
+
 | Farbe | HEX | RGB | CMYK (Richtwert) | Einsatz |
 |---|---|---|---|---|
-| Anthrazitblau | `#0F1E2E` | 15 30 46 | 88 74 50 56 | Grundfarbe, Flächen, Text |
-| Anthrazit hell | `#16293D` | 22 41 61 | 85 70 45 45 | Verläufe |
-| Signalorange | `#F26A1B` | 242 106 27 | 0 70 92 0 | Akzente, Buttons, Telefonnummer |
-| Orange dunkel | `#D2550C` | 210 85 12 | 5 75 100 5 | Links, Hover |
-| Sand | `#F6F3EE` | 246 243 238 | 3 3 6 0 | Abschnittshintergrund |
-| Grauton Text | `#5B6B7B` | 91 107 123 | 65 48 37 10 | Fließtext sekundär |
+| Schwarz | `#0E0E0E` | 14 14 14 | 100 K (Rich Black: 60 40 40 100) | Text, dunkle Flächen, Signet |
+| Schwarz aufgehellt | `#1A1A1A` | 26 26 26 | 90 K | Verläufe, zweite Ebene |
+| Grau Text | `#595959` | 89 89 89 | 0 0 0 75 | Fließtext sekundär |
+| Grau Linie | `#DCDCDC` | 220 220 220 | 0 0 0 16 | Rahmen, Trennlinien |
+| Fläche | `#F4F4F4` | 244 244 244 | 0 0 0 5 | Abschnittshintergrund |
+| **Schlagschnur-Blau** | `#1E3AC8` | 30 58 200 | 90 78 0 0 | Akzent: Buttons, Links, Marken-Bogen |
+| Blau dunkel | `#152A96` | 21 42 150 | 100 90 0 10 | Hover, Links auf Weiß |
+| Blau hell | `#8FA3FF` | 143 163 255 | 45 32 0 0 | Akzent **auf schwarzem Grund** |
+| Blau Tönung | `#EDF0FF` | 237 240 255 | 8 6 0 0 | Hinterlegte Felder |
 
-Folie/Lack: Orange ≈ RAL 2009, Pantone 165 C. Anthrazitblau ≈ RAL 5011.
-Faustregel: Orange ist Akzent, nie Fläche über mehr als ein Viertel der Gestaltung.
+Sonderfarbe (Richtwert): Pantone 2728 C · Folie/Lack: RAL 5005.
+Vor Auflagendruck Proof anfordern – gesättigtes Blau verschiebt sich auf
+ungestrichenem Papier sichtbar.
+
+**Mengenregel:** Schwarz und Weiß tragen die Fläche. Blau erscheint nur dort,
+wo etwas passieren soll – Schaltfläche, Link, Hervorhebung. Als Fläche niemals
+über mehr als ein Zehntel der Gestaltung.
 
 ## Schriften
 - **Überschriften:** Barlow Condensed, 600/700, Versalien, Laufweite +1 bis +3.
@@ -38,7 +51,7 @@ Keine Versprechen, die im Betrieb nicht gehalten werden können.
 
 ## Claim
 **Sauber. Gepflegt. Termintreu.** – immer dreizeilig oder mit Punkten getrennt,
-das letzte Wort in Orange.
+das letzte Wort in Schlagschnur-Blau.
 
 ## Bildsprache
 Eigene Fotos vom eigenen Team und den eigenen Objekten. Vorher/Nachher-Paare wirken stärker

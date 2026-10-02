@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" role="img" aria-label="Gashini Signet">
-  <rect x="0" y="0" width="72" height="72" rx="18" fill="#0F1E2E"/>
-  <path d="M52 23a19 19 0 1 0 0 26" fill="none" stroke="#F26A1B" stroke-width="9" stroke-linecap="square"/>
+  <rect x="0" y="0" width="72" height="72" rx="18" fill="#0E0E0E"/>
+  <path d="M52 23a19 19 0 1 0 0 26" fill="none" stroke="#1E3AC8" stroke-width="9" stroke-linecap="square"/>
   <rect x="36" y="31.5" width="20" height="9" fill="#FFFFFF"/>
 </svg>
