@@ -46,6 +46,33 @@ und konsequentem Nachfassen bei bereits vorhandenen Anfragen.
 > zu tief und wirken nicht. Die Datei `.htaccess` beginnt mit einem Punkt und wird von manchen
 > FTP-Programmen ausgeblendet – Anzeige versteckter Dateien einschalten.
 
+## Vorschau im Netz (GitHub Pages)
+
+Für Abstimmungen mit Dritten liegt ein Workflow bereit, der den Auftritt baut und als
+**nicht indexierbare Vorschau** veröffentlicht: `.github/workflows/vorschau.yml`.
+
+**Einmalig einschalten:** Repository → **Settings** → **Pages** → unter *Build and deployment*
+bei *Source* **GitHub Actions** auswählen. Danach läuft der Deploy bei jedem Push automatisch;
+die Adresse steht anschließend oben auf derselben Einstellungsseite und im Protokoll des
+Workflows unter *Actions*.
+
+Was der Workflow dabei absichert:
+
+- `noindex, nofollow` in jeder Seite und `Disallow: /` in der `robots.txt` – die Vorschau
+  taucht nicht in Suchergebnissen auf, und die `sitemap.xml` wird entfernt
+- ein Hinweisstreifen über jeder Seite, damit niemand die Vorschau für die fertige
+  Website hält
+- `brand/` wandert in den Webordner, damit das Logo auch dann lädt, wenn nur dieser
+  Ordner veröffentlicht wird
+
+> **Wichtig:** Eine GitHub-Pages-Seite ist über ihre Adresse öffentlich erreichbar – sie ist
+> nur nicht auffindbar. Solange Impressum und Firmendaten unvollständig sind, ist das als
+> Abstimmungslink in Ordnung, als beworbene Firmenadresse nicht. Für den echten Livegang
+> gehört der Inhalt von `dist/web/` auf eine eigene Domain, und die Checkliste am Ende
+> dieser Datei muss abgearbeitet sein.
+
+Soll die Vorschau wieder verschwinden: Settings → Pages → *Source* auf **None** stellen.
+
 ## Seitenstruktur
 
 | Seite | Aufgabe |
