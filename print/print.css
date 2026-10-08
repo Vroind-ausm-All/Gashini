@@ -4,7 +4,7 @@
    Hintergrundgrafiken aktivieren. */
 :root{
   --ink:#0E0E0E; --ink-2:#1A1A1A; --ink-soft:#595959;
-  --akzent:#1E3AC8; --flaeche:#F4F4F4; --line:#DCDCDC;
+  --akzent:#B5391C; --flaeche:#F4F4F4; --line:#DCDCDC;
   --font-head:"Barlow Condensed","Oswald","Arial Narrow",sans-serif;
   --font-body:"Inter","Segoe UI",Arial,sans-serif;
 }

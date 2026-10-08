@@ -15,8 +15,8 @@
 ## Farben
 
 Der Auftritt kommt mit **Schwarz, Weiß und einer einzigen Akzentfarbe** aus:
-**Schlagschnur-Blau** – das Pigment des blauen Kreidestrichs, mit dem im Trockenbau
-angerissen und gelotet wird. Die Farbe steht für Maßhaltigkeit, nicht für Dekoration.
+**Ziegelrot** – die Farbe des Rohbaus: gebrannter Ton, Ziegel und die rot bedruckte
+Brandschutzplatte im Trockenbau. Sie steht für die Substanz hinter der fertigen Wand.
 
 | Farbe | HEX | RGB | CMYK (Richtwert) | Einsatz |
 |---|---|---|---|---|
@@ -25,16 +25,16 @@ angerissen und gelotet wird. Die Farbe steht für Maßhaltigkeit, nicht für Dek
 | Grau Text | `#595959` | 89 89 89 | 0 0 0 75 | Fließtext sekundär |
 | Grau Linie | `#DCDCDC` | 220 220 220 | 0 0 0 16 | Rahmen, Trennlinien |
 | Fläche | `#F4F4F4` | 244 244 244 | 0 0 0 5 | Abschnittshintergrund |
-| **Schlagschnur-Blau** | `#1E3AC8` | 30 58 200 | 90 78 0 0 | Akzent: Buttons, Links, Marken-Bogen |
-| Blau dunkel | `#152A96` | 21 42 150 | 100 90 0 10 | Hover, Links auf Weiß |
-| Blau hell | `#8FA3FF` | 143 163 255 | 45 32 0 0 | Akzent **auf schwarzem Grund** |
-| Blau Tönung | `#EDF0FF` | 237 240 255 | 8 6 0 0 | Hinterlegte Felder |
+| **Ziegelrot** | `#B5391C` | 181 57 28 | 0 80 90 25 | Akzent: Buttons, Links, Marken-Bogen |
+| Rot dunkel | `#8E2A12` | 142 42 18 | 0 85 95 45 | Hover, Links auf Weiß |
+| Rot hell | `#EA9478` | 234 148 120 | 0 45 50 0 | Akzent **auf schwarzem Grund** |
+| Rot Tönung | `#FBEFEB` | 251 239 235 | 0 6 6 0 | Hinterlegte Felder |
 
-Sonderfarbe (Richtwert): Pantone 2728 C · Folie/Lack: RAL 5005.
-Vor Auflagendruck Proof anfordern – gesättigtes Blau verschiebt sich auf
-ungestrichenem Papier sichtbar.
+Sonderfarbe (Richtwert): Pantone 1805 C · Folie/Lack: RAL 3016.
+Vor Auflagendruck Proof anfordern – gesättigtes Rot verschiebt sich auf
+ungestrichenem Papier sichtbar ins Stumpfe.
 
-**Mengenregel:** Schwarz und Weiß tragen die Fläche. Blau erscheint nur dort,
+**Mengenregel:** Schwarz und Weiß tragen die Fläche. Rot erscheint nur dort,
 wo etwas passieren soll – Schaltfläche, Link, Hervorhebung. Als Fläche niemals
 über mehr als ein Zehntel der Gestaltung.
 
@@ -51,7 +51,7 @@ Keine Versprechen, die im Betrieb nicht gehalten werden können.
 
 ## Claim
 **Sauber. Gepflegt. Termintreu.** – immer dreizeilig oder mit Punkten getrennt,
-das letzte Wort in Schlagschnur-Blau.
+das letzte Wort in Ziegelrot.
 
 ## Bildsprache
 Eigene Fotos vom eigenen Team und den eigenen Objekten. Vorher/Nachher-Paare wirken stärker

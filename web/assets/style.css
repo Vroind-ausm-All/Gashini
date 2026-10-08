@@ -1,15 +1,15 @@
 /* Gashini Dienstleistungen — Corporate Design Stylesheet
-   Schwarz/Weiß mit Schlagschnur-Blau als einziger Akzentfarbe. */
+   Schwarz/Weiß mit Ziegelrot als einziger Akzentfarbe. */
 :root{
-  /* Schwarz, Weiß und eine Akzentfarbe: Schlagschnur-Blau –
-     das Pigment des blauen Kreidestrichs, mit dem im Trockenbau angerissen wird. */
+  /* Schwarz, Weiß und eine Akzentfarbe: Ziegelrot – die Farbe des Rohbaus
+     und der rot bedruckten Brandschutzplatte im Trockenbau. */
   --ink:#0E0E0E;
   --ink-2:#1A1A1A;
   --ink-soft:#595959;
-  --akzent:#1E3AC8;
-  --akzent-dark:#152A96;
-  --akzent-licht:#8FA3FF;
-  --akzent-hell:#EDF0FF;
+  --akzent:#B5391C;
+  --akzent-dark:#8E2A12;
+  --akzent-licht:#EA9478;
+  --akzent-hell:#FBEFEB;
   --paper:#FFFFFF;
   --flaeche:#F4F4F4;
   --flaeche-2:#FAFAFA;
@@ -95,7 +95,7 @@ section.alt{background:var(--flaeche);border-block:1px solid var(--line-soft)}
 
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(16,32,47,.04)}
 .card p{max-width:none}
-.card .ico{width:50px;height:50px;border-radius:12px;background:var(--akzent-hell);border:1px solid #D4DBFF;display:grid;place-items:center;font-size:1.5rem;margin-bottom:16px}
+.card .ico{width:50px;height:50px;border-radius:12px;background:var(--akzent-hell);border:1px solid #F2D5CB;display:grid;place-items:center;font-size:1.5rem;margin-bottom:16px}
 .card h3{margin-bottom:.45em}
 .card ul{margin:0 0 18px;padding-left:1.15em;color:var(--ink-soft)}
 .card ul li{margin-bottom:.35em}
@@ -200,6 +200,11 @@ footer.site li{margin-bottom:9px}
 /* ---------- Mobile Anrufleiste ---------- */
 .callbar{display:none}
 
+/* Zwischen 1250 und 1400 px braucht die Navigation den Platz der Schaltfläche.
+   Die Handlungsaufforderung steht ohnehin im Hero und am Seitenende. */
+@media(max-width:1400px){
+  .header-cta{display:none}
+}
 @media(max-width:1250px){
   nav.main{display:none;width:100%;order:3}
   nav.main.open{display:block}

@@ -8,9 +8,9 @@ Positionierung laut Strategiepapier: **Termin- und Ergebnissicherheit**, nicht �
 | Element | Befund | Bewertung | Konsequenz |
 |---|---|---|---|
 | **Wortmarke** (Barlow Condensed, Versalien) | Schmal, technisch, kantig — liest sich wie Bau und Logistik | ✅ passt | bleibt |
-| **Signet** (schwarzes Quadrat, blauer Bogen) | Als Bildmarke eigenständig und in 10 mm noch erkennbar | ✅ passt | bleibt |
+| **Signet** (schwarzes Quadrat, roter Bogen) | Als Bildmarke eigenständig und in 10 mm noch erkennbar | ✅ passt | bleibt |
 | **Schwarz/Weiß als Grundlage** | Reduziert, handwerklich, ohne Dekoration — der Kontrast trägt die Hierarchie allein | ✅ passt | Grundgerüst |
-| **Schlagschnur-Blau als einzige Akzentfarbe** | Das Pigment des blauen Kreidestrichs, mit dem im Trockenbau angerissen und gelotet wird — steht für Maßhaltigkeit, nicht für Dekoration | ✅ passt | Akzent, nie Fläche |
+| **Ziegelrot als einzige Akzentfarbe** | Die Farbe des Rohbaus — gebrannter Ton, Ziegel, die rot bedruckte Brandschutzplatte — steht für die Substanz hinter der fertigen Wand | ✅ passt | Akzent, nie Fläche |
 | **Bildsprache** | Existiert nicht. Größte Lücke im gesamten Auftritt | ❌ fehlt | siehe 3.2 |
 | **Claim „Sauber. Gepflegt. Termintreu."** | Die ersten beiden Wörter sind austauschbar, das dritte trägt die Position allein | ⚠️ zu schwach | Claim geschärft, siehe 3.3 |
 | **Tonalität der Texte** | Vor der Überarbeitung leistungs- statt anlassbezogen | ⚠️ | siehe Dokument 04 |
@@ -55,19 +55,19 @@ Damit Gestaltung reproduzierbar bleibt, auch wenn Dritte (Druckerei, Werbetechni
 | Farbe | HEX | RGB | CMYK | Sonderfarbe | Folie |
 |---|---|---|---|---|---|
 | Schwarz | `#0E0E0E` | 14 14 14 | 100 K · Rich Black 60/40/40/100 | Pantone Black 6 C | RAL 9005 |
-| Schlagschnur-Blau | `#1E3AC8` | 30 58 200 | 90 78 0 0 | Pantone 2728 C | RAL 5005 |
-| Blau dunkel | `#152A96` | 21 42 150 | 100 90 0 10 | — | — |
-| Blau hell (auf Schwarz) | `#8FA3FF` | 143 163 255 | 45 32 0 0 | — | — |
+| Ziegelrot | `#B5391C` | 181 57 28 | 0 80 90 25 | Pantone 1805 C | RAL 3016 |
+| Rot dunkel | `#8E2A12` | 142 42 18 | 0 85 95 45 | — | — |
+| Rot hell (auf Schwarz) | `#EA9478` | 234 148 120 | 0 45 50 0 | — | — |
 | Fläche | `#F4F4F4` | 244 244 244 | 0 0 0 5 | — | — |
 
-CMYK-Werte sind Richtwerte für gestrichenes Papier. Vor Auflagendruck einen Proof anfordern — gesättigtes Blau wirkt auf ungestrichenem Papier deutlich stumpfer, und Schwarz braucht auf großen Flächen eine Rich-Black-Mischung, sonst wirkt es grau.
+CMYK-Werte sind Richtwerte für gestrichenes Papier. Vor Auflagendruck einen Proof anfordern — gesättigtes Rot wirkt auf ungestrichenem Papier deutlich stumpfer, und Schwarz braucht auf großen Flächen eine Rich-Black-Mischung, sonst wirkt es grau.
 
 ### Dateiformate nach Verwendung
 | Zweck | Format | Farbraum | Auflösung |
 |---|---|---|---|
 | Druck (Visitenkarte, Flyer, Briefbogen) | PDF/X-4 | CMYK, ISO Coated v2 | Bilder 300 dpi, 3 mm Beschnitt |
 | Großformat (Fahrzeug, Plane, Schild) | PDF oder EPS, Schriften in Pfade | CMYK + Folienangabe | Maßstab 1:10, Bilder 150 dpi bei Endgröße |
-| Textil (Stick, Flex) | SVG oder EPS, Vektor, keine Verläufe | Garnfarbe nach RAL/Pantone (Blau 2728 C, Schwarz 9005) | Mindesthöhe Signet 40 mm |
+| Textil (Stick, Flex) | SVG oder EPS, Vektor, keine Verläufe | Garnfarbe nach RAL/Pantone (Rot 1805 C, Schwarz 9005) | Mindesthöhe Signet 40 mm |
 | Website | SVG für Logos, WebP für Fotos | sRGB | Fotos max. 1600 px Breite, unter 200 KB |
 | Bürodokumente | PNG mit transparentem Grund | sRGB | Logo 600 px Breite |
 | E-Mail-Signatur | PNG | sRGB | Signet 128 × 128 px, unter 20 KB |
