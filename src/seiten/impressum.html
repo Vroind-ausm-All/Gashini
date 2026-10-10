@@ -1,0 +1,46 @@
+<!--
+titel: Impressum | Gashini
+beschreibung: Impressum und Anbieterkennzeichnung von Gashini Dienstleistungen nach § 5 DDG.
+pfad: impressum/
+prioritaet: 0.2
+brotkrumen: Impressum
+-->
+<header class="seitenkopf">
+  <div class="rahmen">
+    [[brotkrumen]]
+    <h1>Impressum</h1>
+  </div>
+</header>
+
+<section class="abschnitt abschnitt--eng">
+  <div class="rahmen">
+    <div class="rechtstext">
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <p>Gashini Dienstleistungen<br>Inhaber: {{INHABER}}<br>{{STRASSE}}<br>{{PLZ_ORT}}</p>
+
+      <h2>Kontakt</h2>
+      <p>Telefon: <a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><br>E-Mail: <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+
+      <!--opt:USTID-->
+      <h2>Umsatzsteuer-Identifikationsnummer</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: {{USTID}}</p>
+      <!--/opt:USTID-->
+
+      <!--opt:HANDWERKSROLLE-->
+      <h2>Handwerksrolle und Kammer</h2>
+      <p>Eingetragen in: {{HANDWERKSROLLE}}<br>Zuständige Kammer: {{KAMMER}}</p>
+      <!--/opt:HANDWERKSROLLE-->
+
+      <!--opt:VERSICHERUNG_NAME-->
+      <h2>Betriebshaftpflichtversicherung</h2>
+      <p>{{VERSICHERUNG_NAME}}<br>{{VERSICHERUNG_ANSCHRIFT}}<br>Räumlicher Geltungsbereich: {{VERSICHERUNG_GELTUNGSBEREICH}}</p>
+      <!--/opt:VERSICHERUNG_NAME-->
+
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+      <h2>Bildnachweis</h2>
+      <p>{{BILDNACHWEIS}}</p>
+    </div>
+  </div>
+</section>

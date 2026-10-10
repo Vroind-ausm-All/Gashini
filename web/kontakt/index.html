@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- Generiert aus src/seiten/kontakt.html durch scripts/build-site.py. Änderungen in dieser Datei gehen beim nächsten Build verloren. -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projekt anfragen | Gashini</title>
+<meta name="description" content="Anfrage an Gashini Dienstleistungen: Formular, Telefon oder E-Mail. Auch für kleine Arbeiten – unverbindlich.">
+<link rel="canonical" href="https://{{DOMAIN}}/kontakt/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Gashini Dienstleistungen">
+<meta property="og:title" content="Projekt anfragen | Gashini">
+<meta property="og:description" content="Anfrage an Gashini Dienstleistungen: Formular, Telefon oder E-Mail. Auch für kleine Arbeiten – unverbindlich.">
+<meta property="og:url" content="https://{{DOMAIN}}/kontakt/">
+<meta name="theme-color" content="#FAFAF8">
+<link rel="icon" href="../assets/marke/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/frueh.js"></script>
+<script src="../assets/js/site.js" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Start", "item": "https://{{DOMAIN}}/"}, {"@type": "ListItem", "position": 2, "name": "Kontakt"}]}</script>
+</head>
+<body>
+<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+<header class="kopf">
+  <div class="rahmen kopf-innen">
+    <a class="marke" href="../" aria-label="Gashini Dienstleistungen – Startseite"><img src="../assets/marke/logo.svg" width="254" height="80" alt=""></a>
+    <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
+    <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
+      <ul><li><a href="../leistungen/">Leistungen</a></li><li><a href="../projekte/">Projekte</a></li><li><a href="../ueber-uns/">Über uns</a></li><li><a href="../kontakt/" aria-current="page">Kontakt</a></li></ul>
+      <div class="hauptnav-fuss">
+        <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      </div>
+    </nav>
+    <div class="kopf-aktion">
+      <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen</a>
+    </div>
+  </div>
+</header>
+<main id="inhalt" tabindex="-1">
+<header class="seitenkopf">
+  <div class="rahmen">
+    <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../">Start</a></li><li aria-current="page">Kontakt</li></ol></nav>
+    <p class="label">Kontakt</p>
+    <h1>Erzählen Sie uns, was ansteht</h1>
+    <p class="einleitung">Ein paar Sätze genügen. Wir melden uns mit einer ersten Einschätzung oder einem Vorschlag, wie es weitergeht.</p>
+  </div>
+</header>
+
+<section class="abschnitt">
+  <div class="rahmen raster">
+    <div class="sp-text">
+      <h2 class="nur-screenreader">Anfrageformular</h2>
+      <form class="formular" action="../api/anfrage.php" method="post" data-anfrage novalidate>
+  <div class="formular-status" role="alert" tabindex="-1"></div>
+  <div class="feld">
+    <label for="f-name">Name</label>
+    <input id="f-name" name="name" type="text" autocomplete="name" maxlength="100" required aria-describedby="f-name-fehler">
+    <p class="fehlertext" id="f-name-fehler" data-fehler-fuer="name"></p>
+  </div>
+  <fieldset class="feldgruppe">
+    <legend>Wie erreichen wir Sie? <span class="gedaempft">Mindestens eine Angabe</span></legend>
+    <div class="formular-reihe formular-reihe--zwei">
+      <div class="feld">
+        <label for="f-email">E-Mail</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="f-email-fehler">
+        <p class="fehlertext" id="f-email-fehler" data-fehler-fuer="email"></p>
+      </div>
+      <div class="feld">
+        <label for="f-telefon">Telefon</label>
+        <input id="f-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" aria-describedby="f-telefon-fehler">
+        <p class="fehlertext" id="f-telefon-fehler" data-fehler-fuer="telefon"></p>
+      </div>
+    </div>
+  </fieldset>
+  <div class="feld">
+    <label for="f-leistung">Worum geht es?</label>
+    <select id="f-leistung" name="leistung" required aria-describedby="f-leistung-fehler">
+      <option value="">Bitte auswählen</option><option>Trockenbau &amp; Innenausbau</option><option>Hausmeisterservice</option><option>Reparatur &amp; Instandhaltung</option><option>Mehrere Arbeiten / noch unklar</option>
+    </select>
+    <p class="fehlertext" id="f-leistung-fehler" data-fehler-fuer="leistung"></p>
+  </div>
+  <div class="feld">
+    <label for="f-nachricht">Ihr Vorhaben</label>
+    <p class="hilfe" id="f-nachricht-hilfe">Was soll gemacht werden, wo, ungefähr in welchem Umfang? Stichworte reichen.</p>
+    <textarea id="f-nachricht" name="nachricht" required minlength="10" maxlength="4000" aria-describedby="f-nachricht-hilfe f-nachricht-fehler"></textarea>
+    <p class="fehlertext" id="f-nachricht-fehler" data-fehler-fuer="nachricht"></p>
+  </div>
+  <div class="formular-reihe formular-reihe--zwei">
+    <div class="feld">
+      <label for="f-ort">PLZ oder Ort<span class="optional">optional</span></label>
+      <input id="f-ort" name="ort" type="text" autocomplete="postal-code" maxlength="100" aria-describedby="f-ort-fehler">
+      <p class="fehlertext" id="f-ort-fehler" data-fehler-fuer="ort"></p>
+    </div>
+    <div class="feld">
+      <label for="f-zeitraum">Gewünschter Zeitraum<span class="optional">optional</span></label>
+      <input id="f-zeitraum" name="zeitraum" type="text" maxlength="100" placeholder="z. B. im März, flexibel" aria-describedby="f-zeitraum-fehler">
+      <p class="fehlertext" id="f-zeitraum-fehler" data-fehler-fuer="zeitraum"></p>
+    </div>
+  </div>
+  <div class="feld">
+    <label for="f-quelle">Wie sind Sie auf uns aufmerksam geworden?<span class="optional">optional</span></label>
+    <select id="f-quelle" name="quelle"><option value="">Keine Angabe</option><option>Google-Suche</option><option>Google-Profil / Karte</option><option>MyHammer</option><option>Empfehlung</option><option>Fahrzeug oder Flyer</option><option>Sonstiges</option></select>
+  </div>
+  <div class="honig" aria-hidden="true">
+    <label for="f-webseite">Bitte dieses Feld leer lassen</label>
+    <input id="f-webseite" name="webseite" type="text" tabindex="-1" autocomplete="off">
+  </div>
+  <input type="hidden" name="ausfuellzeit" value="">
+  <p class="datenschutz-hinweis">Wir verwenden Ihre Angaben ausschließlich, um Ihre Anfrage zu beantworten. Details, Speicherdauer und Ihre Rechte stehen in der <a href="../datenschutz/#anfragen">Datenschutzerklärung</a>.</p>
+  <div><button class="knopf knopf--primaer" type="submit"><span class="laedt" aria-hidden="true"></span><span class="text">Anfrage senden</span> <span class="pfeil" aria-hidden="true">→</span></button></div>
+</form>
+    </div>
+    <aside class="sp-rand-r" aria-labelledby="direkt-titel">
+      <h2 id="direkt-titel" class="label">Direkt erreichen</h2>
+      <ul class="kontaktwege"><li><span class="art">Telefon</span><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><br><span class="gedaempft mono">{{TELEFONZEITEN}}</span></li><li><span class="art">E-Mail</span><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li><!--opt:WHATSAPP--><li><span class="art">WhatsApp</span><a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Nachricht schreiben</a><br><span class="gedaempft mono">Ihre Nachricht wird über WhatsApp (Meta) übertragen.</span></li><!--/opt:WHATSAPP--><li><span class="art">Anschrift</span><span>{{STRASSE}}<br>{{PLZ_ORT}}</span></li></ul>
+      <p class="redaktion">[FREIGABE ERFORDERLICH: Telefonzeiten und Reaktionszeit, die verbindlich eingehalten werden können.]</p>
+    </aside>
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--linie">
+  <div class="rahmen raster">
+    <div class="sp-kopf"><p class="label">Fragen</p><h2>Vor der Anfrage</h2></div>
+    <div class="sp-inhalt"><div class="fragen"><details id="kosten"><summary>Wie entsteht der Preis?</summary><div class="antwort"><p>Nachdem wir den Umfang geklärt haben – am Telefon, anhand von Fotos oder vor Ort – erhalten Sie ein schriftliches Angebot mit den vereinbarten Arbeiten. Ob für eine Besichtigung Kosten anfallen, sagen wir Ihnen vorher. Pauschale Preislisten veröffentlichen wir nicht, weil sich Arbeiten im Bestand selten gleichen.</p></div></details><details id="einsatzgebiet"><summary>In welchem Gebiet arbeiten Sie?</summary><div class="antwort"><p>Wir sind in {{EINSATZGEBIET}} tätig. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p></div></details><details id="vorbereitung"><summary>Was sollte ich für eine Anfrage vorbereiten?</summary><div class="antwort"><p>Eine kurze Beschreibung, wo und was gemacht werden soll, und – wenn möglich – ungefähre Maße und zwei, drei Fotos. Mehr brauchen wir für eine erste Einschätzung nicht.</p></div></details><details id="daten"><summary>Was passiert mit den Angaben aus dem Anfrageformular?</summary><div class="antwort"><p>Wir nutzen sie ausschließlich, um Ihre Anfrage zu beantworten und gegebenenfalls ein Angebot zu erstellen. Sie werden nicht für Werbung verwendet und nicht verkauft. Einzelheiten stehen in der <a href="../datenschutz/#anfragen">Datenschutzerklärung</a>.</p></div></details></div></div>
+  </div>
+</section>
+</main>
+<footer class="fuss">
+  <div class="rahmen">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <img src="../assets/marke/logo-invers.svg" width="254" height="80" alt="Gashini Dienstleistungen">
+        <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
+      </div>
+      <div>
+        <h2>Leistungen</h2>
+        <ul>
+          <li><a href="../leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
+          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="../leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
+          <li><a href="../ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Unternehmen</h2>
+        <ul>
+          <li><a href="../projekte/">Projekte</a></li>
+          <li><a href="../ueber-uns/">Über uns</a></li>
+          <li><a href="../ablauf/">Ablauf &amp; Fragen</a></li>
+          <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
+          <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
+        </ul>
+      </div>
+      <div>
+        <h2>Kontakt</h2>
+        <ul>
+          <li><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></li>
+          <li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>
+          <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · {{INHABER}}</span>
+      <span><a href="../impressum/">Impressum</a> · <a href="../datenschutz/">Datenschutz</a></span>
+    </div>
+  </div>
+</footer>
+<nav class="kontaktleiste" aria-label="Schnellkontakt">
+  <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
+  <a class="knopf knopf--primaer" href="../kontakt/">Anfragen</a>
+</nav>
+</body>
+</html>

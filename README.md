@@ -1,117 +1,60 @@
-# Gashini Dienstleistungen – Firmenauftritt und Marketinggrundlage
+# Gashini Dienstleistungen – Website und Firmenauftritt
 
-Vollständiger Unternehmensauftritt plus die strategische Grundlage dahinter:
-Positionierung, Fachprüfungen der Website, Marken- und Medienstandards, Texte,
-Kanalstrategie, Leadprozess und eine 90-Tage-Roadmap.
+Statische Website mit einem kleinen PHP-Formular-Backend, dazu Logo, Druckvorlagen und Strategiepapiere.
+Keine Frameworks, keine Laufzeit-Abhängigkeiten.
 
-## Inhalt
+## Schnellstart
 
 ```
-strategie/   Strategiepapier, Audits, Marken- und Medienstandards, Texte, Kanäle, CRM
-brand/       Logo (SVG), Signet, Favicon, Gestaltungsrichtlinien
-web/         Website: 13 Seiten, Stylesheet, Sitemap, robots.txt, .htaccess
-print/       Visitenkarte, Briefbogen, Flyer, E-Mail-Signatur, Fahrzeug-/Kleidungsbeschriftung
-content/     Profiltexte und Nachrichtenvorlagen für MyHammer
-data/        firmendaten.env – zentrale Datei mit allen Firmenangaben
-scripts/     build-site.py (erzeugt die Seiten) · firmendaten.sh (setzt die Daten ein)
+python3 scripts/build-site.py          # src/ + data/ → web/
+python3 scripts/firmendaten.py         # web/ + Firmendaten → dist/web/ (Vorschau)
+php -S 127.0.0.1:8000 -t dist/web      # lokal ansehen
 ```
 
-## Zuerst lesen
+Veröffentlichen: `python3 scripts/firmendaten.py --produktion` – bricht ab, solange Angaben offen sind.
+Details: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
-| Dokument | Beantwortet |
+## Aufbau
+
+```
+src/seiten/        Seiteninhalte – hier werden Texte geändert
+src/assets/        Stylesheet (Design-Tokens), Skripte, Schriften, Bilder
+src/api/           Formular-Backend (PHP) und Konfigurationsvorlage
+src/server/        .htaccess (Sicherheits-Header, CSP, Weiterleitungen)
+data/              firmendaten.env (öffentlich) · projekte.json · faq.json
+brand/             Logo, Signet, Favicon, Gestaltungsrichtlinien
+web/               GENERIERT – nicht von Hand ändern (CI prüft das)
+print/             Visitenkarte, Briefbogen, Flyer, E-Mail-Signatur, Fahrzeug
+tests/             statische Prüfungen, Formular-Tests, Browser-Tests
+docs/              Relaunch-Plan, Inhalte, SEO, Recht, Bilder, Tests, Deployment, Pflege
+strategie/         Strategiepapiere aus der ersten Projektphase
+```
+
+## Dokumentation
+
+| Dokument | Inhalt |
 |---|---|
-| [`strategie/01-strategie.md`](strategie/01-strategie.md) | Positionierung, Zielgruppen, Nutzenversprechen, Prioritäten, **90-Tage-Roadmap** |
-| [`strategie/02-audit-website.md`](strategie/02-audit-website.md) | Getrennte Befunde aus Technik, SEO, UX und Conversion – mit Status |
-| [`strategie/03-marke-und-medienstandards.md`](strategie/03-marke-und-medienstandards.md) | Passt das Erscheinungsbild zur Positionierung? Produktionsvorgaben |
-| [`strategie/04-texte-und-botschaften.md`](strategie/04-texte-und-botschaften.md) | Informationshierarchie, Headlines, Claims, CTA-Regeln |
-| [`strategie/05-kanaele.md`](strategie/05-kanaele.md) | SEO, Social und Paid auf gemeinsamer Grundlage |
-| [`strategie/06-leadprozess-crm.md`](strategie/06-leadprozess-crm.md) | Anfrage → Angebot → Nachfassen → Bestandskunde |
+| [`docs/RELAUNCH-PLAN.md`](docs/RELAUNCH-PLAN.md) | Bestandsaufnahme, Risiken, Architekturentscheidung, Prioritäten, Rückfragen |
+| [`docs/CONTENT-PLAN.md`](docs/CONTENT-PLAN.md) | Headlines, Positionierung, Texte, CTAs, offene Freigaben |
+| [`docs/SEO-PLAN.md`](docs/SEO-PLAN.md) | Suchintentionen, Seitenzuordnung, Titel und Beschreibungen |
+| [`docs/LEGAL-CHECKLIST.md`](docs/LEGAL-CHECKLIST.md) | Datenschutz, Impressum, Gewerberecht, Bildrechte, Barrierefreiheit |
+| [`docs/ASSET-BRIEFS.md`](docs/ASSET-BRIEFS.md) | Bildgruppen, Motivlisten, Formate, Rechte |
+| [`docs/TESTREPORT.md`](docs/TESTREPORT.md) | was geprüft wurde – und was nicht |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Hosting, Formular einrichten, Weiterleitungen, nginx |
+| [`docs/PFLEGE.md`](docs/PFLEGE.md) | Texte ändern, Projekte veröffentlichen, Fragen ergänzen |
+| [`brand/styleguide.md`](brand/styleguide.md) | Farben, Schriften, Logo, Bewegung |
 
-**Die wichtigste Erkenntnis aus der Analyse:** Der größte Hebel liegt nicht in mehr Werbung,
-sondern in eigener Auffindbarkeit (Google-Unternehmensprofil), einem eigenen Bewertungsbestand
-und konsequentem Nachfassen bei bereits vorhandenen Anfragen.
+## Tests
 
-## In drei Schritten einsatzbereit
+```
+python3 tests/pruefen.py                          # Build, Drift, Links, SEO-Grundlagen, CSP, Geheimnisse
+python3 tests/formular_test.py                    # Formular-Backend gegen php -S
+cd tests && npm ci && node e2e.mjs                # Browser: 5 Breiten, axe-core, Tastatur, Formular, ohne JS
+```
+Alle drei laufen auch in GitHub Actions (`.github/workflows/vorschau.yml`).
 
-1. **`data/firmendaten.env` ausfüllen** – Anschrift, Telefon, E-Mail, Domain, MyHammer- und
-   Google-Profil, Steuernummer, Versicherung, Bankverbindung sowie die **Preisspannen**.
-2. **`bash scripts/firmendaten.sh`** ausführen. Das Skript kopiert alles nach `dist/` und
-   ersetzt dort die Platzhalter. Am Ende listet es auf, was noch offen ist.
-3. **Inhalt von `dist/web/` hochladen** – jeder einfache Webspace genügt, es wird weder eine
-   Datenbank noch PHP benötigt. Die Druckvorlagen in `dist/print/` im Browser öffnen →
-   Drucken → „Als PDF sichern“ für die Druckerei.
+## Private Daten
 
-> **Stolperstein beim Hochladen:** Der *Inhalt* von `dist/web/` gehört in die Wurzel der Domain,
-> nicht der Ordner selbst. Sonst liegen `robots.txt`, `sitemap.xml` und `.htaccess` eine Ebene
-> zu tief und wirken nicht. Die Datei `.htaccess` beginnt mit einem Punkt und wird von manchen
-> FTP-Programmen ausgeblendet – Anzeige versteckter Dateien einschalten.
-
-## Vorschau im Netz (GitHub Pages)
-
-Für Abstimmungen mit Dritten liegt ein Workflow bereit, der den Auftritt baut und als
-**nicht indexierbare Vorschau** veröffentlicht: `.github/workflows/vorschau.yml`.
-
-**Einmalig einschalten:** Repository → **Settings** → **Pages** → unter *Build and deployment*
-bei *Source* **GitHub Actions** auswählen. Danach läuft der Deploy bei jedem Push automatisch;
-die Adresse steht anschließend oben auf derselben Einstellungsseite und im Protokoll des
-Workflows unter *Actions*.
-
-Was der Workflow dabei absichert:
-
-- `noindex, nofollow` in jeder Seite und `Disallow: /` in der `robots.txt` – die Vorschau
-  taucht nicht in Suchergebnissen auf, und die `sitemap.xml` wird entfernt
-- ein Hinweisstreifen über jeder Seite, damit niemand die Vorschau für die fertige
-  Website hält
-- `brand/` wandert in den Webordner, damit das Logo auch dann lädt, wenn nur dieser
-  Ordner veröffentlicht wird
-
-> **Wichtig:** Eine GitHub-Pages-Seite ist über ihre Adresse öffentlich erreichbar – sie ist
-> nur nicht auffindbar. Solange Impressum und Firmendaten unvollständig sind, ist das als
-> Abstimmungslink in Ordnung, als beworbene Firmenadresse nicht. Für den echten Livegang
-> gehört der Inhalt von `dist/web/` auf eine eigene Domain, und die Checkliste am Ende
-> dieser Datei muss abgearbeitet sein.
-
-Soll die Vorschau wieder verschwinden: Settings → Pages → *Source* auf **None** stellen.
-
-## Seitenstruktur
-
-| Seite | Aufgabe |
-|---|---|
-| `index.html` | Einstieg nach Anlass, Paketlogik, Beweis |
-| `wohnungsuebergabe.html` | Anlassseite Z1 – Auszug unter Frist |
-| `haushaltsaufloesung.html` | Anlassseite Z2 – Erbfall, Räumung |
-| `preise.html` | Preisspannen, Beispielrechnungen, Preisfaktoren |
-| `leistungen.html` | Alle vier Gewerke einzeln |
-| `ablauf.html` | Ablauf in vier Schritten + FAQ (mit FAQ-Auszeichnung für Google) |
-| `kontakt.html` | Anfragestrecke mit Quellenerfassung |
-| `referenzen.html`, `ueber-uns.html` | Beweis und Betrieb |
-| `danke.html`, `404.html`, `impressum.html`, `datenschutz.html` | Pflicht und Randfälle |
-
-Seiten werden aus `scripts/build-site.py` erzeugt. Wer Texte ändert: entweder direkt in den
-HTML-Dateien (einfach, aber beim nächsten Generatorlauf überschrieben) **oder** im Generator und
-anschließend `python3 scripts/build-site.py` ausführen – das ist der empfohlene Weg.
-
-## Platzhalter
-
-Alles in der Form `{{PLATZHALTER}}` stammt aus `data/firmendaten.env` und ist noch zu befüllen.
-Diese Angaben kann nur der Betrieb liefern; sie wurden bewusst nicht erfunden.
-
-## Verzahnung mit MyHammer
-
-- **Website → MyHammer:** Fußzeile jeder Seite, Beweisblock auf Start- und Anlassseiten,
-  Referenz- und Kontaktseite sowie `sameAs` in den strukturierten Daten.
-- **MyHammer → Website:** fertige Profiltexte, Nachrichtenvorlagen und Pflege-Checkliste in
-  [`content/myhammer-profil.md`](content/myhammer-profil.md).
-
-## Vor dem Livegang prüfen
-
-- [ ] Impressum und Datenschutzerklärung sind Vorlagen – juristisch prüfen lassen
-- [ ] Preisspannen und Beispielrechnungen stammen aus **eigenen** abgerechneten Aufträgen
-- [ ] Auf der Referenzseite ausschließlich **echte, freigegebene** Kundenstimmen
-- [ ] Note und Anzahl der MyHammer-Bewertungen entsprechen dem Profil
-- [ ] Kontaktformular mit einem Formulardienst verbunden (`FORMULAR_ENDPOINT`), Weiterleitung
-      auf `danke.html`, **Testanfrage abgeschickt und Empfang geprüft**
-- [ ] Die vier Versprechen im Vertrauensband sind im Betrieb tatsächlich gedeckt
-      (siehe Strategiepapier, Abschnitt 5)
-- [ ] Eigene Fotos statt der Bildplatzhalter – Vorgaben in `strategie/03`, Abschnitt 3.2
-- [ ] Google-Unternehmensprofil angelegt (Roadmap-Maßnahme 1.2 – wichtigster Einzelschritt)
+Nie ins Repository: `data/firmendaten.privat.env` (Bank, Steuernummer) und die Formular-Konfiguration mit
+SMTP-Passwort. Beide stehen in `.gitignore`; die Testsuite schlägt fehl, falls sie doch eingecheckt werden.
+Das Repository ist öffentlich – alles andere hier ist für jeden lesbar.

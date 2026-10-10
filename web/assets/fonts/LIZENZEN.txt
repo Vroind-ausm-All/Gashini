@@ -1,0 +1,10 @@
+Schriftlizenzen
+===============
+
+Instrument Sans – Copyright 2022 The Instrument Sans Project Authors – SIL Open Font License 1.1
+IBM Plex Mono   – Copyright © 2017 IBM Corp. – SIL Open Font License 1.1
+Barlow Condensed (nur als Pfad im Logo) – Copyright 2017 The Barlow Project Authors – SIL Open Font License 1.1
+
+Bezogen über die Fontsource-Pakete (Version 5.3.0), Teilmenge Latin.
+Die OFL erlaubt Nutzung, Einbettung und Weitergabe, auch kommerziell; die Schriften dürfen nicht einzeln verkauft werden.
+Volltext der Lizenz: https://openfontlicense.org

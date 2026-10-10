@@ -1,1 +1,9 @@
 dist/
+node_modules/
+__pycache__/
+
+# Private Daten und Zugangsdaten – niemals ins Repository
+data/firmendaten.privat.env
+src/api/konfiguration.php
+gashini-konfiguration.php
+*.eml

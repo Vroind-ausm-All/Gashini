@@ -1,237 +1,194 @@
 <!DOCTYPE html>
+<!-- Generiert aus src/seiten/startseite.html durch scripts/build-site.py. Änderungen in dieser Datei gehen beim nächsten Build verloren. -->
 <html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wohnungsauflösung, Entrümpelung &amp; Übergaberenovierung in {{ORT}} | Gashini Dienstleistungen</title>
-<meta name="description" content="Räumen, renovieren, reinigen bis zum Übergabetermin – aus einer Hand und zum Festpreis. Gashini Dienstleistungen für {{EINSATZGEBIET}}. Kostenlose Besichtigung.">
-<link rel="icon" href="../brand/favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://{{DOMAIN}}/index.html">
-<meta property="og:title" content="Wohnungsauflösung, Entrümpelung &amp; Übergaberenovierung in {{ORT}} | Gashini Dienstleistungen">
-<meta property="og:description" content="Räumen, renovieren, reinigen bis zum Übergabetermin – aus einer Hand und zum Festpreis. Gashini Dienstleistungen für {{EINSATZGEBIET}}. Kostenlose Besichtigung.">
+<title>Trockenbau &amp; Hausmeisterservice in {{ORT}} | Gashini Dienstleistungen</title>
+<meta name="description" content="Trockenbau, Hausmeisterservice und Reparaturen rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.">
+<link rel="canonical" href="https://{{DOMAIN}}/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="assets/style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "name": "Gashini Dienstleistungen",
-  "description": "Wohnungsauflösung, Entrümpelung, Übergaberenovierung und Endreinigung aus einer Hand – zum Festpreis und bis zum vereinbarten Übergabetermin.",
-  "url": "https://{{DOMAIN}}/",
-  "telephone": "{{TELEFON}}",
-  "email": "{{EMAIL}}",
-  "image": "https://{{DOMAIN}}/brand/logo.svg",
-  "priceRange": "{{PREISNIVEAU}}",
-  "address": { "@type": "PostalAddress", "streetAddress": "{{STRASSE}}", "postalCode": "{{PLZ}}", "addressLocality": "{{ORT}}", "addressCountry": "DE" },
-  "areaServed": { "@type": "GeoCircle", "geoMidpoint": { "@type": "GeoCoordinates", "address": "{{PLZ_ORT}}" }, "description": "{{EINSATZGEBIET}}" },
-  "openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "07:00", "closes": "20:00" }],
-  "founder": { "@type": "Person", "name": "{{INHABER}}" },
-  "sameAs": ["{{MYHAMMER_URL}}", "{{GOOGLE_PROFIL_URL}}"],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog", "name": "Leistungen",
-    "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wohnungsauflösung und Entrümpelung" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Übergaberenovierung und Malerarbeiten" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gebäudereinigung und Endreinigung" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Hausmeisterservice" } }
-    ]
-  }
-}
-</script>
+<meta property="og:site_name" content="Gashini Dienstleistungen">
+<meta property="og:title" content="Gashini Dienstleistungen – Kleine Arbeiten. Großes Netzwerk. Ein Ansprechpartner.">
+<meta property="og:description" content="Trockenbau, Hausmeisterservice und Reparaturen rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.">
+<meta property="og:url" content="https://{{DOMAIN}}/">
+<meta name="theme-color" content="#FAFAF8">
+<link rel="icon" href="assets/marke/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/frueh.js"></script>
+<script src="assets/js/site.js" defer></script>
+<!--@jsonld-firma-->
 </head>
 <body>
-<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
-<div class="topbar">
-  <div class="wrap">
-    <span>Mo–Sa 7–20 Uhr · Rückmeldung am selben Werktag</span>
-    <span><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
-  </div>
-</div>
-<header class="site">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../brand/logo.svg" width="320" height="80" alt="Gashini Dienstleistungen – Startseite"></a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="hauptmenue"><span class="balken"><span></span></span>Menü</button>
-    <nav class="main" id="hauptmenue" aria-label="Hauptnavigation">
-      <ul>
-        <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
-        <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
-        <li><a href="leistungen.html">Leistungen</a></li>
-        <li><a href="preise.html">Preise</a></li>
-        <li><a href="kontakt.html">Kontakt</a></li>
-      </ul>
+<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+<header class="kopf">
+  <div class="rahmen kopf-innen">
+    <a class="marke" href="./" aria-label="Gashini Dienstleistungen – Startseite"><img src="assets/marke/logo.svg" width="254" height="80" alt=""></a>
+    <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
+    <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
+      <ul><li><a href="leistungen/">Leistungen</a></li><li><a href="projekte/">Projekte</a></li><li><a href="ueber-uns/">Über uns</a></li><li><a href="kontakt/">Kontakt</a></li></ul>
+      <div class="hauptnav-fuss">
+        <a class="knopf knopf--primaer" href="kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      </div>
     </nav>
-    <div class="header-cta"><a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a></div>
+    <div class="kopf-aktion">
+      <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      <a class="knopf knopf--primaer" href="kontakt/">Projekt anfragen</a>
+    </div>
   </div>
 </header>
-<main id="inhalt">
-<section class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Wohnungsauflösung · Übergaberenovierung · Endreinigung in {{ORT}}</span>
-    <h1>Räumen, renovieren, reinigen –<br><span>bis zum Übergabetermin</span></h1>
-    <p class="lead">Wenn eine Wohnung zu einem festen Termin fertig sein muss, koordinieren Sie normalerweise drei Firmen. Bei uns ist es ein Auftrag, ein Festpreis und ein Ansprechpartner, der auch selbst vor Ort steht.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a>
-      <a class="btn btn-ghost" href="tel:{{TELEFON_LINK}}">Anrufen: {{TELEFON}}</a>
+<main id="inhalt" tabindex="-1">
+<section class="einstieg" aria-labelledby="einstieg-titel">
+  <div class="rahmen raster">
+    <div class="einstieg-text">
+      <p class="label">Gashini Dienstleistungen · {{REGION}}</p>
+      <h1 id="einstieg-titel"><span class="zeile">Kleine Arbeiten.</span><span class="zeile">Großes Netzwerk.</span><span class="zeile zeile--akzent">Ein Ansprechpartner.</span></h1>
+      <p class="einstieg-unterzeile">Trockenbau, Hausmeisterservice und individuelle Arbeiten rund um Ihre Immobilie – persönlich betreut und bei Bedarf mit qualifizierten Partnern abgestimmt.</p>
+      <div class="knopf-reihe">
+        <a class="knopf knopf--primaer" href="kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="projekte/">Arbeiten ansehen</a>
+      </div>
+      <ul class="einstieg-fakten" aria-label="Leistungsbereiche">
+        <li>Trockenbau</li><li>Hausmeisterservice</li><li>Reparatur &amp; Instandhaltung</li><li>Koordination</li>
+      </ul>
     </div>
-    <p class="hero-fuss">Kostenlose Besichtigung · Rückmeldung am selben Werktag · {{EINSATZGEBIET}}</p>
+    <div class="einstieg-bild">
+      <figure class="zeichnung"><div class="zeichnung-flaeche"><svg viewBox="0 0 540 430" role="img" aria-labelledby="zg-titel zg-beschr" xmlns="http://www.w3.org/2000/svg"><title id="zg-titel">Ansicht einer Metallständerwand</title><desc id="zg-beschr">Schematische Zeichnung: UW-Profile an Decke und Boden, CW-Ständer im Achsabstand von 625 Millimetern, links mit Gipskartonplatten 12,5 Millimeter beplankt, rechts offen mit Mineralwolle. Raumhöhe 2750 Millimeter.</desc><line class="zg-linie" x1="66" y1="50" x2="470" y2="50"/><line class="zg-linie" x1="66" y1="350" x2="470" y2="350"/><line class="zg-duenn" x1="74" y1="352" x2="66" y2="360"/><line class="zg-duenn" x1="108" y1="352" x2="100" y2="360"/><line class="zg-duenn" x1="142" y1="352" x2="134" y2="360"/><line class="zg-duenn" x1="176" y1="352" x2="168" y2="360"/><line class="zg-duenn" x1="210" y1="352" x2="202" y2="360"/><line class="zg-duenn" x1="244" y1="352" x2="236" y2="360"/><line class="zg-duenn" x1="278" y1="352" x2="270" y2="360"/><line class="zg-duenn" x1="312" y1="352" x2="304" y2="360"/><line class="zg-duenn" x1="346" y1="352" x2="338" y2="360"/><line class="zg-duenn" x1="380" y1="352" x2="372" y2="360"/><line class="zg-duenn" x1="414" y1="352" x2="406" y2="360"/><line class="zg-duenn" x1="448" y1="352" x2="440" y2="360"/><rect class="zg-profil" x="80" y="50" width="360" height="7"/><rect class="zg-profil" x="80" y="343" width="360" height="7"/><defs><pattern id="daemmung" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="10" stroke="#9C988F" stroke-width=".7"/></pattern></defs><rect x="266.0" y="57" width="168.0" height="286" fill="url(#daemmung)" opacity=".55"/><rect class="zg-profil zg-zeichnen" x="77.0" y="57" width="6" height="286"/><rect class="zg-profil zg-zeichnen" x="167.0" y="57" width="6" height="286"/><rect class="zg-profil zg-zeichnen" x="257.0" y="57" width="6" height="286"/><rect class="zg-profil zg-zeichnen" x="347.0" y="57" width="6" height="286"/><rect class="zg-profil zg-zeichnen" x="437.0" y="57" width="6" height="286"/><rect class="zg-platte" x="80.5" y="59" width="179.0" height="282"/><circle cx="82.4" cy="84.6" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="110.3" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="135.9" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="161.5" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="187.2" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="212.8" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="238.5" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="264.1" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="289.7" r="1.1" fill="#6B6863"/><circle cx="82.4" cy="315.4" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="84.6" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="110.3" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="135.9" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="161.5" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="187.2" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="212.8" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="238.5" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="264.1" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="289.7" r="1.1" fill="#6B6863"/><circle cx="170.0" cy="315.4" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="84.6" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="110.3" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="135.9" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="161.5" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="187.2" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="212.8" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="238.5" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="264.1" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="289.7" r="1.1" fill="#6B6863"/><circle cx="257.6" cy="315.4" r="1.1" fill="#6B6863"/><line class="zg-mass zg-zeichnen zg-spaet" x1="80" y1="384" x2="440" y2="384"/><line class="zg-mass" x1="80.0" y1="378" x2="80.0" y2="390"/><line class="zg-mass" x1="76.0" y1="388" x2="84.0" y2="380"/><line class="zg-mass" x1="170.0" y1="378" x2="170.0" y2="390"/><line class="zg-mass" x1="166.0" y1="388" x2="174.0" y2="380"/><line class="zg-mass" x1="260.0" y1="378" x2="260.0" y2="390"/><line class="zg-mass" x1="256.0" y1="388" x2="264.0" y2="380"/><line class="zg-mass" x1="350.0" y1="378" x2="350.0" y2="390"/><line class="zg-mass" x1="346.0" y1="388" x2="354.0" y2="380"/><line class="zg-mass" x1="440.0" y1="378" x2="440.0" y2="390"/><line class="zg-mass" x1="436.0" y1="388" x2="444.0" y2="380"/><text class="zg-text zg-text--akzent zg-einblenden" x="125.0" y="376" text-anchor="middle">625</text><text class="zg-text zg-einblenden" x="215.0" y="376" text-anchor="middle">625</text><text class="zg-text zg-einblenden" x="305.0" y="376" text-anchor="middle">625</text><text class="zg-text zg-einblenden" x="395.0" y="376" text-anchor="middle">625</text><line class="zg-mass zg-mass--akzent" x1="80" y1="384" x2="170.0" y2="384"/><line class="zg-mass zg-zeichnen zg-spaet" x1="50" y1="50" x2="50" y2="350"/><line class="zg-mass" x1="46" y1="54" x2="54" y2="46"/><line class="zg-mass" x1="46" y1="354" x2="54" y2="346"/><text class="zg-text zg-einblenden" x="40" y="200" transform="rotate(-90 40 200)" text-anchor="middle">2750</text><polyline class="zg-duenn zg-einblenden" points="350.0,53.5 370.0,28.0 404.0,28.0"/><circle class="zg-einblenden" cx="350.0" cy="53.5" r="2" fill="#0E0E0E"/><text class="zg-text zg-einblenden" x="408.0" y="32.0" text-anchor="start">UW 75</text><polyline class="zg-duenn zg-einblenden" points="262.0,170.0 300.0,142.0 334.0,142.0"/><circle class="zg-einblenden" cx="262.0" cy="170.0" r="2" fill="#0E0E0E"/><text class="zg-text zg-einblenden" x="338.0" y="146.0" text-anchor="start">CW 75</text><polyline class="zg-duenn zg-einblenden" points="377.0,250.0 395.0,226.0 429.0,226.0"/><circle class="zg-einblenden" cx="377.0" cy="250.0" r="2" fill="#0E0E0E"/><text class="zg-text zg-einblenden" x="433.0" y="230.0" text-anchor="start">Mineralwolle 60</text><polyline class="zg-duenn zg-einblenden" points="129.5,120.0 143.5,94.0 177.5,94.0"/><circle class="zg-einblenden" cx="129.5" cy="120.0" r="2" fill="#0E0E0E"/><text class="zg-text zg-einblenden" x="181.5" y="98.0" text-anchor="start">GKB 12,5</text></svg></div><figcaption>Abb. — Metallständerwand, Ansicht, Maße in mm. Schematische Darstellung, kein Projektfoto.</figcaption></figure>
+    </div>
   </div>
 </section>
-<section class="vertrauensband">
-  <div class="wrap">
-    <ul>
-      <li><strong>Festpreis</strong> nach kostenloser Besichtigung</li>
-      <li><strong>Termin</strong> schriftlich zugesagt</li>
-      <li><strong>Betriebshaftpflicht</strong> versichert</li>
-      <li><strong>Rückmeldung</strong> am selben Werktag</li>
+
+<section class="abschnitt abschnitt--linie" aria-labelledby="leistungen-titel">
+  <div class="rahmen raster">
+    <div class="sp-kopf">
+      <p class="label">Leistungen</p>
+      <h2 id="leistungen-titel">Was wir übernehmen</h2>
+      <p class="gedaempft">Vier Bereiche, ein Ansprechpartner. Was wir nicht selbst ausführen, sagen wir offen – und vermitteln, wenn wir können.</p>
+    </div>
+    <div class="sp-inhalt">
+      <ul class="leistungsliste">
+        <li><a href="leistungen/trockenbau/"><h3>Trockenbau &amp; Innenausbau</h3><p>Trennwände, Vorsatzschalen, abgehängte Decken und Anpassungen im Bestand.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+        <li><a href="leistungen/hausmeisterservice/"><h3>Hausmeisterservice</h3><p>Objektbetreuung, kleinere Arbeiten und laufende Unterstützung rund um die Immobilie.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+        <li><a href="leistungen/reparatur-und-instandhaltung/"><h3>Reparatur &amp; Instandhaltung</h3><p>Praktische Hilfe bei Arbeiten, die nicht liegen bleiben sollen.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+        <li><a href="ueber-uns/#netzwerk"><h3>Koordination weiterer Gewerke</h3><p>Bei zusätzlichem Fachbedarf stimmen wir die Arbeiten mit geeigneten Partnerbetrieben ab.<span class="netzwerk-hinweis">Ausführung durch Partnerbetriebe</span></p><span class="pfeil" aria-hidden="true">→</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="klein-titel">
+  <div class="rahmen raster">
+    <div class="sp-halb-l">
+      <p class="label">Auch kleine Aufträge</p>
+      <h2 id="klein-titel">Nicht jedes Vorhaben braucht eine Großbaustelle.</h2>
+      <p class="einleitung">Viele Arbeiten an einer Immobilie sind überschaubar – und bleiben gerade deshalb liegen, weil sich niemand dafür zuständig fühlt. Genau dafür sind wir da.</p>
+      <p class="gedaempft">Schreiben Sie uns auch dann, wenn Sie unsicher sind, ob sich die Anfrage lohnt. Passt es nicht zu uns, sagen wir es Ihnen direkt.</p>
+    </div>
+    <div class="sp-halb-r">
+      <ul class="situationen" aria-label="Typische Anlässe">
+        <li>Eine Wand ergänzen oder verändern</li>
+        <li>Eine Wohnung für neue Mieter vorbereiten</li>
+        <li>Kleinere Mängel beheben, bevor sie größer werden</li>
+        <li>Einen einzelnen Raum modernisieren</li>
+        <li>Laufende Objektpflege, ohne selbst hinzufahren</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="abschnitt" aria-labelledby="projekte-titel">
+  <div class="rahmen">
+    <div class="raster">
+      <div class="sp-breit">
+        <p class="label">Projekte</p>
+        <h2 id="projekte-titel">Ausgewählte Arbeiten</h2>
+      </div>
+      <div class="sp-schmal-r projekte-link"><a class="textlink" href="projekte/">Alle Projekte <span class="pfeil" aria-hidden="true">→</span></a></div>
+    </div>
+    <div class="leerzustand"><div><p class="label">Projektgalerie</p><h3>Die ersten Projekte werden gerade dokumentiert.</h3></div><div><p>Wir zeigen hier ausschließlich Arbeiten, die wir selbst fotografiert haben und deren Veröffentlichung die Auftraggeber freigegeben haben. Bis dahin erzählen wir Ihnen gern am Telefon, woran wir zuletzt gearbeitet haben.</p><p class="leerzustand-aktion"><a class="textlink" href="kontakt/">Vorhaben besprechen <span class="pfeil" aria-hidden="true">→</span></a></p></div></div>
+  </div>
+</section>
+
+<section class="abschnitt dunkel" id="netzwerk-kurz" aria-labelledby="netzwerk-titel">
+  <div class="rahmen">
+    <div class="raster">
+      <div class="sp-breit">
+        <p class="label label--hell">Netzwerk</p>
+        <h2 id="netzwerk-titel">Für vieles der richtige Ansprechpartner. Für Weiteres die richtigen Kontakte.</h2>
+        <p class="einleitung">Rund um eine Immobilie fallen oft Arbeiten mehrerer Gewerke an. Wir übernehmen, was in unseren Leistungsumfang fällt – und arbeiten für alles Weitere mit Fachbetrieben zusammen, die wir kennen.</p>
+      </div>
+    </div>
+    <ul class="zustaendigkeit">
+      <li><span class="wer">Wir selbst</span><h3>Eigene Leistung</h3><p>Trockenbau, Hausmeisterservice, Reparatur und Instandhaltung im Rahmen unseres Gewerbes.</p><span class="vertrag">Ihr Vertragspartner: Gashini</span></li>
+      <li><span class="wer">Mit Partnern</span><h3>Koordinierte Gewerke</h3><p>Wir stimmen Termine und Reihenfolge mit einem Fachbetrieb ab, damit die Arbeiten ineinandergreifen.</p><span class="vertrag">Vertragspartner: steht vor Beginn im Angebot</span></li>
+      <li><span class="wer">Empfehlung</span><h3>Kontakt zum Fachbetrieb</h3><p>Für Arbeiten, die wir nicht koordinieren, nennen wir Ihnen einen Betrieb, mit dem Sie direkt vereinbaren.</p><span class="vertrag">Ihr Vertragspartner: der Fachbetrieb</span></li>
     </ul>
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Wo gehören Sie dazu?</span>
-      <h2>Was steht bei Ihnen an?</h2>
-      <p>Die meisten Anfragen erreichen uns, weil ein Termin im Kalender steht. Wählen Sie den Fall, der Ihrem am nächsten kommt – dort steht, wie wir vorgehen und was es ungefähr kostet.</p>
-    </div>
-    <div class="grid g3 anlaesse">
-      <a class="anlass" href="wohnungsuebergabe.html">
-        <span class="anlass-label">Häufigster Fall</span>
-        <h3>Ich muss eine Wohnung übergeben</h3>
-        <p>Auszug steht an, der Vermieter erwartet die Wohnung geräumt, gestrichen und sauber. Wir machen alles drei und sind vor dem Übergabetermin fertig.</p>
-        <span class="more">Wohnungsübergabe →</span>
-      </a>
-      <a class="anlass" href="haushaltsaufloesung.html">
-        <h3>Ich muss einen Haushalt auflösen</h3>
-        <p>Nach einem Todesfall oder einem Umzug ins Heim. Wir räumen vollständig, entsorgen mit Nachweis und übergeben besenrein – Sie müssen nicht dabei sein.</p>
-        <span class="more">Haushaltsauflösung →</span>
-      </a>
-      <a class="anlass" href="leistungen.html">
-        <h3>Ich brauche eine einzelne Leistung</h3>
-        <p>Treppenhausreinigung, Winterdienst, Fenster, Malerarbeiten oder Hausmeisterservice – auch einzeln und regelmäßig, mit festem Plan.</p>
-        <span class="more">Alle Leistungen →</span>
-      </a>
-    </div>
+    <p class="netzwerk-link"><a class="textlink" href="ueber-uns/#netzwerk">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
-<section class="material material--dunkel">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Das Paket</span>
-      <h2><span class="fuell">Vier Gewerke, eine Reihenfolge</span></h2>
-      <p>Der Grund, warum Übergaben schiefgehen, ist selten schlechte Arbeit – es ist die Reihenfolge. Wer streicht, bevor geräumt ist, streicht zweimal. Wir planen die Schritte als einen Ablauf.</p>
+<section class="abschnitt" aria-labelledby="ablauf-titel">
+  <div class="rahmen">
+    <div class="raster">
+      <div class="sp-breit">
+        <p class="label">Ablauf</p>
+        <h2 id="ablauf-titel">So läuft eine Anfrage ab</h2>
+      </div>
     </div>
-    <ol class="paket">
-      <li><span class="paket-nr">1</span><h3>Räumen</h3><p>Möbel, Hausrat, Keller und Dachboden. Verwertbares wird angerechnet, der Rest fachgerecht entsorgt – mit Nachweis, wenn Sie ihn brauchen.</p></li>
-      <li><span class="paket-nr">2</span><h3>Instand setzen</h3><p>Dübellöcher, Silikonfugen, defekte Zargen, lose Fliesen. Das, was im Übergabeprotokoll sonst als Mangel landet.</p></li>
-      <li><span class="paket-nr">3</span><h3>Streichen</h3><p>Wände, Decken, Türen und Heizkörper – in der Farbe, die der Mietvertrag verlangt.</p></li>
-      <li><span class="paket-nr">4</span><h3>Reinigen &amp; übergeben</h3><p>Endreinigung inklusive Fenster, Bad und Küche. Auf Wunsch sind wir beim Übergabetermin dabei.</p></li>
-    </ol>
-    <p class="paket-fuss">Sie brauchen nur einen Teil davon? Dann rechnen wir nur den Teil ab. <a href="preise.html">Preisspannen ansehen</a></p>
+    <ol class="schritte"><li><h3>Anfrage senden</h3><p>Per Formular, Telefon oder E-Mail. Ein paar Sätze zum Vorhaben genügen – Fotos helfen, sind aber kein Muss.</p></li><li><h3>Vorhaben besprechen</h3><p>Wir klären, was genau ansteht, und sehen uns die Situation bei Bedarf vor Ort an.</p></li><li><h3>Angebot abstimmen</h3><p>Sie erhalten ein Angebot mit den vereinbarten Arbeiten. Wenn ein Partnerbetrieb beteiligt ist, steht das darin.</p></li><li><h3>Umsetzen und abschließen</h3><p>Wir führen die Arbeiten aus, stimmen Termine mit Ihnen ab und gehen das Ergebnis gemeinsam durch.</p></li></ol>
+    <p class="ablauf-link"><a class="textlink" href="ablauf/">Ablauf und häufige Fragen <span class="pfeil" aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Ehrlich gesagt</span>
-      <h2>Dafür sind wir nicht die Richtigen</h2>
-    </div>
-    <div class="grid g3">
-      <div class="card"><h3>Wenn nur der Preis zählt</h3><p>Wir sind nicht der günstigste Anbieter. Wer drei Vergleichsangebote einholt und das billigste nimmt, wird bei uns nicht fündig.</p></div>
-      <div class="card"><h3>Bei Kernsanierungen</h3><p>Elektrik, Heizung, Statik und Bäder komplett neu – das ist Sache eines Sanierungsbetriebs. Wir sagen es Ihnen offen und nennen jemanden.</p></div>
-      <div class="card"><h3>Bei „heute noch“</h3><p>Wir planen mit Puffer, damit zugesagte Termine halten. Das heißt auch: ganz kurzfristig geht es meistens nicht.</p></div>
-    </div>
-  </div>
-</section>
-<section class="alt">
-  <div class="wrap">
-    <div class="section-head"><span class="eyebrow">Beweis statt Behauptung</span><h2>Warum Kunden uns glauben</h2></div>
-    <div class="grid g3">
-      <div class="card">
-        <h3>Bewertungen, die wir nicht selbst schreiben</h3>
-        <p class="mh-note-klein">{{MYHAMMER_NOTE}} <span class="mh-sterne" aria-hidden="true">★★★★★</span></p>
-        <p>aus {{MYHAMMER_BEWERTUNGEN}} Bewertungen auf MyHammer – jede davon stammt aus einem tatsächlich vermittelten Auftrag.</p>
-        <a class="more" href="{{MYHAMMER_URL}}" rel="noopener">Profil ansehen →</a>
-      </div>
-      <div class="card">
-        <h3>Vorher und nachher</h3>
-        <div class="bildplatz"><span>Platz für ein eigenes Vorher-/Nachher-Foto<br><small>Vorgaben: Dokument 03, Abschnitt 3.2</small></span></div>
-        <p>Eigene Aufnahmen aus abgeschlossenen Aufträgen – keine gekauften Bilder.</p>
-      </div>
-      <div class="card">
-        <h3>Hier sind wir unterwegs</h3>
-        <p>{{EINSATZGEBIET}}</p>
-        <p>Liegt Ihr Objekt außerhalb? Rufen Sie an – wenn wir es nicht übernehmen können, sagen wir es sofort und nennen Ihnen jemanden, der es kann.</p>
-        <a class="more" href="tel:{{TELEFON_LINK}}">{{TELEFON}} →</a>
-      </div>
-    </div>
-  </div>
-</section><section class="abschluss material material--hell">
-  <div class="wrap">
-    <h2>Sagen Sie uns, bis wann es fertig sein muss</h2>
-    <p>Besichtigung und Kostenvoranschlag sind kostenlos und unverbindlich. Sie erhalten Ihren Festpreis in der Regel innerhalb von 24 Stunden.</p>
-    <div class="abschluss-aktionen">
-      <a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a>
-      <a class="btn btn-ghost" href="tel:{{TELEFON_LINK}}">Anrufen: {{TELEFON}}</a>
-    </div>
-  </div>
-</section>
+<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel">Was steht bei Ihnen an?</h2><p class="einleitung">Erzählen Sie uns von Ihrem Vorhaben – auch wenn es nur eine kleine Arbeit ist.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="kontakt/">Unverbindlich anfragen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
 </main>
-<footer class="site">
-  <div class="wrap">
-    <div class="footgrid">
-      <div>
-        <img src="../brand/logo-invers.svg" width="320" height="80" alt="Gashini Dienstleistungen" style="height:58px;width:auto">
-        <p style="margin-top:16px">Wir räumen, renovieren und reinigen Ihre Immobilie bis zum vereinbarten Übergabetermin – ein Auftrag, ein Festpreis, ein Ansprechpartner.</p>
+<footer class="fuss">
+  <div class="rahmen">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <img src="assets/marke/logo-invers.svg" width="254" height="80" alt="Gashini Dienstleistungen">
+        <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
       </div>
       <div>
-        <h4>Anlässe</h4>
+        <h2>Leistungen</h2>
         <ul>
-          <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
-          <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
-          <li><a href="leistungen.html#reinigung">Gebäudereinigung</a></li>
-          <li><a href="leistungen.html#hausmeister">Hausmeisterservice</a></li>
-          <li><a href="leistungen.html#renovierung">Renovierung &amp; Maler</a></li>
+          <li><a href="leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
+          <li><a href="leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
+          <li><a href="ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
         </ul>
       </div>
       <div>
-        <h4>Unternehmen</h4>
+        <h2>Unternehmen</h2>
         <ul>
-          <li><a href="preise.html">Preise</a></li>
-          <li><a href="ablauf.html">Ablauf &amp; Fragen</a></li>
-          <li><a href="referenzen.html">Referenzen</a></li>
-          <li><a href="ueber-uns.html">Über uns</a></li>
-          <li><a href="impressum.html">Impressum</a></li>
-          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="projekte/">Projekte</a></li>
+          <li><a href="ueber-uns/">Über uns</a></li>
+          <li><a href="ablauf/">Ablauf &amp; Fragen</a></li>
+          <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
+          <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
       </div>
       <div>
-        <h4>Kontakt</h4>
+        <h2>Kontakt</h2>
         <ul>
-          <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
           <li><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></li>
           <li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>
-          <li><a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer-Profil ↗</a></li>
-          <li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Profil ↗</a></li>
+          <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
         </ul>
       </div>
     </div>
-    <div class="copy">
-      <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · Inhaber {{INHABER}}</span>
-      <span>Einsatzgebiet: {{EINSATZGEBIET}}</span>
+    <div class="fuss-unten">
+      <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · {{INHABER}}</span>
+      <span><a href="impressum/">Impressum</a> · <a href="datenschutz/">Datenschutz</a></span>
     </div>
   </div>
 </footer>
-<div class="callbar">
-  <a href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a href="kontakt.html">Festpreis anfragen</a>
-</div>
-<script src="assets/main.js"></script>
+<nav class="kontaktleiste" aria-label="Schnellkontakt">
+  <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
+  <a class="knopf knopf--primaer" href="kontakt/">Anfragen</a>
+</nav>
 </body>
 </html>

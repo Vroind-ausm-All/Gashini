@@ -1,0 +1,7 @@
+# Nur das Formularskript ist von außen erreichbar.
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+<Files "anfrage.php">
+  Require all granted
+</Files>

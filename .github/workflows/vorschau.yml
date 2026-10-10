@@ -1,49 +1,92 @@
-name: Vorschau auf GitHub Pages
+name: Prüfen und Vorschau
 
-# Baut den Webauftritt und stellt ihn als nicht indexierbare Vorschau bereit.
-# Einmalig nötig: Repository → Settings → Pages → Source auf "GitHub Actions" stellen.
+# Prüft jeden Stand (Generator-Drift, Links, Seitengrundlagen, Formular-Backend, Browser)
+# und veröffentlicht den Hauptzweig als nicht indexierbare Vorschau auf GitHub Pages.
+# Einmalig nötig: Repository → Settings → Pages → Source auf "GitHub Actions".
 
 on:
   push:
-    branches: [claude/affectionate-pascal-xxw1o2]
-    paths:
-      - 'web/**'
-      - 'brand/**'
-      - 'data/**'
-      - 'scripts/**'
-      - '.github/workflows/vorschau.yml'
+    branches: [claude/affectionate-pascal-xxw1o2, claude/relaunch-premium]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pruefen-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  bauen:
+  pruefen:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Firmendaten einsetzen
+      - name: Werkzeugversionen
+        run: python3 --version && php --version | head -1
+
+      - name: Seiten erzeugen
+        run: python3 scripts/build-site.py
+
+      - name: web/ entspricht der Quelle
         run: |
-          bash scripts/firmendaten.sh || echo "::warning::Es sind noch Platzhalter offen – siehe Ausgabe oben."
+          if ! git diff --quiet -- web/ || [ -n "$(git ls-files --others --exclude-standard web/)" ]; then
+            echo "::error::web/ weicht vom Generator ab. Lokal 'python3 scripts/build-site.py' ausführen und web/ einchecken."
+            git status --short web/ | head -20
+            exit 1
+          fi
 
-      - name: Als Vorschau kennzeichnen und für Suchmaschinen sperren
-        run: python3 scripts/vorschau-markieren.py dist/web
+      - name: Statische Prüfungen
+        run: CI=1 python3 tests/pruefen.py
 
+      - name: Formular-Backend
+        run: python3 tests/formular_test.py
+
+  browser:
+    runs-on: ubuntu-latest
+    needs: pruefen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Testabhängigkeiten
+        working-directory: tests
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Browser-Tests
+        working-directory: tests
+        env:
+          BERICHT_VERZEICHNIS: ${{ runner.temp }}/bericht
+        run: node e2e.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-bericht
+          path: ${{ runner.temp }}/bericht
+
+  vorschau-bauen:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/claude/affectionate-pascal-xxw1o2'
+    needs: [pruefen, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bauen und als Vorschau kennzeichnen
+        run: |
+          python3 scripts/build-site.py
+          python3 scripts/firmendaten.py
+          python3 scripts/vorschau-markieren.py dist/web
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/web
 
-  veroeffentlichen:
-    needs: bauen
+  vorschau-veroeffentlichen:
+    needs: vorschau-bauen
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

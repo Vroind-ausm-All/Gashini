@@ -1,112 +1,106 @@
 <!DOCTYPE html>
+<!-- Generiert aus src/seiten/404.html durch scripts/build-site.py. Änderungen in dieser Datei gehen beim nächsten Build verloren. -->
 <html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Seite nicht gefunden | Gashini Dienstleistungen</title>
-<meta name="description" content="Diese Seite existiert nicht. Zurück zur Startseite von Gashini Dienstleistungen.">
-<link rel="icon" href="../brand/favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://{{DOMAIN}}/404.html">
-<meta property="og:title" content="Seite nicht gefunden | Gashini Dienstleistungen">
-<meta property="og:description" content="Diese Seite existiert nicht. Zurück zur Startseite von Gashini Dienstleistungen.">
+<title>Seite nicht gefunden | Gashini</title>
+<meta name="description" content="Diese Seite existiert nicht.">
+<meta name="robots" content="noindex, follow">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="assets/style.css">
+<meta property="og:site_name" content="Gashini Dienstleistungen">
+<meta property="og:title" content="Seite nicht gefunden | Gashini">
+<meta property="og:description" content="Diese Seite existiert nicht.">
+<meta property="og:url" content="https://{{DOMAIN}}/">
+<meta name="theme-color" content="#FAFAF8">
+<link rel="icon" href="assets/marke/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/frueh.js"></script>
+<script src="assets/js/site.js" defer></script>
+
 </head>
 <body>
-<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
-<div class="topbar">
-  <div class="wrap">
-    <span>Mo–Sa 7–20 Uhr · Rückmeldung am selben Werktag</span>
-    <span><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
-  </div>
-</div>
-<header class="site">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../brand/logo.svg" width="320" height="80" alt="Gashini Dienstleistungen – Startseite"></a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="hauptmenue"><span class="balken"><span></span></span>Menü</button>
-    <nav class="main" id="hauptmenue" aria-label="Hauptnavigation">
-      <ul>
-        <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
-        <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
-        <li><a href="leistungen.html">Leistungen</a></li>
-        <li><a href="preise.html">Preise</a></li>
-        <li><a href="kontakt.html">Kontakt</a></li>
-      </ul>
+<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+<header class="kopf">
+  <div class="rahmen kopf-innen">
+    <a class="marke" href="./" aria-label="Gashini Dienstleistungen – Startseite"><img src="assets/marke/logo.svg" width="254" height="80" alt=""></a>
+    <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
+    <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
+      <ul><li><a href="leistungen/">Leistungen</a></li><li><a href="projekte/">Projekte</a></li><li><a href="ueber-uns/">Über uns</a></li><li><a href="kontakt/">Kontakt</a></li></ul>
+      <div class="hauptnav-fuss">
+        <a class="knopf knopf--primaer" href="kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      </div>
     </nav>
-    <div class="header-cta"><a class="btn btn-primary" href="kontakt.html">Festpreis anfragen</a></div>
+    <div class="kopf-aktion">
+      <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+      <a class="knopf knopf--primaer" href="kontakt/">Projekt anfragen</a>
+    </div>
   </div>
 </header>
-<main id="inhalt">
-<section class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Fehler 404</span>
-    <h1>Diese Seite<br><span>gibt es nicht</span></h1>
-    <p class="lead">Vielleicht hat sich ein Tippfehler eingeschlichen, oder wir haben die Seite umbenannt. Hier kommen Sie weiter:</p>
-    <ul class="fehler-links">
-      <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
-      <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
-      <li><a href="leistungen.html">Alle Leistungen</a></li>
-      <li><a href="preise.html">Preise</a></li>
-      <li><a href="kontakt.html">Kontakt</a></li>
-    </ul>
-    <div class="hero-actions"><a class="btn btn-primary" href="tel:{{TELEFON_LINK}}">Anrufen: {{TELEFON}}</a></div>
+<main id="inhalt" tabindex="-1">
+<section class="abschnitt">
+  <div class="rahmen raster">
+    <div class="sp-text">
+      <p class="label">Fehler 404</p>
+      <h1>Diese Seite gibt es nicht</h1>
+      <p class="einleitung">Vielleicht wurde sie umbenannt, oder in der Adresse steckt ein Tippfehler.</p>
+      <h2 class="label">Hier geht es weiter</h2>
+      <ul class="leistungsliste">
+        <li><a href="leistungen/"><h3>Leistungen</h3><p>Trockenbau, Hausmeisterservice, Reparaturen</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+        <li><a href="projekte/"><h3>Projekte</h3><p>Ausgewählte Arbeiten</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+        <li><a href="kontakt/"><h3>Kontakt</h3><p>Anfrage senden oder anrufen</p><span class="pfeil" aria-hidden="true">→</span></a></li>
+      </ul>
+    </div>
   </div>
 </section>
 </main>
-<footer class="site">
-  <div class="wrap">
-    <div class="footgrid">
-      <div>
-        <img src="../brand/logo-invers.svg" width="320" height="80" alt="Gashini Dienstleistungen" style="height:58px;width:auto">
-        <p style="margin-top:16px">Wir räumen, renovieren und reinigen Ihre Immobilie bis zum vereinbarten Übergabetermin – ein Auftrag, ein Festpreis, ein Ansprechpartner.</p>
+<footer class="fuss">
+  <div class="rahmen">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <img src="assets/marke/logo-invers.svg" width="254" height="80" alt="Gashini Dienstleistungen">
+        <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
       </div>
       <div>
-        <h4>Anlässe</h4>
+        <h2>Leistungen</h2>
         <ul>
-          <li><a href="wohnungsuebergabe.html">Wohnungsübergabe</a></li>
-          <li><a href="haushaltsaufloesung.html">Haushaltsauflösung</a></li>
-          <li><a href="leistungen.html#reinigung">Gebäudereinigung</a></li>
-          <li><a href="leistungen.html#hausmeister">Hausmeisterservice</a></li>
-          <li><a href="leistungen.html#renovierung">Renovierung &amp; Maler</a></li>
+          <li><a href="leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
+          <li><a href="leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
+          <li><a href="ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
         </ul>
       </div>
       <div>
-        <h4>Unternehmen</h4>
+        <h2>Unternehmen</h2>
         <ul>
-          <li><a href="preise.html">Preise</a></li>
-          <li><a href="ablauf.html">Ablauf &amp; Fragen</a></li>
-          <li><a href="referenzen.html">Referenzen</a></li>
-          <li><a href="ueber-uns.html">Über uns</a></li>
-          <li><a href="impressum.html">Impressum</a></li>
-          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="projekte/">Projekte</a></li>
+          <li><a href="ueber-uns/">Über uns</a></li>
+          <li><a href="ablauf/">Ablauf &amp; Fragen</a></li>
+          <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
+          <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
       </div>
       <div>
-        <h4>Kontakt</h4>
+        <h2>Kontakt</h2>
         <ul>
-          <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
           <li><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a></li>
           <li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>
-          <li><a href="{{MYHAMMER_URL}}" rel="noopener">MyHammer-Profil ↗</a></li>
-          <li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Profil ↗</a></li>
+          <li>{{STRASSE}}<br>{{PLZ_ORT}}</li>
         </ul>
       </div>
     </div>
-    <div class="copy">
-      <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · Inhaber {{INHABER}}</span>
-      <span>Einsatzgebiet: {{EINSATZGEBIET}}</span>
+    <div class="fuss-unten">
+      <span>© <span id="jahr">2026</span> Gashini Dienstleistungen · {{INHABER}}</span>
+      <span><a href="impressum/">Impressum</a> · <a href="datenschutz/">Datenschutz</a></span>
     </div>
   </div>
 </footer>
-<div class="callbar">
-  <a href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a href="kontakt.html">Festpreis anfragen</a>
-</div>
-<script src="assets/main.js"></script>
+<nav class="kontaktleiste" aria-label="Schnellkontakt">
+  <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
+  <a class="knopf knopf--primaer" href="kontakt/">Anfragen</a>
+</nav>
 </body>
 </html>
