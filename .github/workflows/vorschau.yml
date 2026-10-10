@@ -51,6 +51,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: 3D-Bündel und GSAP entsprechen der Quelle
+        working-directory: scripts/werkzeuge/3d
+        run: |
+          npm ci
+          npm run bauen
+          if ! git diff --quiet -- ../../../src/assets/js; then
+            echo "::error::src/assets/js weicht vom Werkzeug ab. 'cd scripts/werkzeuge/3d && npm run bauen' ausführen und einchecken."
+            git status --short ../../../src/assets/js
+            exit 1
+          fi
       - name: Testabhängigkeiten
         working-directory: tests
         run: npm ci && npx playwright install --with-deps chromium

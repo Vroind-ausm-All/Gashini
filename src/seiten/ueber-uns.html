@@ -1,69 +1,79 @@
 <!--
-titel: Über uns und unser Netzwerk | Gashini
-beschreibung: Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wie wir arbeiten und wie die Zusammenarbeit mit Partnerbetrieben geregelt ist.
+titel: Über uns – inhabergeführt in {{ORT}} | Gashini
+beschreibung: Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer wir sind, wie wir arbeiten und woran Sie uns messen können.
 pfad: ueber-uns/
 nav: ueber-uns/
 prioritaet: 0.7
 brotkrumen: Über uns
 -->
 <header class="seitenkopf">
-  <div class="rahmen">
-    [[brotkrumen]]
-    <p class="label">Über uns</p>
-    <h1>Ein Betrieb, ein Ansprechpartner</h1>
-    <p class="einleitung">Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer anruft, spricht mit jemandem, der die Arbeit kennt – und sie in den meisten Fällen selbst ausführt.</p>
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      [[brotkrumen]]
+      <p class="label">Über uns</p>
+      <h1 data-zeilen>Ein Betrieb. Ein Ansprechpartner.</h1>
+      <p class="editorial-einstieg">Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer anruft, spricht mit jemandem, der die Arbeit kennt – und sie in den meisten Fällen selbst ausführt.</p>
+    </div>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="inhaber-titel">
   <div class="rahmen raster">
     <div class="sp-halb-l">
+      [[foto id="inhaber" motiv="Der Inhaber bei der Arbeit oder am Firmenfahrzeug, Blick zur Kamera, Arbeitskleidung" format="Hochformat 4:5, mindestens 1600 px hoch" licht="Tageslicht, kein Blitz, ruhiger Hintergrund"]]
+    </div>
+    <div class="sp-halb-r" data-zeigen>
       <p class="label">Inhaber</p>
-      <h2>{{INHABER}}</h2>
-      <p>{{INHABER_TEXT}}</p>
-    </div>
-    <div class="sp-halb-r">
-      <figure class="portrait">
-        <div class="portrait-flaeche" role="img" aria-label="Platz für ein Porträtfoto des Inhabers"><span class="mono">Porträt des Inhabers<br>Foto folgt</span></div>
-        <figcaption class="bildunterschrift">Ein eigenes Foto bei der Arbeit oder am Fahrzeug – keine Agenturaufnahme.</figcaption>
-      </figure>
+      <h2 id="inhaber-titel">{{INHABER}}</h2>
+      <p class="einleitung">{{INHABER_TEXT}}</p>
+      <p class="gedaempft">Kein Callcenter, keine Vermittlungsplattform: Ihre Anfrage landet direkt im Betrieb.</p>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Arbeitsweise</p>
-      <h2>Woran Sie uns messen können</h2>
-    </div>
-    <div class="sp-inhalt">
-      <ul class="leistungsliste">
-        <li><div class="eintrag"><h3>Erreichbar</h3><p>Sie haben einen festen Ansprechpartner – keine Zentrale, keine Warteschleife.</p></div></li>
-        <li><div class="eintrag"><h3>Offen über Grenzen</h3><p>Was wir nicht dürfen oder nicht gut können, sagen wir beim ersten Gespräch.</p></div></li>
-        <li><div class="eintrag"><h3>Klar bei Partnern</h3><p>Ist ein anderer Betrieb beteiligt, wissen Sie vorher, wer es ist und wer Ihr Vertragspartner ist.</p></div></li>
-        <li><div class="eintrag"><h3>Ordentlich</h3><p>Wir hinterlassen den Arbeitsplatz so, wie wir ihn selbst vorfinden möchten.</p></div></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="abschnitt dunkel" id="netzwerk" aria-labelledby="netzwerk-titel">
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="arbeitsweise-titel">
   <div class="rahmen">
-    <div class="raster">
-      <div class="sp-breit">
-        <p class="label label--hell">Netzwerk</p>
-        <h2 id="netzwerk-titel">Für vieles der richtige Ansprechpartner. Für Weiteres die richtigen Kontakte.</h2>
-        <p class="einleitung">Über die Jahre ist ein Netzwerk aus Fachbetrieben entstanden, mit denen wir regelmäßig zusammenarbeiten. Das heißt nicht, dass wir jedes Gewerk anbieten – sondern dass wir wissen, wen wir fragen.</p>
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Arbeitsweise</p>
+        <h2 id="arbeitsweise-titel" data-zeilen>Woran Sie uns messen können</h2>
       </div>
     </div>
-    <ul class="zustaendigkeit">
-      <li><span class="wer">Wir selbst</span><h3>Eigene Leistung</h3><p>Trockenbau, Hausmeisterservice, Reparatur und Instandhaltung im Rahmen unseres Gewerbes. Wir führen aus, wir rechnen ab, wir haften.</p><span class="vertrag">Ihr Vertragspartner: Gashini</span></li>
-      <li><span class="wer">Mit Partnern</span><h3>Koordinierte Gewerke</h3><p>Wenn mehrere Gewerke ineinandergreifen, stimmen wir Termine und Reihenfolge ab. Der Fachbetrieb führt die Arbeiten seines Gewerks aus.</p><span class="vertrag">Vertragspartner: steht vor Beginn im Angebot</span></li>
-      <li><span class="wer">Empfehlung</span><h3>Kontakt zum Fachbetrieb</h3><p>Für Arbeiten, die wir nicht koordinieren, nennen wir Ihnen einen Betrieb. Sie vereinbaren direkt mit ihm.</p><span class="vertrag">Ihr Vertragspartner: der Fachbetrieb</span></li>
-    </ul>
-    <p class="redaktion">[FREIGABE ERFORDERLICH: Gewerke im Netzwerk und Form der Zusammenarbeit bestätigen – Subunternehmer unter eigener Rechnung, Koordination oder reine Empfehlung. Erst danach Gewerke namentlich nennen.]</p>
+    <ol class="grundsaetze">
+      <li data-zeigen><h3>Erreichbar</h3><p>Sie haben einen festen Ansprechpartner – keine Zentrale, keine Warteschleife.</p></li>
+      <li data-zeigen><h3>Offen über Grenzen</h3><p>Was wir nicht dürfen oder nicht gut können, sagen wir beim ersten Gespräch – nicht erst auf der Baustelle.</p></li>
+      <li data-zeigen><h3>Klar bei Partnern</h3><p>Ist ein anderer Betrieb beteiligt, wissen Sie vorher, wer es ist und wer Ihr Vertragspartner ist.</p></li>
+      <li data-zeigen><h3>Ordentlich</h3><p>Wir hinterlassen den Arbeitsplatz so, wie wir ihn selbst vorfinden möchten – abgedeckt, gereinigt, ohne Reste.</p></li>
+    </ol>
   </div>
 </section>
 
-[[abschluss]]
+<!--vorschau-->
+<section class="abschnitt nur-redaktion" aria-labelledby="einblicke-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Einblicke</p>
+        <h2 id="einblicke-titel">Fotos, die hier entstehen sollen</h2>
+        <p class="einleitung">Diese Briefings erscheinen nur in der Vorschau. Sobald eigene Fotos vorliegen, ersetzen sie die Briefings; ohne Fotos entfällt der Abschnitt im veröffentlichten Auftritt.</p>
+      </div>
+    </div>
+    <ul class="einblicke">
+      [[einblick id="einblick-werkzeug" motiv="Werkzeug und Material vor einer Baustelle, ordentlich ausgelegt" format="Querformat 3:2" licht="Tageslicht, seitlich"]]
+      [[einblick id="einblick-fahrzeug" motiv="Firmenfahrzeug vor einem Objekt, Logo lesbar, keine Kennzeichen" format="Querformat 3:2" licht="Tageslicht, bedeckter Himmel"]]
+      [[einblick id="einblick-detail" motiv="Detail einer frisch gespachtelten Fuge im Streiflicht" format="Querformat 3:2" licht="Streiflicht von der Seite"]]
+    </ul>
+  </div>
+</section>
+<!--/vorschau-->
+
+<section class="ruhe abschnitt--linie" aria-labelledby="netz-titel">
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      <h2 id="netz-titel" class="leitsatz">Was wir nicht selbst machen, machen wir nicht nach. <em>Dafür gibt es Fachbetriebe – und wir wissen, wen wir fragen.</em></h2>
+      <p><a class="textlink" href="@/netzwerk/">Netzwerk &amp; Zusammenarbeit <span class="pfeil" aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+[[abschluss titel="Lernen wir uns kennen." text="Rufen Sie an oder schreiben Sie uns – auch wenn Sie noch nicht genau wissen, was gemacht werden soll." knopf="Kontakt aufnehmen" label="Kontakt"]]

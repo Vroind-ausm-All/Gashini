@@ -1,11 +1,13 @@
 {
-  "_anleitung": "Projektgalerie. Neue Projekte hier eintragen, Bilder unter src/assets/bilder/projekte/<slug>/ ablegen. Veröffentlicht wird ein Projekt nur, wenn status = freigegeben, freigabe.kunde = true und jedes Bild rechte.freigabe_kunde = true und rechte.ki_generiert = false hat. Ausführliche Anleitung: docs/PFLEGE.md",
+  "_anleitung": "Projektgalerie. Neue Projekte hier eintragen, Bilder unter src/assets/bilder/projekte/<slug>/ ablegen. Veröffentlicht wird ein Projekt nur, wenn status = freigegeben, freigabe.kunde = true und jedes Bild rechte.freigabe_kunde = true und rechte.ki_generiert = false hat. Projektbericht: ausgangssituation, aufgabenstellung, arbeiten, vorgehen (optional), ergebnis; Bilder mit Rolle titel, vorher, nachher, prozess. Ausführliche Anleitung: docs/PFLEGE.md",
   "_felder": {
     "status": "entwurf | freigegeben",
     "kategorie": "trockenbau | hausmeisterservice | reparatur | koordination",
     "ausfuehrung": "eigener-betrieb | partner | gemeinsam",
-    "bilder[].rolle": "titel | vorher | nachher | galerie",
-    "region": "nur grobe, freigegebene Ortsangabe – keine Straße, keine Hausnummer"
+    "bilder[].rolle": "titel | vorher | nachher | prozess",
+    "region": "nur grobe, freigegebene Ortsangabe – keine Straße, keine Hausnummer",
+    "aufgabenstellung": "was erreicht werden sollte – aus Sicht des Auftraggebers",
+    "arbeiten": "Liste der ausgeführten Arbeiten (früher: leistungsumfang)"
   },
   "projekte": [
     {
@@ -19,22 +21,81 @@
       "ausfuehrung": "eigener-betrieb",
       "kurztext": "Ein großer Wohnraum wird durch eine nichttragende Ständerwand mit Tür in zwei Räume geteilt.",
       "ausgangssituation": "Beispieltext: Beschreiben Sie hier in zwei, drei Sätzen, wie der Raum vorher genutzt wurde und was sich der Auftraggeber gewünscht hat.",
-      "leistungsumfang": ["Beispiel: Metallständerwand mit Türöffnung", "Beispiel: Beplankung und Spachtelarbeiten", "Beispiel: Anschluss an Bestandsdecke"],
+      "aufgabenstellung": "Beispieltext: Was sollte erreicht werden – Nutzung, Termin, Rahmenbedingungen?",
+      "arbeiten": [
+        "Beispiel: Metallständerwand mit Türöffnung",
+        "Beispiel: Beplankung und Spachtelarbeiten",
+        "Beispiel: Anschluss an Bestandsdecke"
+      ],
       "vorgehen": "Beispieltext: Was wurde in welcher Reihenfolge gemacht? Gab es Besonderheiten im Bestand?",
       "ergebnis": "Beispieltext: Was hat sich für den Auftraggeber verändert? Sachlich, ohne Superlative.",
       "bilder": [
-        {"datei": "platzhalter/projekt-titel-a.svg", "rolle": "titel", "alt": "Platzhalter für das Titelbild", "unterschrift": "Platzhalter – hier steht später das Titelbild.",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}},
-        {"datei": "platzhalter/projekt-vorher.svg", "rolle": "vorher", "alt": "Platzhalter für das Vorher-Bild", "unterschrift": "",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}},
-        {"datei": "platzhalter/projekt-nachher.svg", "rolle": "nachher", "alt": "Platzhalter für das Nachher-Bild", "unterschrift": "Platzhalter – Vorher und Nachher vom selben Standpunkt aufnehmen.",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}},
-        {"datei": "platzhalter/projekt-detail-1.svg", "rolle": "galerie", "alt": "Platzhalter für ein Detailbild", "unterschrift": "Platzhalter – Detail 1",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}},
-        {"datei": "platzhalter/projekt-detail-2.svg", "rolle": "galerie", "alt": "Platzhalter für ein Detailbild", "unterschrift": "Platzhalter – Detail 2",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}}
+        {
+          "datei": "platzhalter/projekt-titel-a.svg",
+          "rolle": "titel",
+          "alt": "Platzhalter für das Titelbild",
+          "unterschrift": "Platzhalter – hier steht später das Titelbild.",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        },
+        {
+          "datei": "platzhalter/projekt-vorher.svg",
+          "rolle": "vorher",
+          "alt": "Platzhalter für das Vorher-Bild",
+          "unterschrift": "",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        },
+        {
+          "datei": "platzhalter/projekt-nachher.svg",
+          "rolle": "nachher",
+          "alt": "Platzhalter für das Nachher-Bild",
+          "unterschrift": "Platzhalter – Vorher und Nachher vom selben Standpunkt aufnehmen.",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        },
+        {
+          "datei": "platzhalter/projekt-detail-1.svg",
+          "rolle": "prozess",
+          "alt": "Platzhalter für ein Detailbild",
+          "unterschrift": "Platzhalter – Detail 1",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        },
+        {
+          "datei": "platzhalter/projekt-detail-2.svg",
+          "rolle": "prozess",
+          "alt": "Platzhalter für ein Detailbild",
+          "unterschrift": "Platzhalter – Detail 2",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        }
       ],
-      "freigabe": {"kunde": false, "datum": "", "notiz": "Beispieleintrag – dient nur als Vorlage."}
+      "freigabe": {
+        "kunde": false,
+        "datum": "",
+        "notiz": "Beispieleintrag – dient nur als Vorlage."
+      }
     },
     {
       "id": "beispiel-02",
@@ -47,14 +108,33 @@
       "ausfuehrung": "gemeinsam",
       "kurztext": "Kleinere Mängel behoben, Arbeiten eines Partnerbetriebs koordiniert, Übergabe an neue Mieter vorbereitet.",
       "ausgangssituation": "Beispieltext: Ausgangslage aus Sicht des Vermieters.",
-      "leistungsumfang": ["Beispiel: Kontrolle und Mängelliste", "Beispiel: Kleinreparaturen", "Beispiel: Koordination eines Fachbetriebs"],
+      "aufgabenstellung": "Beispieltext: Was sollte erreicht werden – Nutzung, Termin, Rahmenbedingungen?",
+      "arbeiten": [
+        "Beispiel: Kontrolle und Mängelliste",
+        "Beispiel: Kleinreparaturen",
+        "Beispiel: Koordination eines Fachbetriebs"
+      ],
       "vorgehen": "Beispieltext.",
       "ergebnis": "Beispieltext.",
       "bilder": [
-        {"datei": "platzhalter/projekt-titel-b.svg", "rolle": "titel", "alt": "Platzhalter für das Titelbild", "unterschrift": "",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}}
+        {
+          "datei": "platzhalter/projekt-titel-b.svg",
+          "rolle": "titel",
+          "alt": "Platzhalter für das Titelbild",
+          "unterschrift": "",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        }
       ],
-      "freigabe": {"kunde": false, "datum": "", "notiz": "Beispieleintrag – dient nur als Vorlage."}
+      "freigabe": {
+        "kunde": false,
+        "datum": "",
+        "notiz": "Beispieleintrag – dient nur als Vorlage."
+      }
     },
     {
       "id": "beispiel-03",
@@ -67,14 +147,70 @@
       "ausfuehrung": "eigener-betrieb",
       "kurztext": "Beschädigte Deckenverkleidung ausgebaut, Unterkonstruktion geprüft, neu beplankt und gespachtelt.",
       "ausgangssituation": "Beispieltext.",
-      "leistungsumfang": ["Beispiel: Rückbau", "Beispiel: Unterkonstruktion", "Beispiel: Beplankung"],
+      "aufgabenstellung": "Beispieltext: Was sollte erreicht werden – Nutzung, Termin, Rahmenbedingungen?",
+      "arbeiten": [
+        "Beispiel: Rückbau",
+        "Beispiel: Unterkonstruktion",
+        "Beispiel: Beplankung"
+      ],
       "vorgehen": "Beispieltext.",
       "ergebnis": "Beispieltext.",
       "bilder": [
-        {"datei": "platzhalter/projekt-titel-c.svg", "rolle": "titel", "alt": "Platzhalter für das Titelbild", "unterschrift": "",
-         "rechte": {"fotograf": "", "freigabe_kunde": false, "nutzungsrecht": "", "ki_generiert": false}}
+        {
+          "datei": "platzhalter/projekt-titel-c.svg",
+          "rolle": "titel",
+          "alt": "Platzhalter für das Titelbild",
+          "unterschrift": "",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        }
       ],
-      "freigabe": {"kunde": false, "datum": "", "notiz": "Beispieleintrag – dient nur als Vorlage."}
+      "freigabe": {
+        "kunde": false,
+        "datum": "",
+        "notiz": "Beispieleintrag – dient nur als Vorlage."
+      }
+    },
+    {
+      "id": "beispiel-04",
+      "status": "entwurf",
+      "titel": "Installationsschacht im Bad verkleidet",
+      "slug": "beispiel-installationsschacht",
+      "kategorie": "trockenbau",
+      "region": "[Region]",
+      "datum": "2025-11",
+      "ausfuehrung": "gemeinsam",
+      "kurztext": "Neue Leitungen eines Installationsbetriebs mit einer Trockenbau-Verkleidung geschlossen.",
+      "ausgangssituation": "Beispieltext.",
+      "aufgabenstellung": "Beispieltext.",
+      "arbeiten": [
+        "Beispiel: Unterkonstruktion",
+        "Beispiel: Beplankung mit Revisionsöffnung"
+      ],
+      "ergebnis": "Beispieltext.",
+      "bilder": [
+        {
+          "datei": "platzhalter/projekt-titel-a.svg",
+          "rolle": "titel",
+          "alt": "Platzhalter für das Titelbild",
+          "unterschrift": "",
+          "rechte": {
+            "fotograf": "",
+            "freigabe_kunde": false,
+            "nutzungsrecht": "",
+            "ki_generiert": false
+          }
+        }
+      ],
+      "freigabe": {
+        "kunde": false,
+        "datum": "",
+        "notiz": "Beispieleintrag – dient nur als Vorlage."
+      }
     }
   ]
 }

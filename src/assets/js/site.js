@@ -31,13 +31,31 @@
     nav.addEventListener('click', function (e) {
       if (e.target.closest('a')) schliessen(false);
     });
-    window.matchMedia('(min-width: 960px)').addEventListener('change', function (m) {
+    window.matchMedia('(min-width: 1080px)').addEventListener('change', function (m) {
       if (m.matches) schliessen(false);
     });
   }
 
   var jahr = document.getElementById('jahr');
   if (jahr) jahr.textContent = String(new Date().getFullYear());
+
+  /* ---------- Vorschau: Kundenansicht blendet Redaktionshinweise aus ----------
+     Nur in der gekennzeichneten Vorschau vorhanden; der veröffentlichte Auftritt speichert nichts. */
+  var schalter = document.querySelector('[data-kundenansicht]');
+  if (schalter) {
+    var setzeAnsicht = function (an) {
+      document.documentElement.classList.toggle('kundenansicht', an);
+      schalter.setAttribute('aria-pressed', String(an));
+    };
+    var gespeichert = false;
+    try { gespeichert = window.localStorage.getItem('gashini-kundenansicht') === '1'; } catch (e) {}
+    setzeAnsicht(gespeichert);
+    schalter.addEventListener('click', function () {
+      var an = schalter.getAttribute('aria-pressed') !== 'true';
+      setzeAnsicht(an);
+      try { window.localStorage.setItem('gashini-kundenansicht', an ? '1' : '0'); } catch (e) {}
+    });
+  }
 
   /* ---------- Anfrageformular ---------- */
   var form = document.querySelector('form[data-anfrage]');
@@ -49,6 +67,47 @@
     var senden = form.querySelector('button[type="submit"]');
     var sendetext = senden.querySelector('.text');
     var laeuft = false;
+    var MAX_FOTOS = 3, MAX_BYTES = 12 * 1024 * 1024, TYPEN = ['image/jpeg', 'image/png', 'image/webp'];
+
+    function feld(name) { return form.elements[name]; }
+    var fotos = form.querySelector('input[type="file"]');
+    var rueckruf = feld('rueckruf');
+    var rueckrufZeit = form.querySelector('[data-rueckruf-zeit]');
+
+    // Vorauswahl aus der Adresse: ?leistung=reparatur&anliegen=Tür+schleift
+    var parameter = new URLSearchParams(window.location.search);
+    var schluessel = parameter.get('leistung');
+    if (schluessel) {
+      var option = form.querySelector('#f-leistung option[data-schluessel="' + schluessel.replace(/[^a-z-]/g, '') + '"]');
+      if (option) option.selected = true;
+    }
+    var anliegen = (parameter.get('anliegen') || '').replace(/[^\wäöüÄÖÜß .,\-]/g, '').slice(0, 80);
+    if (anliegen && !feld('nachricht').value) feld('nachricht').value = anliegen + ': ';
+
+    // Rückruf: Zeitfenster nur zeigen, wenn gewünscht
+    function rueckrufAnzeigen() { if (rueckrufZeit) rueckrufZeit.hidden = !rueckruf.checked; }
+    if (rueckruf) { rueckruf.addEventListener('change', rueckrufAnzeigen); rueckrufAnzeigen(); }
+
+    // Fotos: Liste der gewählten Dateien
+    var liste = form.querySelector('[data-dateiliste]');
+    function fotoFehler() {
+      if (!fotos || !fotos.files) return '';
+      var dateien = Array.prototype.slice.call(fotos.files);
+      if (dateien.length > MAX_FOTOS) return 'Bitte wählen Sie höchstens ' + MAX_FOTOS + ' Fotos aus.';
+      if (dateien.some(function (d) { return TYPEN.indexOf(d.type) < 0; })) return 'Bitte nur Fotos als JPEG, PNG oder WebP hochladen.';
+      var summe = dateien.reduce(function (s, d) { return s + d.size; }, 0);
+      if (summe > MAX_BYTES) return 'Die Fotos sind zusammen zu groß (höchstens 12 MB). Bitte wählen Sie weniger oder kleinere Bilder.';
+      return '';
+    }
+    if (fotos && liste) fotos.addEventListener('change', function () {
+      liste.textContent = '';
+      Array.prototype.slice.call(fotos.files || []).forEach(function (d) {
+        var li = document.createElement('li');
+        li.textContent = d.name + ' · ' + (d.size / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB';
+        liste.appendChild(li);
+      });
+      setzeFehler('fotos', fotoFehler());
+    });
 
     var regeln = {
       name: function (v) { return !v ? 'Bitte geben Sie Ihren Namen an.' : v.length > 100 ? 'Der Name ist zu lang (höchstens 100 Zeichen).' : ''; },
@@ -70,12 +129,11 @@
         return '';
       }
     };
+    var FELDER = ['name', 'email', 'telefon', 'rueckruf', 'leistung', 'nachricht', 'fotos', 'ort', 'zeitraum'];
 
-    function feld(name) { return form.elements[name]; }
     function fehlerElement(name) { return form.querySelector('[data-fehler-fuer="' + name + '"]'); }
-
     function setzeFehler(name, text) {
-      var el = feld(name), ziel = fehlerElement(name);
+      var el = name === 'fotos' ? fotos : feld(name), ziel = fehlerElement(name);
       if (!el || !ziel) return;
       ziel.textContent = text || '';
       if (text) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
@@ -91,30 +149,29 @@
       if (!feld('email').value.trim() && !feld('telefon').value.trim()) {
         fehler.email = fehler.email || 'Bitte geben Sie eine E-Mail-Adresse oder eine Telefonnummer an.';
       }
+      if (rueckruf && rueckruf.checked && !feld('telefon').value.trim()) {
+        fehler.telefon = fehler.telefon || 'Für einen Rückruf brauchen wir Ihre Telefonnummer.';
+      }
+      var f = fotoFehler(); if (f) fehler.fotos = f;
       return fehler;
     }
 
     function zeigeFehler(fehler, meldung) {
-      ['name', 'email', 'telefon', 'leistung', 'nachricht', 'ort', 'zeitraum'].forEach(function (n) {
-        setzeFehler(n, fehler[n]);
-      });
-      var namen = Object.keys(fehler);
+      FELDER.forEach(function (n) { setzeFehler(n, fehler[n]); });
+      var namen = FELDER.filter(function (n) { return fehler[n]; });
       if (!namen.length) return;
       status.className = 'formular-status formular-status--fehler';
       status.textContent = meldung || (namen.length === 1
         ? 'Ein Feld muss noch korrigiert werden.'
         : namen.length + ' Felder müssen noch korrigiert werden.');
-      var erstes = feld(namen[0]);
+      var erstes = namen[0] === 'fotos' ? fotos : feld(namen[0]);
       if (erstes) erstes.focus();
     }
 
     ['name', 'email', 'telefon', 'leistung', 'nachricht'].forEach(function (n) {
       var el = feld(n); if (!el) return;
       el.addEventListener('blur', function () {
-        if (el.getAttribute('aria-invalid') === 'true' || el.value) {
-          var t = regeln[n](el.value.trim());
-          setzeFehler(n, t);
-        }
+        if (el.getAttribute('aria-invalid') === 'true' || el.value) setzeFehler(n, regeln[n](el.value.trim()));
       });
     });
 
@@ -131,7 +188,7 @@
       if (Object.keys(fehler).length) { zeigeFehler(fehler); return; }
       zeigeFehler({});
       status.className = 'formular-status formular-status--laeuft';
-      status.textContent = 'Ihre Anfrage wird übertragen …';
+      status.textContent = fotos && fotos.files && fotos.files.length ? 'Ihre Anfrage und die Fotos werden übertragen …' : 'Ihre Anfrage wird übertragen …';
       sperre(true);
 
       var daten = new FormData(form);
@@ -177,20 +234,18 @@
     }
   }
 
-  /* ---------- Projektfilter ---------- */
+  /* ---------- Projektfilter (mit Flip, wenn bewegung.js es bereitstellt) ---------- */
   var filter = document.querySelector('.filter');
   if (filter) {
-    var karten = Array.prototype.slice.call(document.querySelectorAll('[data-kategorie]'));
+    var karten = Array.prototype.slice.call(document.querySelectorAll('[data-projekt]'));
     var ansage = document.getElementById('filter-ansage');
     filter.addEventListener('change', function (e) {
       var wert = e.target.value;
-      var sichtbar = 0;
-      karten.forEach(function (k) {
-        var treffer = wert === 'alle' || k.getAttribute('data-kategorie') === wert;
-        k.hidden = !treffer;
-        if (treffer) sichtbar++;
-      });
-      if (ansage) ansage.textContent = sichtbar === 1 ? '1 Projekt angezeigt' : sichtbar + ' Projekte angezeigt';
+      var sichtbar = function (k) { return wert === 'alle' || k.getAttribute('data-kategorie') === wert; };
+      if (typeof window.gashiniUmordnen === 'function') window.gashiniUmordnen(karten, sichtbar);
+      else karten.forEach(function (k) { k.hidden = !sichtbar(k); });
+      var n = karten.filter(sichtbar).length;
+      if (ansage) ansage.textContent = n === 1 ? '1 Projekt angezeigt' : n + ' Projekte angezeigt';
     });
   }
 
@@ -202,14 +257,14 @@
     var text = dialog.querySelector('figcaption');
     var zaehler = dialog.querySelector('.zaehler');
     var aktuell = 0, zuletzt = null;
-    function zeige(i) {
+    var zeige = function (i) {
       aktuell = (i + ausloeser.length) % ausloeser.length;
       var a = ausloeser[aktuell];
       bild.src = a.getAttribute('data-gross');
       bild.alt = a.getAttribute('data-alt') || '';
       text.textContent = a.getAttribute('data-text') || '';
       zaehler.textContent = (aktuell + 1) + ' / ' + ausloeser.length;
-    }
+    };
     ausloeser.forEach(function (a, i) {
       a.addEventListener('click', function (e) {
         e.preventDefault();

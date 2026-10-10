@@ -35,19 +35,20 @@ Automatisch aus den Quellen in `src/seiten/` gelesen (Stand dieses Dokuments). P
 
 | URL | Title | H1 | Meta-Description | Index |
 |---|---|---|---|---|
-| `/404.html` | Seite nicht gefunden | Gashini | Diese Seite gibt es nicht | Diese Seite existiert nicht. | nein |
-| `/ablauf/` | Ablauf und häufige Fragen | Gashini | Von der Anfrage bis zum fertigen Ergebnis | Wie eine Anfrage bei Gashini Dienstleistungen abläuft – von der ersten Nachricht bis zum Abschluss – und Antworten auf häufige Fragen zu Kosten, Partnern und Gebiet. | ja |
-| `/kontakt/danke/` | Anfrage übermittelt | Gashini | Danke für Ihre Anfrage | Ihre Anfrage an Gashini Dienstleistungen. | nein |
-| `/datenschutz/` | Datenschutzerklärung | Gashini | Datenschutzerklärung | Wie Gashini Dienstleistungen personenbezogene Daten auf dieser Website verarbeitet – Hosting, Anfrageformular, E-Mail und Ihre Rechte. | ja |
-| `/leistungen/hausmeisterservice/` | Hausmeisterservice in {{ORT}} | Gashini | Hausmeisterservice in {{ORT}} | Objektbetreuung, kleinere Instandhaltung und Vorbereitung von Mieterwechseln in {{REGION}} – für Vermieter, Hausverwaltungen und Gewerbe. | ja |
-| `/impressum/` | Impressum | Gashini | Impressum | Impressum und Anbieterkennzeichnung von Gashini Dienstleistungen nach § 5 DDG. | ja |
-| `/kontakt/` | Projekt anfragen | Gashini | Erzählen Sie uns, was ansteht | Anfrage an Gashini Dienstleistungen: Formular, Telefon oder E-Mail. Auch für kleine Arbeiten – unverbindlich. | ja |
-| `/leistungen/` | Leistungen: Trockenbau, Hausmeister, Reparaturen | Gashini | Was wir übernehmen – und was nicht | Trockenbau und Innenausbau, Hausmeisterservice sowie Reparatur und Instandhaltung in {{REGION}} – und was wir bewusst nicht selbst ausführen. | ja |
-| `/projekte/` | Projekte aus Trockenbau und Objektbetreuung | Gashini | Unsere Arbeiten | Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Hausmeisterservice, Reparatur und koordinierte Gewerke. | ja |
-| `/leistungen/reparatur-und-instandhaltung/` | Reparaturen & Instandhaltung in {{REGION}} | Gashini | Reparatur und Instandhaltung | Kleinere Reparaturen, Ausbesserungen und Montagen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzelne Arbeiten. | ja |
-| `/` | Trockenbau & Hausmeisterservice in {{ORT}} | Gashini Dienstleistungen | Kleine Arbeiten. Großes Netzwerk. Ein Ansprechpartner. | Trockenbau, Hausmeisterservice und Reparaturen rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt. | ja |
-| `/leistungen/trockenbau/` | Trockenbau & Innenausbau in {{ORT}} | Gashini | Trockenbau und Innenausbau in {{ORT}} | Nichttragende Trennwände, Vorsatzschalen, abgehängte Decken und Reparaturen im Bestand in {{REGION}}. Auch einzelne Räume und kleine Arbeiten. | ja |
-| `/ueber-uns/` | Über uns und unser Netzwerk | Gashini | Ein Betrieb, ein Ansprechpartner | Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wie wir arbeiten und wie die Zusammenarbeit mit Partnerbetrieben geregelt ist. | ja |
+| `/404.html` | Seite nicht gefunden \| Gashini | Diese Seite gibt es nicht. | Diese Seite existiert nicht. | nein |
+| `/kontakt/danke/` | Anfrage übermittelt \| Gashini | Danke für Ihre Anfrage. | Ihre Anfrage an Gashini Dienstleistungen. | nein |
+| `/datenschutz/` | Datenschutzerklärung \| Gashini | Datenschutzerklärung | Wie Gashini Dienstleistungen personenbezogene Daten auf dieser Website verarbeitet – Hosting, Anfrageformular, E-Mail und Ihre Rechte. | ja |
+| `/fragen/` | Fragen & Ablauf \| Gashini | Was Sie vorher wissen sollten. | Wie eine Anfrage bei Gashini Dienstleistungen abläuft – von der ersten Nachricht bis zum Abschluss – und Antworten zu Kosten, Partnern, Einsatzgebiet und Daten. | ja |
+| `/leistungen/hausmeisterservice/` | Hausmeisterservice in {{ORT}} \| Gashini | Hausmeisterservice in {{ORT}} | Objektkontrollen mit Protokoll, kleinere Instandhaltung und Vorbereitung von Mieterwechseln in {{REGION}} – für Vermieter, Hausverwaltungen und Gewerbe. | ja |
+| `/impressum/` | Impressum \| Gashini | Impressum | Impressum und Anbieterkennzeichnung von Gashini Dienstleistungen nach § 5 DDG. | ja |
+| `/kontakt/` | Anfrage stellen \| Gashini | Erzählen Sie uns, was ansteht. | Anfrage an Gashini Dienstleistungen: Formular mit Fotos und Rückrufwunsch, Telefon oder E-Mail. Auch für kleine Arbeiten – unverbindlich. | ja |
+| `/leistungen/` | Leistungen: Trockenbau, Reparaturen, Hausmeister \| Gashini | Was wir übernehmen – und was nicht. | Trockenbau und Innenausbau, Reparatur und Instandhaltung sowie Hausmeisterservice in {{REGION}} – und was wir bewusst nicht selbst ausführen. | ja |
+| `/netzwerk/` | Netzwerk & Zusammenarbeit mit Fachbetrieben \| Gashini | Ein Ansprechpartner. Viele Gewerke im Blick. | Ein Ansprechpartner für Ihr Vorhaben: Was Gashini selbst ausführt, wann Fachbetriebe dazukommen und wer in welchem Fall Ihr Vertragspartner ist. | ja |
+| `/projekte/` | Projekte aus Trockenbau und Objektbetreuung \| Gashini | Unsere Arbeiten | Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Reparatur, Hausmeisterservice und koordinierte Gewerke. | ja |
+| `/leistungen/reparatur-und-instandhaltung/` | Reparaturen & Instandhaltung in {{REGION}} \| Gashini | Reparatur und Instandhaltung | Tür schleift, Loch in der Wand, Silikonfuge, Montage: kleinere Reparaturen und Ausbesserungen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzeln. | ja |
+| `/` | Trockenbau, Reparaturen & Hausmeisterservice in {{ORT}} \| Gashini | Kleine Arbeiten. Großes Netzwerk. Ein Ansprechpartner. | Trockenbau, Reparaturen und Hausmeisterservice rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Fachbetrieben abgestimmt. | ja |
+| `/leistungen/trockenbau/` | Trockenbau & Innenausbau in {{ORT}} \| Gashini | Trockenbau und Innenausbau in {{ORT}} | Nichttragende Trennwände, Vorsatzschalen, abgehängte Decken und Reparaturen im Bestand in {{REGION}}. Auch einzelne Räume und kleine Arbeiten. | ja |
+| `/ueber-uns/` | Über uns – inhabergeführt in {{ORT}} \| Gashini | Ein Betrieb. Ein Ansprechpartner. | Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer wir sind, wie wir arbeiten und woran Sie uns messen können. | ja |
 
 Projektdetailseiten erhalten automatisch Titel `Projektname – Leistung | Gashini Dienstleistungen` und die
 Kurzbeschreibung als Meta-Description.
@@ -72,7 +73,7 @@ H1 auszeichnen. Keine versteckten Texte.
 | robots.txt | Produktion: alles erlaubt außer `/api/`; Vorschau: alles gesperrt + `noindex` je Seite |
 | `noindex` | Danke-Seite und 404 |
 | Open Graph | Titel, Beschreibung, URL, Typ, Sprache je Seite |
-| Strukturierte Daten | `HomeAndConstructionBusiness` (nur aus **bestätigten** Werten erzeugt), `Service` je Leistungsseite, `BreadcrumbList`, `FAQPage` auf der Ablaufseite |
+| Strukturierte Daten | `HomeAndConstructionBusiness` (nur aus **bestätigten** Werten erzeugt), `Service` je Leistungsseite, `BreadcrumbList`, `FAQPage` auf der Seite „Fragen & Ablauf“ (`/fragen/`, alle Fragen) und auf `/netzwerk/` |
 | Interne Verlinkung | Leistungsliste, Brotkrumen, Fußbereich, Kontextlinks mit sprechendem Ankertext |
 | Bilder | feste Maße, Alt-Text Pflicht (Testsuite prüft), `srcset` sobald Varianten vorliegen |
 | Weiterleitungen | alte Vorschau-URLs gezielt per 301 (siehe `docs/DEPLOYMENT.md`) |

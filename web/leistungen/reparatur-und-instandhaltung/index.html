@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reparaturen &amp; Instandhaltung in {{REGION}} | Gashini</title>
-<meta name="description" content="Kleinere Reparaturen, Ausbesserungen und Montagen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzelne Arbeiten.">
+<meta name="description" content="Tür schleift, Loch in der Wand, Silikonfuge, Montage: kleinere Reparaturen und Ausbesserungen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzeln.">
 <link rel="canonical" href="https://{{DOMAIN}}/leistungen/reparatur-und-instandhaltung/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:site_name" content="Gashini Dienstleistungen">
 <meta property="og:title" content="Reparaturen &amp; Instandhaltung in {{REGION}} | Gashini">
-<meta property="og:description" content="Kleinere Reparaturen, Ausbesserungen und Montagen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzelne Arbeiten.">
+<meta property="og:description" content="Tür schleift, Loch in der Wand, Silikonfuge, Montage: kleinere Reparaturen und Ausbesserungen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzeln.">
 <meta property="og:url" content="https://{{DOMAIN}}/leistungen/reparatur-und-instandhaltung/">
 <meta name="theme-color" content="#FAFAF8">
 <link rel="icon" href="../../assets/marke/favicon.svg" type="image/svg+xml">
@@ -19,6 +19,11 @@
 <link rel="stylesheet" href="../../assets/css/site.css">
 <script src="../../assets/js/frueh.js"></script>
 <script src="../../assets/js/site.js" defer></script>
+<script src="../../assets/js/vendor/gsap.min.js" defer></script>
+<script src="../../assets/js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/vendor/SplitText.min.js" defer></script>
+<script src="../../assets/js/vendor/DrawSVGPlugin.min.js" defer></script>
+<script src="../../assets/js/bewegung.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Start", "item": "https://{{DOMAIN}}/"}, {"@type": "ListItem", "position": 2, "name": "Leistungen", "item": "https://{{DOMAIN}}/leistungen/"}, {"@type": "ListItem", "position": 3, "name": "Reparatur & Instandhaltung"}]}</script>
 </head>
 <body>
@@ -28,63 +33,96 @@
     <a class="marke" href="../../" aria-label="Gashini Dienstleistungen – Startseite"><img src="../../assets/marke/logo.svg" width="254" height="80" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
-      <ul><li><a href="../../leistungen/" aria-current="page">Leistungen</a></li><li><a href="../../projekte/">Projekte</a></li><li><a href="../../ueber-uns/">Über uns</a></li><li><a href="../../kontakt/">Kontakt</a></li></ul>
+      <ul><li><a href="../../leistungen/" aria-current="page">Leistungen</a></li><li><a href="../../projekte/">Projekte</a></li><li><a href="../../netzwerk/">Netzwerk</a></li><li><a href="../../ueber-uns/">Über uns</a></li><li><a href="../../kontakt/">Kontakt</a></li></ul>
       <div class="hauptnav-fuss">
-        <a class="knopf knopf--primaer" href="../../kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--primaer" href="../../kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
       </div>
     </nav>
     <div class="kopf-aktion">
       <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
-      <a class="knopf knopf--primaer" href="../../kontakt/">Projekt anfragen</a>
+      <a class="knopf knopf--primaer" href="../../kontakt/#anfrage">Anfrage stellen</a>
     </div>
   </div>
 </header>
 <main id="inhalt" tabindex="-1">
-<header class="seitenkopf">
-  <div class="rahmen">
-    <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../../">Start</a></li><li><a href="../../leistungen/">Leistungen</a></li><li aria-current="page">Reparatur &amp; Instandhaltung</li></ol></nav>
-    <p class="label">Leistung</p>
-    <h1>Reparatur und Instandhaltung</h1>
-    <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten.</p>
+<header class="seitenkopf seitenkopf--bild">
+  <div class="rahmen seitenkopf-raster">
+    <div class="seitenkopf-text">
+      <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../../">Start</a></li><li><a href="../../leistungen/">Leistungen</a></li><li aria-current="page">Reparatur &amp; Instandhaltung</li></ol></nav>
+      <p class="label">Leistung 02</p>
+      <h1 data-zeilen>Reparatur und Instandhaltung</h1>
+      <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten. Ein Foto und zwei Sätze reichen für den Anfang.</p>
+      <div class="knopf-reihe">
+        <a class="knopf knopf--primaer" href="../../kontakt/?leistung=reparatur#anfrage">Foto und Beschreibung senden <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="#faelle-titel">Beispiele ansehen</a>
+      </div>
+    </div>
+    <figure class="seitenkopf-bild">
+      <div class="flaeche flaeche--zeichnung" data-enthuellen><svg class="zg zg--flicken-einzeln" viewBox="0 0 300 340" role="img" aria-labelledby="fe-t fe-d" xmlns="http://www.w3.org/2000/svg"><title id="fe-t">Ausbesserung einer Wandfläche</title><desc id="fe-d">Ein neues Plattenstück ist eingesetzt und verschraubt; das Spachtelband deckt die Ränder; daneben der Spachtel.</desc><defs><pattern id="fe-wolle" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0,0 v8" class="zg-schraffur"/></pattern><pattern id="fe-mauer" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 v7" class="zg-schraffur zg-schraffur--dicht"/></pattern></defs><rect class="zg-fertig" x="20" y="20" width="260" height="300"/><path class="zg-duenn" d="M20,286 H280 M20,300 H280"/><rect class="zg-spachtelband" x="70" y="88" width="150" height="122"/><rect class="zg-platte" data-linie x="96" y="110" width="98" height="78"/><circle class="zg-schraube" cx="106" cy="120" r="1.6"/><circle class="zg-schraube" cx="184" cy="120" r="1.6"/><circle class="zg-schraube" cx="106" cy="178" r="1.6"/><circle class="zg-schraube" cx="184" cy="178" r="1.6"/><path class="zg-unsichtbar" d="M74,124 H216 M74,174 H216"/><path class="zg-akzent" data-linie d="M168,236 L232,190 L246,204 L186,254 Z M196,246 L174,268 M178,272 L170,264"/><path class="zg-mass" d="M96,226 H194 M96,222 v8 M194,222 v8"/><text class="zg-text" x="145" y="244" text-anchor="middle">Flicken</text></svg></div>
+      <figcaption>Ausbesserung einer Wandfläche – schematische Darstellung.</figcaption>
+    </figure>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="faelle-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Aus dem Alltag</p>
+        <h2 id="faelle-titel" data-zeilen>Kommt Ihnen das bekannt vor?</h2>
+        <p class="einleitung">Wählen Sie Ihren Fall – das Formular ist dann schon vorausgefüllt. Ist Ihr Anliegen nicht dabei, beschreiben Sie es einfach.</p>
+      </div>
+    </div>
+    <ul class="faelle"><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M12,42 V8 H34 V42"/><path class="ik-akzent" d="M14,10 L28,14 V44 L14,40 Z"/><circle cx="24" cy="28" r="1.4"/><path d="M36,30 a8,8 0 0 1 0,10"/></svg><h3>Tür schleift oder schließt nicht</h3><p>Bänder nachstellen, Schließblech anpassen, Zarge prüfen.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=T%C3%BCr+schleift#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Tür schleift oder schließt nicht anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="8" width="36" height="32"/><path class="ik-akzent" d="M20,14 l4,6 l-3,5 l5,6 l-2,5"/><path d="M30,26 h8 v8 h-8 z"/></svg><h3>Loch oder Riss in der Wand</h3><p>Dübellöcher, Stoßstellen, Risse – ausbessern, bis man nichts mehr sieht.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Loch+oder+Riss+in+der+Wand#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Loch oder Riss in der Wand anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M8,8 h32 v32 h-32 z M24,8 v32"/><path class="ik-akzent" d="M14,22 q4,-5 8,0 q-4,5 -8,0 z"/><circle cx="10" cy="14" r="1"/><circle cx="10" cy="34" r="1"/><circle cx="38" cy="14" r="1"/><circle cx="38" cy="34" r="1"/></svg><h3>Delle in der Trockenbauwand</h3><p>Beschädigtes Stück ausschneiden, neu einsetzen, spachteln.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Trockenbauwand+besch%C3%A4digt#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Delle in der Trockenbauwand anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M8,40 h32 M8,8 v32 M16,40 v-6 M24,40 v-6 M32,40 v-6 M8,32 h6 M8,24 h6 M8,16 h6"/><path class="ik-akzent" d="M12,38 l24,-24"/><path d="M30,10 l8,-4 l4,4 l-4,8 z"/></svg><h3>Silikonfuge erneuern</h3><p>Alte Fuge in Bad oder Küche entfernen und neu ziehen.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Silikonfuge+erneuern#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Silikonfuge erneuern anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M6,18 h36 M6,22 h36"/><path d="M12,22 v8 l6,-8 M36,22 v8 l-6,-8"/><path class="ik-akzent" d="M14,18 v-8 h6 v8 M26,18 v-12 h8 v12"/><circle cx="12" cy="34" r="1.2"/><circle cx="36" cy="34" r="1.2"/></svg><h3>Regal, Spiegel oder Garderobe</h3><p>Fachgerecht befestigen – passend zum Untergrund.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Montage+an+der+Wand#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Regal, Spiegel oder Garderobe anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M10,12 h28 v28 h-28 z M10,26 h28 M22,19 h4 M22,33 h4"/><path class="ik-akzent" d="M34,6 l8,0 l0,3 l-5,0 l-6,6"/></svg><h3>Möbel aufbauen</h3><p>Schränke und Regale aufbauen, ausrichten, sichern.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=M%C3%B6bel+aufbauen#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Möbel aufbauen anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M8,8 v32 h32"/><path d="M8,34 h32"/><path class="ik-akzent" d="M8,38 h22 l4,-4"/><path d="M20,30 l2,-4 l2,4"/></svg><h3>Sockelleiste lose oder fehlt</h3><p>Befestigen, ersetzen, Übergänge sauber schließen.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Sockelleiste#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Sockelleiste lose oder fehlt anfragen</span></a></li><li class="fall" data-zeigen><svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M8,40 h32 v-32 h-32 z"/><path class="ik-akzent" d="M24,14 c-5,7 -7,10 -7,14 a7,7 0 0 0 14,0 c0,-4 -2,-7 -7,-14 z"/></svg><h3>Wand nach Wasserschaden</h3><p>Wenn die Ursache behoben ist: trocknen lassen, ausbessern, schließen.</p><a href="../../kontakt/?leistung=reparatur&amp;anliegen=Wand+nach+Wasserschaden#anfrage">Das ist mein Fall <span class="pfeil" aria-hidden="true">→</span><span class="nur-screenreader">: Wand nach Wasserschaden anfragen</span></a></li></ul>
+    <details class="redaktion"><summary>Offener Punkt</summary><p>[FREIGABE ERFORDERLICH: Alltagsfälle bestätigen. Arbeiten, die einem zulassungspflichtigen Handwerk zuzuordnen sind, nur nach Klärung mit der Handwerkskammer aufnehmen.]</p></details>
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="einfach-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">So einfach geht es</p>
+        <h2 id="einfach-titel" data-zeilen>Drei Schritte bis zur Antwort</h2>
+      </div>
+    </div>
+    <ol class="kurzablauf">
+      <li data-zeigen><h3>Foto machen</h3><p>Ein Bild der Stelle aus etwa zwei Metern, eines aus der Nähe. Mehr braucht es meist nicht.</p></li>
+      <li data-zeigen><h3>Kurz beschreiben</h3><p>Was ist passiert, wo ist es, wie dringend? Stichworte reichen – auch Ihre Postleitzahl hilft.</p></li>
+      <li data-zeigen><h3>Rückruf oder Termin</h3><p>Wir melden uns mit einer Einschätzung. Auf Wunsch rufen wir Sie zu einer passenden Zeit zurück.</p></li>
+    </ol>
+    <div class="knopf-reihe" data-zeigen><a class="knopf knopf--primaer" href="../../kontakt/?leistung=reparatur#anfrage">Jetzt Foto senden <span class="pfeil" aria-hidden="true">→</span></a><a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Lieber anrufen</a></div>
+  </div>
+</section>
+
+<section class="abschnitt" aria-labelledby="ausbesserung-titel">
   <div class="rahmen raster">
     <div class="sp-kopf">
-      <p class="label">Typische Arbeiten</p>
-      <h2>Was wir erledigen</h2>
+      <p class="label">Im Detail</p>
+      <h2 id="ausbesserung-titel">Was bei einer Ausbesserung passiert</h2>
+      <p class="gedaempft">Damit man hinterher nichts mehr sieht, wird nicht einfach zugespachtelt: Die Stelle wird sauber vorbereitet, hinterlegt, geschlossen und geschliffen.</p>
     </div>
-    <div class="sp-inhalt">
-      <ul class="aufzaehlung aufzaehlung--zweispaltig">
-        <li>Ausbessern von Wand- und Deckenschäden</li>
-        <li>Reparatur von Trockenbauflächen</li>
-        <li>Einstellen und Instandsetzen von Türen</li>
-        <li>Montage von Möbeln, Regalen und Ausstattung</li>
-        <li>Kleinere Arbeiten nach einem Wasserschaden, sobald die Ursache behoben ist</li>
-        <li>Erneuern von Silikonfugen</li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Liste bestätigen. Arbeiten, die einem zulassungspflichtigen Handwerk zuzuordnen sind, nur nach Klärung mit der Handwerkskammer aufnehmen.]</p>
+    <div class="sp-inhalt"><figure class="tafel "><div class="tafel-flaeche"><svg class="zg zg--flicken" viewBox="0 0 730 190" role="img" aria-labelledby="fl-t fl-d" xmlns="http://www.w3.org/2000/svg"><title id="fl-t">Ausbesserung einer Wandfläche in vier Schritten</title><desc id="fl-d">1 beschädigte Stelle, 2 sauber ausgeschnitten und hinterlegt, 3 neues Plattenstück eingesetzt, verschraubt und gespachtelt, 4 geschliffen und bereit für den Anstrich.</desc><defs><pattern id="fl-wolle" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0,0 v8" class="zg-schraffur"/></pattern><pattern id="fl-mauer" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 v7" class="zg-schraffur zg-schraffur--dicht"/></pattern></defs><g class="fl-feld" data-feld="1"><rect class="zg-fertig" x="10" y="20" width="160" height="150"/><path class="zg-schaden" data-linie d="M64,86 l14,-10 l9,7 l13,-4 l6,12 l-5,13 l9,9 l-15,6 l-6,-9 l-12,8 l-8,-12 l-11,-3 l6,-11 z"/><path class="zg-duenn" d="M70,80 l-14,-16 M106,82 l18,-12" /><g class="zg-marke"><circle cx="28" cy="38" r="11"/><text x="28" y="42.2" text-anchor="middle">1</text></g></g><path class="zg-pfeil" d="M174,95 h10 m-4,-4 l4,4 l-4,4"/><g class="fl-feld" data-feld="2"><rect class="zg-fertig" x="190" y="20" width="160" height="150"/><rect class="zg-loch" x="238" y="67" width="64" height="50"/><path class="zg-unsichtbar" data-linie d="M226,74 h88 M226,110 h88"/><path class="zg-akzent" data-linie d="M238,67 h64 v50 h-64 z"/><g class="zg-marke"><circle cx="208" cy="38" r="11"/><text x="208" y="42.2" text-anchor="middle">2</text></g></g><path class="zg-pfeil" d="M354,95 h10 m-4,-4 l4,4 l-4,4"/><g class="fl-feld" data-feld="3"><rect class="zg-fertig" x="370" y="20" width="160" height="150"/><rect class="zg-spachtelband" x="408" y="57" width="84" height="70"/><rect class="zg-platte" x="419" y="68" width="62" height="48"/><circle class="zg-schraube" cx="426" cy="75" r="1.4"/><circle class="zg-schraube" cx="474" cy="75" r="1.4"/><circle class="zg-schraube" cx="426" cy="109" r="1.4"/><circle class="zg-schraube" cx="474" cy="109" r="1.4"/><path class="zg-akzent" data-linie d="M474,132 l34,-22 l9,8 l-30,26 z M480,144 l-12,10"/><g class="zg-marke"><circle cx="388" cy="38" r="11"/><text x="388" y="42.2" text-anchor="middle">3</text></g></g><path class="zg-pfeil" d="M534,95 h10 m-4,-4 l4,4 l-4,4"/><g class="fl-feld" data-feld="4"><rect class="zg-fertig" x="550" y="20" width="160" height="150"/><rect class="zg-spachtelband zg-spachtelband--glatt" x="588" y="57" width="84" height="70"/><path class="zg-duenn" d="M600,92 c10,-6 20,6 30,0 s20,6 30,0" /><rect class="zg-akzent" data-linie x="632" y="130" width="44" height="20" rx="2"/><g class="zg-marke"><circle cx="568" cy="38" r="11"/><text x="568" y="42.2" text-anchor="middle">4</text></g></g></svg></div><ol class="legende"><li>Beschädigte Stelle</li><li>Sauber ausschneiden und hinterlegen</li><li>Plattenstück einsetzen, verschrauben, spachteln</li><li>Schleifen – fertig für den Anstrich</li></ol><figcaption>Ausbesserung einer Wandfläche, schematisch.</figcaption></figure></div>
+  </div>
+</section>
+
+<section class="ruhe abschnitt--linie" aria-labelledby="lohnt-titel">
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      <h2 id="lohnt-titel" class="leitsatz">Lohnt sich eine Anfrage für so etwas Kleines? <em>Ja. Und wenn es nicht zu uns passt, sagen wir es Ihnen direkt.</em></h2>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="grenze-titel">
   <div class="rahmen raster">
-    <div class="sp-halb-l">
-      <p class="label">Vorbereitung</p>
-      <h2>Was wir für eine Anfrage brauchen</h2>
-      <ol class="kasten-liste">
-        <li>Was ist beschädigt oder soll gemacht werden?</li>
-        <li>Ein bis zwei Fotos</li>
-        <li>Wo befindet sich das Objekt?</li>
-        <li>Wie dringend ist es?</li>
-      </ol>
+    <div class="sp-kopf">
+      <p class="label">Abgrenzung</p>
+      <h2 id="grenze-titel">Was ein Fachbetrieb übernimmt</h2>
     </div>
-    <div class="sp-halb-r">
+    <div class="sp-inhalt">
       <div class="abgrenzung">
-        <h3>Nicht unser Teil</h3>
         <ul>
           <li>Notdienst rund um die Uhr</li>
           <li>Elektro-, Gas- und Wasserinstallation</li>
@@ -95,14 +133,14 @@
   </div>
 </section>
 
-<section class="abschnitt abschnitt--linie">
+<section class="abschnitt" aria-labelledby="fragen-titel">
   <div class="rahmen raster">
-    <div class="sp-kopf"><p class="label">Fragen</p><h2>Häufig gefragt</h2></div>
-    <div class="sp-inhalt"><div class="fragen"><details id="kleine-arbeiten"><summary>Lohnt sich eine Anfrage auch für eine kleine Arbeit?</summary><div class="antwort"><p>Ja. Ein Großteil unserer Aufträge sind überschaubare Arbeiten: eine Wand ergänzen, eine Decke ausbessern, einen Raum für neue Mieter herrichten. Schreiben Sie uns, was ansteht – wenn es nicht zu uns passt, sagen wir Ihnen das direkt.</p></div></details><details id="steuer"><summary>Kann ich die Kosten steuerlich geltend machen?</summary><div class="antwort"><p>Für Handwerkerleistungen im eigenen Haushalt können Privatpersonen nach § 35a Einkommensteuergesetz 20 Prozent der Arbeitskosten, höchstens 1.200 Euro im Jahr, direkt von der Steuer abziehen. Voraussetzung sind eine Rechnung und eine Zahlung per Überweisung. Den Lohnanteil weisen wir auf der Rechnung gesondert aus. Ob die Voraussetzungen in Ihrem Fall vorliegen, klären Sie bitte mit Ihrer Steuerberatung.</p></div></details><details id="elektro-sanitaer"><summary>Übernehmen Sie auch Elektro-, Gas- oder Wasserinstallationen?</summary><div class="antwort"><p>Nein, nicht selbst. Arbeiten an Elektro-, Gas- und Wasserinstallationen sind eingetragenen Fachbetrieben vorbehalten. Wenn solche Arbeiten anfallen, stellen wir den Kontakt zu einem Partnerbetrieb her oder stimmen die Arbeiten mit ihm ab.</p></div></details></div></div>
+    <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
+    <div class="sp-inhalt"><div class="fragen"><details id="kleine-arbeiten"><summary>Lohnt sich eine Anfrage auch für eine kleine Arbeit?</summary><div class="antwort"><p>Ja. Ein Großteil unserer Aufträge sind überschaubare Arbeiten: eine Wand ergänzen, eine Decke ausbessern, einen Raum für neue Mieter herrichten. Schreiben Sie uns, was ansteht – wenn es nicht zu uns passt, sagen wir Ihnen das direkt.</p></div></details><details id="steuer"><summary>Kann ich die Kosten steuerlich geltend machen?</summary><div class="antwort"><p>Für Handwerkerleistungen im eigenen Haushalt können Privatpersonen nach § 35a Einkommensteuergesetz 20 Prozent der Arbeitskosten, höchstens 1.200 Euro im Jahr, direkt von der Steuer abziehen. Voraussetzung sind eine Rechnung und eine Zahlung per Überweisung. Den Lohnanteil weisen wir auf der Rechnung gesondert aus. Ob die Voraussetzungen in Ihrem Fall vorliegen, klären Sie bitte mit Ihrer Steuerberatung.</p></div></details><details id="elektro-sanitaer"><summary>Übernehmen Sie auch Elektro-, Gas- oder Wasserinstallationen?</summary><div class="antwort"><p>Nein, nicht selbst. Arbeiten an Elektro-, Gas- und Wasserinstallationen sind eingetragenen Fachbetrieben vorbehalten. Wenn solche Arbeiten anfallen, stellen wir den Kontakt zu einem Partnerbetrieb her oder stimmen die Arbeiten mit ihm ab.</p></div></details><details id="fotos"><summary>Was passiert mit den Fotos, die ich hochlade?</summary><div class="antwort"><p>Die Fotos werden zusammen mit Ihrer Anfrage per E-Mail an uns übermittelt und nur für die Einschätzung Ihres Vorhabens verwendet – nicht veröffentlicht und nicht weitergegeben. Bitte fotografieren Sie keine Personen. Details stehen in der <a href="../../datenschutz/#anfragen">Datenschutzerklärung</a>.</p></div></details></div></div>
   </div>
 </section>
 
-<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel">Was steht bei Ihnen an?</h2><p class="einleitung">Erzählen Sie uns von Ihrem Vorhaben – auch wenn es nur eine kleine Arbeit ist.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../../kontakt/">Unverbindlich anfragen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
+<section class="abschluss abschluss--dunkel" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Reparatur</p><h2 id="abschluss-titel" data-zeilen>Schicken Sie uns ein Foto.</h2><p class="einleitung">Ein Bild und zwei Sätze genügen für eine erste Einschätzung. Wenn Sie möchten, rufen wir Sie zurück.</p><div class="knopf-reihe"><a class="knopf knopf--hell" href="../../kontakt/?leistung=reparatur#anfrage">Foto und Beschreibung senden <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Reparatur und Instandhaltung","provider":{"@id":"https://{{DOMAIN}}/#firma"},"url":"https://{{DOMAIN}}/leistungen/reparatur-und-instandhaltung/"}</script>
 </main>
@@ -117,9 +155,9 @@
         <h2>Leistungen</h2>
         <ul>
           <li><a href="../../leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
-          <li><a href="../../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
           <li><a href="../../leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
-          <li><a href="../../ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
+          <li><a href="../../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="../../netzwerk/">Netzwerk &amp; Zusammenarbeit</a></li>
         </ul>
       </div>
       <div>
@@ -127,7 +165,7 @@
         <ul>
           <li><a href="../../projekte/">Projekte</a></li>
           <li><a href="../../ueber-uns/">Über uns</a></li>
-          <li><a href="../../ablauf/">Ablauf &amp; Fragen</a></li>
+          <li><a href="../../fragen/">Fragen &amp; Ablauf</a></li>
           <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
           <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
@@ -149,7 +187,7 @@
 </footer>
 <nav class="kontaktleiste" aria-label="Schnellkontakt">
   <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a class="knopf knopf--primaer" href="../../kontakt/">Anfragen</a>
+  <a class="knopf knopf--primaer" href="../../kontakt/#anfrage">Anfragen</a>
 </nav>
 </body>
 </html>

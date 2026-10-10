@@ -1,55 +1,88 @@
 <!--
 titel: Reparaturen & Instandhaltung in {{REGION}} | Gashini
-beschreibung: Kleinere Reparaturen, Ausbesserungen und Montagen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzelne Arbeiten.
+beschreibung: Tür schleift, Loch in der Wand, Silikonfuge, Montage: kleinere Reparaturen und Ausbesserungen rund um Wohnung, Haus und Gewerbeobjekt in {{REGION}} – auch einzeln.
 pfad: leistungen/reparatur-und-instandhaltung/
 nav: leistungen/
 prioritaet: 0.8
 brotkrumen: Leistungen=leistungen/ | Reparatur & Instandhaltung
 -->
-<header class="seitenkopf">
-  <div class="rahmen">
-    [[brotkrumen]]
-    <p class="label">Leistung</p>
-    <h1>Reparatur und Instandhaltung</h1>
-    <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten.</p>
+<header class="seitenkopf seitenkopf--bild">
+  <div class="rahmen seitenkopf-raster">
+    <div class="seitenkopf-text">
+      [[brotkrumen]]
+      <p class="label">Leistung 02</p>
+      <h1 data-zeilen>Reparatur und Instandhaltung</h1>
+      <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten. Ein Foto und zwei Sätze reichen für den Anfang.</p>
+      <div class="knopf-reihe">
+        <a class="knopf knopf--primaer" href="[[kontakt-link leistung="reparatur"]]">Foto und Beschreibung senden <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="#faelle-titel">Beispiele ansehen</a>
+      </div>
+    </div>
+    <figure class="seitenkopf-bild">
+      <div class="flaeche flaeche--zeichnung" data-enthuellen>[[zeichnung art="flicken-einzeln"]]</div>
+      <figcaption>Ausbesserung einer Wandfläche – schematische Darstellung.</figcaption>
+    </figure>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="faelle-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Aus dem Alltag</p>
+        <h2 id="faelle-titel" data-zeilen>Kommt Ihnen das bekannt vor?</h2>
+        <p class="einleitung">Wählen Sie Ihren Fall – das Formular ist dann schon vorausgefüllt. Ist Ihr Anliegen nicht dabei, beschreiben Sie es einfach.</p>
+      </div>
+    </div>
+    [[faelle]]
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Alltagsfälle bestätigen. Arbeiten, die einem zulassungspflichtigen Handwerk zuzuordnen sind, nur nach Klärung mit der Handwerkskammer aufnehmen.]</p>
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="einfach-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">So einfach geht es</p>
+        <h2 id="einfach-titel" data-zeilen>Drei Schritte bis zur Antwort</h2>
+      </div>
+    </div>
+    <ol class="kurzablauf">
+      <li data-zeigen><h3>Foto machen</h3><p>Ein Bild der Stelle aus etwa zwei Metern, eines aus der Nähe. Mehr braucht es meist nicht.</p></li>
+      <li data-zeigen><h3>Kurz beschreiben</h3><p>Was ist passiert, wo ist es, wie dringend? Stichworte reichen – auch Ihre Postleitzahl hilft.</p></li>
+      <li data-zeigen><h3>Rückruf oder Termin</h3><p>Wir melden uns mit einer Einschätzung. Auf Wunsch rufen wir Sie zu einer passenden Zeit zurück.</p></li>
+    </ol>
+    <div class="knopf-reihe" data-zeigen><a class="knopf knopf--primaer" href="[[kontakt-link leistung="reparatur"]]">Jetzt Foto senden <span class="pfeil" aria-hidden="true">→</span></a><a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Lieber anrufen</a></div>
+  </div>
+</section>
+
+<section class="abschnitt" aria-labelledby="ausbesserung-titel">
   <div class="rahmen raster">
     <div class="sp-kopf">
-      <p class="label">Typische Arbeiten</p>
-      <h2>Was wir erledigen</h2>
+      <p class="label">Im Detail</p>
+      <h2 id="ausbesserung-titel">Was bei einer Ausbesserung passiert</h2>
+      <p class="gedaempft">Damit man hinterher nichts mehr sieht, wird nicht einfach zugespachtelt: Die Stelle wird sauber vorbereitet, hinterlegt, geschlossen und geschliffen.</p>
     </div>
-    <div class="sp-inhalt">
-      <ul class="aufzaehlung aufzaehlung--zweispaltig">
-        <li>Ausbessern von Wand- und Deckenschäden</li>
-        <li>Reparatur von Trockenbauflächen</li>
-        <li>Einstellen und Instandsetzen von Türen</li>
-        <li>Montage von Möbeln, Regalen und Ausstattung</li>
-        <li>Kleinere Arbeiten nach einem Wasserschaden, sobald die Ursache behoben ist</li>
-        <li>Erneuern von Silikonfugen</li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Liste bestätigen. Arbeiten, die einem zulassungspflichtigen Handwerk zuzuordnen sind, nur nach Klärung mit der Handwerkskammer aufnehmen.]</p>
+    <div class="sp-inhalt">[[flicken]]</div>
+  </div>
+</section>
+
+<section class="ruhe abschnitt--linie" aria-labelledby="lohnt-titel">
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      <h2 id="lohnt-titel" class="leitsatz">Lohnt sich eine Anfrage für so etwas Kleines? <em>Ja. Und wenn es nicht zu uns passt, sagen wir es Ihnen direkt.</em></h2>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="grenze-titel">
   <div class="rahmen raster">
-    <div class="sp-halb-l">
-      <p class="label">Vorbereitung</p>
-      <h2>Was wir für eine Anfrage brauchen</h2>
-      <ol class="kasten-liste">
-        <li>Was ist beschädigt oder soll gemacht werden?</li>
-        <li>Ein bis zwei Fotos</li>
-        <li>Wo befindet sich das Objekt?</li>
-        <li>Wie dringend ist es?</li>
-      </ol>
+    <div class="sp-kopf">
+      <p class="label">Abgrenzung</p>
+      <h2 id="grenze-titel">Was ein Fachbetrieb übernimmt</h2>
     </div>
-    <div class="sp-halb-r">
+    <div class="sp-inhalt">
       <div class="abgrenzung">
-        <h3>Nicht unser Teil</h3>
         <ul>
           <li>Notdienst rund um die Uhr</li>
           <li>Elektro-, Gas- und Wasserinstallation</li>
@@ -60,13 +93,13 @@ brotkrumen: Leistungen=leistungen/ | Reparatur & Instandhaltung
   </div>
 </section>
 
-<section class="abschnitt abschnitt--linie">
+<section class="abschnitt" aria-labelledby="fragen-titel">
   <div class="rahmen raster">
-    <div class="sp-kopf"><p class="label">Fragen</p><h2>Häufig gefragt</h2></div>
+    <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
     <div class="sp-inhalt">[[faq seite="reparatur"]]</div>
   </div>
 </section>
 
-[[abschluss]]
+[[abschluss titel="Schicken Sie uns ein Foto." text="Ein Bild und zwei Sätze genügen für eine erste Einschätzung. Wenn Sie möchten, rufen wir Sie zurück." knopf="Foto und Beschreibung senden" leistung="reparatur" label="Reparatur" variante="dunkel"]]
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Reparatur und Instandhaltung","provider":{"@id":"https://{{DOMAIN}}/#firma"},"url":"https://{{DOMAIN}}/leistungen/reparatur-und-instandhaltung/"}</script>

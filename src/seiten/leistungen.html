@@ -1,6 +1,6 @@
 <!--
-titel: Leistungen: Trockenbau, Hausmeister, Reparaturen | Gashini
-beschreibung: Trockenbau und Innenausbau, Hausmeisterservice sowie Reparatur und Instandhaltung in {{REGION}} – und was wir bewusst nicht selbst ausführen.
+titel: Leistungen: Trockenbau, Reparaturen, Hausmeister | Gashini
+beschreibung: Trockenbau und Innenausbau, Reparatur und Instandhaltung sowie Hausmeisterservice in {{REGION}} – und was wir bewusst nicht selbst ausführen.
 pfad: leistungen/
 nav: leistungen/
 prioritaet: 0.9
@@ -10,47 +10,64 @@ brotkrumen: Leistungen
   <div class="rahmen">
     [[brotkrumen]]
     <p class="label">Leistungen</p>
-    <h1>Was wir übernehmen – und was nicht</h1>
+    <h1 data-zeilen>Was wir übernehmen – und was nicht.</h1>
     <p class="einleitung">Drei Bereiche führen wir selbst aus. Für alles, was darüber hinausgeht, arbeiten wir mit Fachbetrieben zusammen und sagen Ihnen vorher, wer was macht.</p>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-label="Unsere Bereiche">
+  <div class="rahmen">
+    <article class="leistungszeile" aria-labelledby="lz-trockenbau">
+      <figure class="leistungszeile-bild" data-enthuellen>[[bild datei="visualisierung/wand-daemmung.webp" alt="Visualisierung: Ständerwerk mit Mineralwolle, Rückseite beplankt." groessen="(min-width: 900px) 55vw, 100vw"]]</figure>
+      <div data-zeigen>
+        <span class="nr">01</span>
+        <h2 id="lz-trockenbau">Trockenbau &amp; Innenausbau</h2>
+        <p class="einleitung">Räume neu aufteilen, Wände und Decken verkleiden, Beschädigtes ersetzen – ohne Mauern und lange Trocknungszeiten.</p>
+        <ul><li>Nichttragende Trennwände, auch mit Tür</li><li>Vorsatzschalen und Verkleidungen</li><li>Abgehängte Decken</li><li>Anpassungen im Bestand</li></ul>
+        <a class="textlink" href="@/leistungen/trockenbau/">Trockenbau im Detail <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="leistungszeile" aria-labelledby="lz-reparatur">
+      <figure class="leistungszeile-bild leistungszeile-bild--zeichnung" data-enthuellen>[[zeichnung art="flicken-einzeln"]]</figure>
+      <div data-zeigen>
+        <span class="nr">02</span>
+        <h2 id="lz-reparatur">Reparatur &amp; Instandhaltung</h2>
+        <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten.</p>
+        <ul><li>Wand- und Deckenschäden ausbessern</li><li>Türen einstellen und instand setzen</li><li>Montagen und Möbelaufbau</li><li>Silikonfugen erneuern</li></ul>
+        <a class="textlink" href="@/leistungen/reparatur-und-instandhaltung/">Alltagsbeispiele ansehen <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="leistungszeile" aria-labelledby="lz-hausmeister">
+      <figure class="leistungszeile-bild leistungszeile-bild--zeichnung" data-enthuellen>[[zeichnung art="rundgang"]]</figure>
+      <div data-zeigen>
+        <span class="nr">03</span>
+        <h2 id="lz-hausmeister">Hausmeisterservice</h2>
+        <p class="einleitung">Jemand, der regelmäßig nach dem Objekt sieht, kleine Arbeiten gleich erledigt und sich meldet, bevor aus einem kleinen Schaden ein großer wird.</p>
+        <ul><li>Regelmäßige Objektkontrollen mit Protokoll</li><li>Kleinere Instandhaltung</li><li>Vorbereitung von Mieterwechseln</li><li>Abstimmung mit Fachbetrieben</li></ul>
+        <a class="textlink" href="@/leistungen/hausmeisterservice/">Hausmeisterservice im Detail <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Werden Gebäudereinigung, Entrümpelung und Umzüge weiterhin angeboten? Falls ja, als eigene Bereiche ergänzen; falls nein, bleiben sie hier bewusst weg.]</p>
+  </div>
+</section>
+
+<section class="abschnitt dunkel" aria-labelledby="koordination">
   <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Eigene Leistung</p>
-      <h2>Unsere Bereiche</h2>
-    </div>
-    <div class="sp-inhalt">
-      <ul class="leistungsliste">
-        <li><a href="@/leistungen/trockenbau/"><h3>Trockenbau &amp; Innenausbau</h3><p>Nichttragende Trennwände, Vorsatzschalen, Deckenverkleidungen und Anpassungen im Bestand.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="@/leistungen/hausmeisterservice/"><h3>Hausmeisterservice</h3><p>Regelmäßige Objektbetreuung, kleinere Arbeiten und Vorbereitung von Mieterwechseln.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="@/leistungen/reparatur-und-instandhaltung/"><h3>Reparatur &amp; Instandhaltung</h3><p>Ausbesserungen, Montagen und Arbeiten, die nicht liegen bleiben sollen.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Werden Gebäudereinigung, Entrümpelung und Umzüge weiterhin angeboten? Falls ja, als eigene Bereiche ergänzen; falls nein, bleiben sie hier bewusst weg.]</p>
+    <div class="sp-breit">
+      <p class="label label--hell">Mit Partnern</p>
+      <h2 id="koordination" data-zeilen>Koordination weiterer Gewerke</h2>
+      <p class="einleitung">Manche Vorhaben brauchen mehr als ein Gewerk – etwa wenn in eine neue Trennwand Leitungen sollen. Dann stimmen wir die Arbeiten mit einem Fachbetrieb ab. Wer Ihr Vertragspartner ist, steht vor Beginn im Angebot.</p>
+      <p><a class="textlink" href="@/netzwerk/">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Mit Partnern</p>
-      <h2 id="koordination">Koordination weiterer Gewerke</h2>
-    </div>
-    <div class="sp-inhalt">
-      <p class="einleitung">Manche Vorhaben brauchen mehr als ein Gewerk – etwa wenn in eine neue Trennwand Leitungen sollen. Dann stimmen wir die Arbeiten mit einem Fachbetrieb aus unserem Netzwerk ab.</p>
-      <p class="gedaempft">Wichtig dabei: Wir führen nur aus, was in unseren Leistungsumfang fällt. Arbeiten, die Fachbetrieben vorbehalten sind, erledigt der Fachbetrieb. Wer Ihr Vertragspartner ist, steht vor Beginn im Angebot.</p>
-      <p><a class="textlink" href="@/ueber-uns/#netzwerk">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
-    </div>
-  </div>
-</section>
-
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="abgrenzung-titel">
   <div class="rahmen raster">
     <div class="sp-kopf">
       <p class="label">Abgrenzung</p>
-      <h2>Was wir nicht selbst ausführen</h2>
+      <h2 id="abgrenzung-titel">Was wir nicht selbst ausführen</h2>
+      <p class="gedaempft">Klarheit von Anfang an: Was einem Fachbetrieb vorbehalten ist, erledigt ein Fachbetrieb.</p>
     </div>
     <div class="sp-inhalt">
       <div class="abgrenzung">
@@ -66,4 +83,4 @@ brotkrumen: Leistungen
   </div>
 </section>
 
-[[abschluss]]
+[[abschluss titel="Welche Leistung brauchen Sie?" text="Wählen Sie den passenden Bereich – oder beschreiben Sie einfach, was ansteht. Die Zuordnung übernehmen wir." knopf="Vorhaben beschreiben" schnellwahl="ja" label="Anfrage"]]

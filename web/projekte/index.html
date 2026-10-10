@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Projekte aus Trockenbau und Objektbetreuung | Gashini</title>
-<meta name="description" content="Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Hausmeisterservice, Reparatur und koordinierte Gewerke.">
+<meta name="description" content="Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Reparatur, Hausmeisterservice und koordinierte Gewerke.">
 <link rel="canonical" href="https://{{DOMAIN}}/projekte/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:site_name" content="Gashini Dienstleistungen">
 <meta property="og:title" content="Projekte aus Trockenbau und Objektbetreuung | Gashini">
-<meta property="og:description" content="Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Hausmeisterservice, Reparatur und koordinierte Gewerke.">
+<meta property="og:description" content="Ausgewählte, freigegebene Arbeiten von Gashini Dienstleistungen: Trockenbau, Reparatur, Hausmeisterservice und koordinierte Gewerke.">
 <meta property="og:url" content="https://{{DOMAIN}}/projekte/">
 <meta name="theme-color" content="#FAFAF8">
 <link rel="icon" href="../assets/marke/favicon.svg" type="image/svg+xml">
@@ -19,6 +19,12 @@
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/frueh.js"></script>
 <script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/vendor/gsap.min.js" defer></script>
+<script src="../assets/js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../assets/js/vendor/SplitText.min.js" defer></script>
+<script src="../assets/js/vendor/DrawSVGPlugin.min.js" defer></script>
+<script src="../assets/js/vendor/Flip.min.js" defer></script>
+<script src="../assets/js/bewegung.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Start", "item": "https://{{DOMAIN}}/"}, {"@type": "ListItem", "position": 2, "name": "Projekte"}]}</script>
 </head>
 <body>
@@ -28,15 +34,15 @@
     <a class="marke" href="../" aria-label="Gashini Dienstleistungen – Startseite"><img src="../assets/marke/logo.svg" width="254" height="80" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
-      <ul><li><a href="../leistungen/">Leistungen</a></li><li><a href="../projekte/" aria-current="page">Projekte</a></li><li><a href="../ueber-uns/">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
+      <ul><li><a href="../leistungen/">Leistungen</a></li><li><a href="../projekte/" aria-current="page">Projekte</a></li><li><a href="../netzwerk/">Netzwerk</a></li><li><a href="../ueber-uns/">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
       <div class="hauptnav-fuss">
-        <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
       </div>
     </nav>
     <div class="kopf-aktion">
       <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
-      <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen</a>
+      <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen</a>
     </div>
   </div>
 </header>
@@ -45,18 +51,35 @@
   <div class="rahmen">
     <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../">Start</a></li><li aria-current="page">Projekte</li></ol></nav>
     <p class="label">Projekte</p>
-    <h1>Unsere Arbeiten</h1>
+    <h1 data-zeilen>Unsere Arbeiten</h1>
     <p class="einleitung">Jedes Projekt hier haben wir selbst fotografiert, und die Auftraggeber haben der Veröffentlichung zugestimmt. Private Angaben zeigen wir nicht – den Ort nur so genau, wie freigegeben.</p>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-label="Projektübersicht">
   <div class="rahmen">
-    <div class="leerzustand"><div><p class="label">Projektgalerie</p><h2>Die ersten Projekte werden gerade dokumentiert.</h2></div><div><p>Wir zeigen hier ausschließlich Arbeiten, die wir selbst fotografiert haben und deren Veröffentlichung die Auftraggeber freigegeben haben. Bis dahin erzählen wir Ihnen gern am Telefon, woran wir zuletzt gearbeitet haben.</p><p class="leerzustand-aktion"><a class="textlink" href="../kontakt/">Vorhaben besprechen <span class="pfeil" aria-hidden="true">→</span></a></p></div></div>
+    <div class="leerzustand" data-zeigen><div><p class="label">Projektberichte</p><h2>Die ersten Projektberichte entstehen gerade.</h2><p>Wir zeigen hier nur Arbeiten, die wir selbst fotografiert haben und deren Veröffentlichung die Auftraggeber freigegeben haben – ohne Adressen, ohne private Details. Bis die ersten Berichte stehen, erzählen wir Ihnen gern am Telefon, woran wir zuletzt gearbeitet haben.</p><p class="leerzustand-aktion"><a class="textlink" href="../leistungen/">Leistungen ansehen <span class="pfeil" aria-hidden="true">→</span></a></p></div><div><p class="label">So ist jeder Bericht aufgebaut</p><ol class="bericht-schema"><li><div><strong>Ausgangssituation</strong><span>Wie es vorher war</span></div></li><li><div><strong>Aufgabenstellung</strong><span>Was erreicht werden sollte</span></div></li><li><div><strong>Ausgeführte Arbeiten</strong><span>Was wir gemacht haben</span></div></li><li><div><strong>Prozessbilder</strong><span>Zwischenstände, eigene Fotos</span></div></li><li><div><strong>Ergebnis</strong><span>Wie es jetzt ist</span></div></li><li><div><strong>Vorher / Nachher</strong><span>Gleicher Standpunkt, gleiches Licht</span></div></li></ol></div></div>
   </div>
 </section>
 
-<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel">Ihr Vorhaben könnte das nächste sein</h2><p class="einleitung">Beschreiben Sie uns kurz, was ansteht – wir melden uns mit einer ersten Einschätzung.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/">Unverbindlich anfragen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="dokumentation-titel">
+  <div class="rahmen raster">
+    <div class="sp-kopf">
+      <p class="label">Grundsätze</p>
+      <h2 id="dokumentation-titel">Wie wir dokumentieren</h2>
+    </div>
+    <div class="sp-inhalt">
+      <ol class="kasten-liste">
+        <li>Nur eigene Fotos – keine Bilder aus Datenbanken, keine KI-Bilder als Projektfotos.</li>
+        <li>Nur mit schriftlicher Freigabe der Auftraggeber.</li>
+        <li>Keine Adressen, keine Personen, keine privaten Details – der Ort nur so genau wie freigegeben.</li>
+        <li>Vorher und nachher vom selben Standpunkt, damit der Vergleich ehrlich bleibt.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Anfrage</p><h2 id="abschluss-titel" data-zeilen>Ihr Vorhaben könnte das nächste sein.</h2><p class="einleitung">Beschreiben Sie uns kurz, was ansteht – wir melden uns mit einer ersten Einschätzung.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/#anfrage">Vorhaben beschreiben <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
 </main>
 <footer class="fuss">
   <div class="rahmen">
@@ -69,9 +92,9 @@
         <h2>Leistungen</h2>
         <ul>
           <li><a href="../leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
-          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
           <li><a href="../leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
-          <li><a href="../ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
+          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="../netzwerk/">Netzwerk &amp; Zusammenarbeit</a></li>
         </ul>
       </div>
       <div>
@@ -79,7 +102,7 @@
         <ul>
           <li><a href="../projekte/">Projekte</a></li>
           <li><a href="../ueber-uns/">Über uns</a></li>
-          <li><a href="../ablauf/">Ablauf &amp; Fragen</a></li>
+          <li><a href="../fragen/">Fragen &amp; Ablauf</a></li>
           <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
           <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
@@ -101,7 +124,7 @@
 </footer>
 <nav class="kontaktleiste" aria-label="Schnellkontakt">
   <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a class="knopf knopf--primaer" href="../kontakt/">Anfragen</a>
+  <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfragen</a>
 </nav>
 </body>
 </html>

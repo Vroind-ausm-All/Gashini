@@ -1,0 +1,14 @@
+Fremdbibliotheken in diesem Verzeichnis
+=======================================
+
+GSAP 3.15.0 (gsap, ScrollTrigger, SplitText, DrawSVGPlugin, Flip)
+  Copyright (c) 2008-2026, GreenSock. All rights reserved.
+  Lizenz: GSAP Standard "No Charge" License – https://gsap.com/standard-license
+  Kostenlose Nutzung auch auf kommerziellen Websites; nicht für Werkzeuge,
+  die mit Webflow konkurrieren. Die Dateien bleiben unverändert.
+
+three.js 0.186.1 – gebündelt in ../wandaufbau.js
+  MIT-Lizenz, Copyright 2010-2026 three.js authors – https://github.com/mrdoob/three.js/blob/dev/LICENSE
+
+Aktualisieren: scripts/werkzeuge/3d/package.json anpassen, dann
+  cd scripts/werkzeuge/3d && npm install && npm run bauen

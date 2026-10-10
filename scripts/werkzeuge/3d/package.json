@@ -1,0 +1,16 @@
+{
+  "name": "gashini-3d",
+  "private": true,
+  "description": "Entwicklungswerkzeug: bündelt die Wandaufbau-Szene (Three.js) und GSAP nach src/assets/js/. Nicht Teil der Website-Auslieferung.",
+  "type": "module",
+  "scripts": {
+    "bauen": "node bauen.mjs",
+    "renderings": "node renderings.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "gsap": "3.15.0",
+    "playwright": "1.56.1",
+    "three": "0.186.1"
+  }
+}

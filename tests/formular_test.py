@@ -8,7 +8,7 @@ Startet `php -S` auf dist/web mit einer Test-Konfiguration (Transport "datei":
 Mails werden als .eml-Datei geschrieben statt versendet). Geprüft wird die
 serverseitige Annahme – NICHT die tatsächliche Zustellung über einen Mailserver.
 """
-import json, os, shutil, socket, subprocess, sys, tempfile, time, urllib.parse, urllib.request, urllib.error
+import base64, json, os, shutil, socket, struct, subprocess, sys, tempfile, time, urllib.parse, urllib.request, urllib.error, uuid, zlib
 
 WURZEL = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 WEB = os.path.join(WURZEL, "dist", "web")
@@ -20,7 +20,8 @@ def freier_port():
 def server(konfig_pfad):
     port = freier_port()
     env = dict(os.environ, GASHINI_KONFIG=konfig_pfad)
-    proc = subprocess.Popen(["php", "-S", "127.0.0.1:%d" % port, "-t", WEB], env=env,
+    proc = subprocess.Popen(["php", "-d", "upload_max_filesize=8M", "-d", "post_max_size=14M", "-d", "max_file_uploads=5",
+                             "-S", "127.0.0.1:%d" % port, "-t", WEB], env=env,
                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(50):
         try:
@@ -61,6 +62,30 @@ def senden(url, daten, json_antwort=True, kopf=None, methode="POST"):
     except urllib.error.HTTPError as e:
         status, text, hdr = e.code, e.read().decode(), e.headers
     return status, text, hdr
+
+def mehrteilig(url, daten, dateien):
+    """multipart/form-data wie ein Browser: dateien = [(feldname, dateiname, typ, bytes)]."""
+    grenze = "----gashini" + uuid.uuid4().hex
+    teile = []
+    for k, v in daten.items():
+        teile.append(("--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n" % (grenze, k, v)).encode())
+    for feld, name, typ, inhalt in dateien:
+        teile.append(("--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s\r\n\r\n"
+                      % (grenze, feld, name, typ)).encode() + inhalt + b"\r\n")
+    body = b"".join(teile) + ("--%s--\r\n" % grenze).encode()
+    req = urllib.request.Request(url, data=body, method="POST")
+    req.add_header("Content-Type", "multipart/form-data; boundary=" + grenze)
+    req.add_header("Accept", "application/json")
+    try:
+        r = oeffner.open(req, timeout=20); return r.status, r.read().decode()
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode()
+
+def png(breite=4, hoehe=3):
+    """Gültiges, winziges PNG ohne Fremdbibliothek."""
+    zeilen = b"".join(b"\x00" + b"\xb5\x39\x1c" * breite for _ in range(hoehe))
+    chunk = lambda typ, d: struct.pack(">I", len(d)) + typ + d + struct.pack(">I", zlib.crc32(typ + d) & 0xffffffff)
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", breite, hoehe, 8, 2, 0, 0, 0)) + chunk(b"IDAT", zlib.compress(zeilen)) + chunk(b"IEND", b"")
 
 GUELTIG = {"name": "Erika Beispiel", "email": "erika@test.invalid", "telefon": "", "leistung": "Trockenbau & Innenausbau",
            "nachricht": "Wir möchten im Wohnzimmer eine Trennwand mit Tür einziehen lassen.", "ort": "12345",
@@ -147,8 +172,37 @@ def main():
         s, t, _ = senden(url, GUELTIG, kopf={"Origin": "http://erlaubt.test"})
         pruefe("Erlaubte Herkunft: 200", s == 200, s)
 
-        s, t, _ = senden(url, dict(GUELTIG, nachricht="y" * 21000))
-        pruefe("Übergroße Anfrage: 413", s == 413, s)
+        s, t, _ = senden(url, dict(GUELTIG, nachricht="y" * (13 * 1024 * 1024 + 100)))
+        pruefe("Übergroße Anfrage (> 13 MB): 413", s == 413, s)
+
+        # --- Rückrufwunsch ---
+        s, t, _ = senden(url, dict(GUELTIG, rueckruf="ja", telefon=""))
+        pruefe("Rückruf ohne Telefonnummer: 422 am Telefonfeld", s == 422 and "telefon" in json.loads(t).get("fehler", {}), t)
+        s, t, _ = senden(url, dict(GUELTIG, rueckruf="ja", telefon="0123 456789", rueckrufzeit="Mitternacht"))
+        pruefe("Unbekanntes Zeitfenster für den Rückruf: 422", s == 422 and "rueckrufzeit" in json.loads(t).get("fehler", {}), t)
+        vorher = set(post_dateien(tmp))
+        s, t, _ = senden(url, dict(GUELTIG, rueckruf="ja", telefon="0123 456789", rueckrufzeit="Vormittags (8–12 Uhr)"))
+        neu_mail = sorted(set(post_dateien(tmp)) - vorher)
+        inhalt = open(os.path.join(tmp, "post", neu_mail[0]), encoding="utf-8").read() if neu_mail else ""
+        pruefe("Rückrufwunsch mit Zeitfenster steht in der Nachricht", s == 200 and "Rückruf:   erwünscht, Vormittags (8–12 Uhr)" in inhalt, t)
+
+        # --- Fotos ---
+        bild = png()
+        vorher = set(post_dateien(tmp))
+        s, t = mehrteilig(url, GUELTIG, [("fotos[]", "IMG_0001.PNG", "image/png", bild)])
+        neu_mail = sorted(set(post_dateien(tmp)) - vorher)
+        roh = open(os.path.join(tmp, "post", neu_mail[0]), encoding="utf-8", newline="").read() if neu_mail else ""
+        anhang = roh.split('filename="foto-1.png"', 1)[1].split("\r\n\r\n", 1)[1].split("\r\n--", 1)[0] if 'filename="foto-1.png"' in roh else ""
+        pruefe("Foto-Upload: 200, Nachricht multipart/mixed mit unverändertem Anhang",
+               s == 200 and "multipart/mixed" in roh and base64.b64decode(anhang.replace("\r\n", "")) == bild and "Fotos:     1 im Anhang" in roh, (s, t[:120]))
+        pruefe("Foto-Anhang trägt einen neutralen Dateinamen statt des Originalnamens", "IMG_0001" not in roh)
+        s, t = mehrteilig(url, GUELTIG, [("fotos[]", "rechnung.jpg", "image/jpeg", b"<?php echo 1; ?> kein Bild")])
+        pruefe("Getarnte Datei (kein echtes Bild): 422 am Fotofeld", s == 422 and "fotos" in json.loads(t).get("fehler", {}), t)
+        s, t = mehrteilig(url, GUELTIG, [("fotos[]", "a%d.png" % i, "image/png", bild) for i in range(4)])
+        pruefe("Mehr als drei Fotos: 422", s == 422 and "fotos" in json.loads(t).get("fehler", {}), t)
+        vorher = set(post_dateien(tmp))
+        s, t = mehrteilig(url, GUELTIG, [("fotos[]", "", "application/octet-stream", b"")])
+        pruefe("Leeres Dateifeld (kein Foto gewählt) stört die Anfrage nicht", s == 200 and len(set(post_dateien(tmp)) - vorher) == 1, (s, t[:120]))
 
         s, t, h = senden(url, GUELTIG, json_antwort=False)
         pruefe("Ohne JavaScript: 303 auf die Danke-Seite mit Vorgangsnummer", s == 303 and h.get("Location", "").startswith("../kontakt/danke/?ref="), (s, h.get("Location")))

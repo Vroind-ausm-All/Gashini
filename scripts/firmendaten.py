@@ -13,6 +13,9 @@ Regeln
 - <!--opt:SCHLUESSEL-->…<!--/opt:SCHLUESSEL--> entfällt, wenn der Wert leer ist.
 - Werte in [eckigen Klammern] gelten als nicht bestätigt.
 - <!--@jsonld-firma--> wird durch strukturierte Daten aus bestätigten Werten ersetzt.
+- <!--vorschau-->…<!--/vorschau--> (Fotobriefings) bleibt in der Vorschau und entfällt in Produktion.
+- In der Vorschau erscheinen nicht bestätigte Werte im Fließtext als <span class="offen"> ohne Klammern;
+  in Attributen, Titeln und Skripten bleiben sie unverändert.
 """
 import html, io, json, os, re, shutil, sys
 
@@ -60,11 +63,42 @@ def jsonld_firma(w):
     if gleich: d["sameAs"] = gleich
     return '<script type="application/ld+json">%s</script>' % json.dumps(d, ensure_ascii=False)
 
+ROHTEXT = ("title", "script", "style", "textarea", "option")
+
+def text_einsetzen(teil, werte):
+    """Platzhalter im sichtbaren Text: nicht bestätigte Werte in der Vorschau als markierte Spanne."""
+    def ersetzen(m):
+        if m.group(1) not in werte:
+            return m.group(0)
+        wert = werte[m.group(1)]
+        if not PRODUKTION and unbestaetigt(wert):
+            return '<span class="offen" title="Angabe noch nicht bestätigt">%s</span>' % html.escape(wert[1:-1], quote=True)
+        return html.escape(wert, quote=True)
+    return re.sub(r"\{\{([A-Z0-9_]+)\}\}", ersetzen, teil)
+
+def html_einsetzen(teil, werte):
+    """Trennt Tags und Text; ersetzt in Tags und Rohtext-Elementen unverändert, im übrigen Text markiert."""
+    roh = lambda t: re.sub(r"\{\{([A-Z0-9_]+)\}\}", lambda m: html.escape(werte[m.group(1)], quote=True) if m.group(1) in werte else m.group(0), t)
+    aus, im_roh = [], None
+    for stueck in re.split(r"(<[^>]+>)", teil):
+        if stueck.startswith("<"):
+            m = re.match(r"<(/?)([a-zA-Z0-9]+)", stueck)
+            if m:
+                name = m.group(2).lower()
+                if not m.group(1) and name in ROHTEXT: im_roh = name
+                elif m.group(1) and name == im_roh: im_roh = None
+            aus.append(roh(stueck))
+        else:
+            aus.append(roh(stueck) if im_roh else text_einsetzen(stueck, werte))
+    return "".join(aus)
+
 def einsetzen(text, werte, ist_html):
     # optionale Blöcke
     def opt(m):
         return "" if not werte.get(m.group(1), "") else m.group(2)
     text = re.sub(r"<!--opt:([A-Z0-9_]+)-->(.*?)<!--/opt:\1-->", opt, text, flags=re.S)
+    # Vorschau-Blöcke (Fotobriefings)
+    text = re.sub(r"<!--vorschau-->(.*?)<!--/vorschau-->", "" if PRODUKTION else r"\1", text, flags=re.S)
     text = text.replace("<!--@jsonld-firma-->", jsonld_firma(werte))
     if not ist_html:
         return re.sub(r"\{\{([A-Z0-9_]+)\}\}", lambda m: werte.get(m.group(1), m.group(0)), text)
@@ -76,8 +110,7 @@ def einsetzen(text, werte, ist_html):
             aus.append(re.sub(r"\{\{([A-Z0-9_]+)\}\}",
                               lambda m: json.dumps(werte[m.group(1)], ensure_ascii=False)[1:-1] if m.group(1) in werte else m.group(0), teil))
         else:
-            aus.append(re.sub(r"\{\{([A-Z0-9_]+)\}\}",
-                              lambda m: html.escape(werte[m.group(1)], quote=True) if m.group(1) in werte else m.group(0), teil))
+            aus.append(html_einsetzen(teil, werte))
     return "".join(aus)
 
 def main():

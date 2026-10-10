@@ -6,55 +6,43 @@ nav: leistungen/
 prioritaet: 0.9
 brotkrumen: Leistungen=leistungen/ | Trockenbau & Innenausbau
 -->
-<header class="seitenkopf">
-  <div class="rahmen">
-    [[brotkrumen]]
-    <p class="label">Leistung</p>
-    <h1>Trockenbau und Innenausbau in {{ORT}}</h1>
-    <p class="einleitung">Räume neu aufteilen, Wände und Decken verkleiden, Beschädigtes ersetzen – mit Ständerwerk und Gipsplatten, sauber und ohne lange Trocknungszeiten.</p>
+<header class="seitenkopf seitenkopf--bild">
+  <div class="rahmen seitenkopf-raster">
+    <div class="seitenkopf-text">
+      [[brotkrumen]]
+      <p class="label">Leistung 01</p>
+      <h1 data-zeilen>Trockenbau und Innenausbau in {{ORT}}</h1>
+      <p class="einleitung">Räume neu aufteilen, Wände und Decken verkleiden, Beschädigtes ersetzen – mit Ständerwerk und Gipsplatten, sauber und ohne lange Trocknungszeiten.</p>
+      <div class="knopf-reihe"><a class="knopf knopf--primaer" href="[[kontakt-link leistung="trockenbau"]]">Trockenbau anfragen <span class="pfeil" aria-hidden="true">→</span></a></div>
+    </div>
+    <figure class="seitenkopf-bild">
+      <div class="flaeche" data-enthuellen>[[bild datei="visualisierung/wand-staender.webp" alt="Visualisierung: Ständerwerk aus verzinkten Metallprofilen, von unten gesehen." groessen="(min-width: 1000px) 52vw, 100vw" laden="eager" prioritaet="ja"]]</div>
+      <figcaption>Visualisierung – Ständerwerk eines Beispielaufbaus. Kein Projektfoto.</figcaption>
+    </figure>
   </div>
 </header>
 
-<section class="abschnitt">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Wofür</p>
-      <h2>Wenn ein Raum anders funktionieren soll</h2>
+<section class="abschnitt" aria-labelledby="anwendungen-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Wofür</p>
+        <h2 id="anwendungen-titel" data-zeilen>Wenn ein Raum anders funktionieren soll</h2>
+        <p class="einleitung">Ein Arbeitszimmer abtrennen, eine unruhige Wand begradigen, Leitungen hinter einer Verkleidung verschwinden lassen – vom einzelnen Raum bis zum abgestimmten Ausbau mehrerer Räume.</p>
+      </div>
     </div>
-    <div class="sp-inhalt">
-      <p class="einleitung">Ein Arbeitszimmer abtrennen, eine unruhige Wand begradigen, Leitungen hinter einer Verkleidung verschwinden lassen: Trockenbau verändert Räume, ohne dass gemauert oder lange getrocknet werden muss.</p>
-      <p class="gedaempft">Wir arbeiten für Eigentümer, Vermieter, Hausverwaltungen und kleinere Gewerbebetriebe – vom einzelnen Raum bis zum abgestimmten Ausbau mehrerer Räume.</p>
-    </div>
+    [[anwendungen]]
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Anwendungen mit dem tatsächlichen Leistungsumfang und dem Eintrag als Trockenbaumonteur (Anlage B1 HwO) abgleichen.]</p>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Typische Arbeiten</p>
-      <h2>Was dazugehört</h2>
-    </div>
-    <div class="sp-inhalt">
-      <ul class="aufzaehlung aufzaehlung--zweispaltig">
-        <li>Nichttragende Trennwände in Metallständerbauweise</li>
-        <li>Türöffnungen in Trockenbauwänden</li>
-        <li>Vorsatzschalen und Wandverkleidungen</li>
-        <li>Abgehängte Decken und Deckenverkleidungen</li>
-        <li>Verkleidung von Leitungen und Installationsschächten</li>
-        <li>Spachtelarbeiten an Gipsplatten</li>
-        <li>Reparatur beschädigter Trockenbauflächen</li>
-        <li>Anpassungen im Bestand, etwa für neue Raumaufteilungen</li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Liste mit dem tatsächlichen Leistungsumfang und dem Eintrag als Trockenbaumonteur (Anlage B1 HwO) abgleichen.]</p>
-    </div>
-  </div>
-</section>
+[[wandaufbau titel="Vom Profil zur fertigen Wand"]]
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="vorbereitung-titel">
   <div class="rahmen raster">
     <div class="sp-halb-l">
       <p class="label">Vorbereitung</p>
-      <h2>Was wir für eine Anfrage brauchen</h2>
+      <h2 id="vorbereitung-titel">Was wir für eine Anfrage brauchen</h2>
       <ol class="kasten-liste">
         <li>Um welchen Raum geht es, und wie groß ist er ungefähr?</li>
         <li>Was soll entstehen – Wand, Verkleidung, Decke, Reparatur?</li>
@@ -80,13 +68,13 @@ brotkrumen: Leistungen=leistungen/ | Trockenbau & Innenausbau
   </div>
 </section>
 
-<section class="abschnitt abschnitt--linie">
+<section class="abschnitt abschnitt--linie" aria-labelledby="fragen-titel">
   <div class="rahmen raster">
-    <div class="sp-kopf"><p class="label">Fragen</p><h2>Häufig gefragt</h2></div>
+    <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
     <div class="sp-inhalt">[[faq seite="trockenbau"]]</div>
   </div>
 </section>
 
-[[abschluss]]
+[[abschluss titel="Eine Wand, eine Decke, ein Raum?" text="Schicken Sie uns Maße und zwei, drei Fotos – wir melden uns mit einer ersten Einschätzung und sagen, ob eine Besichtigung nötig ist." knopf="Trockenbau anfragen" leistung="trockenbau" label="Trockenbau"]]
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Trockenbau und Innenausbau","serviceType":"Trockenbau","provider":{"@id":"https://{{DOMAIN}}/#firma"},"url":"https://{{DOMAIN}}/leistungen/trockenbau/"}</script>

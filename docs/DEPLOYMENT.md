@@ -23,7 +23,7 @@ GitHub Pages kann kein PHP ausführen – **in der Vorschau funktioniert das For
 ## Anforderungen an den Webspace
 
 - Apache mit `mod_rewrite`, `mod_headers`, `mod_expires` (bei anderem Server: Abschnitt „nginx“)
-- PHP ≥ 8.1 mit `mbstring`
+- PHP ≥ 8.1 mit `mbstring` und `fileinfo`; Datei-Uploads erlaubt (`file_uploads = On`). Die Grenzen für Fotos setzt `api/.user.ini` (PHP-FPM/CGI) bzw. `api/.htaccess` (mod_php): `upload_max_filesize = 8M`, `post_max_size = 14M`. Greifen beide nicht, beim Hoster einstellen.
 - Mailversand: Postfach mit SMTP-Zugang (empfohlen) **oder** funktionierendes PHP-`mail()` mit Absender der eigenen Domain
 - HTTPS-Zertifikat (bei deutschen Hostern meist kostenlos über Let's Encrypt)
 - Verarbeitung in der EU, Auftragsverarbeitungsvertrag verfügbar
@@ -73,9 +73,10 @@ Vorschau-Links.
 |---|---|
 | `/wohnungsuebergabe.html` | `/leistungen/hausmeisterservice/#mieterwechsel` |
 | `/haushaltsaufloesung.html` | `/leistungen/` |
-| `/preise.html` | `/ablauf/#kosten` |
+| `/preise.html` | `/fragen/#kosten` |
+| `/ablauf/`, `/ablauf.html` | `/fragen/` |
 | `/referenzen.html` | `/projekte/` |
-| `/leistungen.html`, `/ablauf.html`, `/ueber-uns.html`, `/kontakt.html`, `/impressum.html`, `/datenschutz.html` | jeweilige Verzeichnis-URL |
+| `/leistungen.html`, `/ueber-uns.html`, `/kontakt.html`, `/impressum.html`, `/datenschutz.html` | jeweilige Verzeichnis-URL |
 | `/danke.html` | `/kontakt/danke/` |
 
 ## nginx (falls kein Apache)

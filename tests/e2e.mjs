@@ -6,7 +6,8 @@
 // Darstellung, Bedienung, Barrierefreiheit und Formularstrecke.
 import { chromium } from 'playwright';
 import { spawn, execFileSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, readdirSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readdirSync, existsSync, mkdirSync, readFileSync, cpSync } from 'node:fs';
+import zlib from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,7 +27,8 @@ function freierPort() {
 }
 async function phpServer(wurzel, konfig) {
   const port = await freierPort();
-  const proc = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', wurzel], { env: { ...process.env, GASHINI_KONFIG: konfig }, stdio: 'ignore' });
+  const proc = spawn('php', ['-d', 'upload_max_filesize=8M', '-d', 'post_max_size=14M', '-S', `127.0.0.1:${port}`, '-t', wurzel],
+    { env: { ...process.env, GASHINI_KONFIG: konfig }, stdio: 'ignore' });
   for (let i = 0; i < 50; i++) {
     try { await new Promise((ok, nein) => { const c = net.connect(port, '127.0.0.1', () => { c.end(); ok(); }); c.on('error', nein); }); break; }
     catch { await new Promise(r => setTimeout(r, 100)); }
@@ -48,14 +50,36 @@ execFileSync('python3', ['scripts/firmendaten.py'], { cwd: WURZEL });
 const entwurf = join(TMP, 'entwurf-web');
 execFileSync('python3', ['scripts/build-site.py'], { cwd: WURZEL, env: { ...process.env, ENTWUERFE: '1', AUSGABE: entwurf } });
 execFileSync('python3', ['scripts/build-site.py'], { cwd: WURZEL });   // web/ wiederherstellen
+const vorschau = join(TMP, 'vorschau-web');
+cpSync(join(WURZEL, 'dist/web'), vorschau, { recursive: true });
+execFileSync('python3', ['scripts/vorschau-markieren.py', vorschau], { cwd: WURZEL });
 
 const POST = join(TMP, 'post');
 const haupt = await phpServer(join(WURZEL, 'dist/web'), testKonfig('haupt', POST));
 const entw = await phpServer(entwurf, testKonfig('entwurf', join(TMP, 'post2')));
-const browser = await chromium.launch(process.env.CHROMIUM_PFAD ? { executablePath: process.env.CHROMIUM_PFAD } : {});
+const vors = await phpServer(vorschau, testKonfig('vorschau', join(TMP, 'post3')));
+const STARTOPTIONEN = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
+  ...(process.env.CHROMIUM_PFAD ? { executablePath: process.env.CHROMIUM_PFAD } : {}) };
+const browser = await chromium.launch(STARTOPTIONEN);
+
+// Gültiges Mini-PNG für den Upload-Test
+function png() {
+  const crc = b => { let c, t = []; for (let n = 0; n < 256; n++) { c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+    let r = 0xffffffff; for (const x of b) r = t[(r ^ x) & 0xff] ^ (r >>> 8); return (r ^ 0xffffffff) >>> 0; };
+  const chunk = (typ, d) => { const l = Buffer.alloc(4); l.writeUInt32BE(d.length); const td = Buffer.concat([Buffer.from(typ), d]);
+    const c = Buffer.alloc(4); c.writeUInt32BE(crc(td)); return Buffer.concat([l, td, c]); };
+  const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(4, 0); ihdr.writeUInt32BE(3, 4); ihdr[8] = 8; ihdr[9] = 2;
+  const roh = Buffer.concat(Array.from({ length: 3 }, () => Buffer.from([0, 181, 57, 28, 181, 57, 28, 181, 57, 28, 181, 57, 28])));
+  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', zlib.deflateSync(roh)), chunk('IEND', Buffer.alloc(0))]);
+}
+async function durchscrollen(p) {
+  const h = await p.evaluate(() => document.documentElement.scrollHeight);
+  for (let y = 0; y < h; y += 300) { await p.evaluate(y => window.scrollTo(0, y), y); await p.waitForTimeout(40); }
+  await p.waitForTimeout(1500);
+}
 
 const SEITEN = ['', 'leistungen/', 'leistungen/trockenbau/', 'leistungen/hausmeisterservice/', 'leistungen/reparatur-und-instandhaltung/',
-  'projekte/', 'ueber-uns/', 'ablauf/', 'kontakt/', 'kontakt/danke/', 'impressum/', 'datenschutz/', '404.html'];
+  'projekte/', 'netzwerk/', 'ueber-uns/', 'fragen/', 'kontakt/', 'kontakt/danke/', 'impressum/', 'datenschutz/', '404.html'];
 const BREITEN = [320, 375, 768, 1024, 1440];
 
 try {
@@ -73,6 +97,20 @@ try {
     await p.waitForTimeout(1800);
     await p.screenshot({ path: join(BERICHT, `start-${b}.png`), fullPage: true });
     pruefe(`Kein waagerechter Überlauf bei ${b}px (${SEITEN.length} Seiten)`, ueberlauf.length === 0, ueberlauf.join(', '));
+    await ctx.close();
+  }
+
+  // ---------------------------------------------------------------- Bildschirmfotos aller Seiten (Bericht)
+  for (const b of [390, 1440]) {
+    const ctx = await browser.newContext({ viewport: { width: b, height: b < 600 ? 844 : 900 } });
+    const p = await ctx.newPage();
+    for (const s of SEITEN) {
+      await p.goto(vors.basis + s, { waitUntil: 'networkidle' });
+      await durchscrollen(p);
+      await p.evaluate(() => window.scrollTo(0, 0));
+      await p.waitForTimeout(300);
+      await p.screenshot({ path: join(BERICHT, `seite-${(s.replace(/\//g, '_').replace(/_$/, '') || 'start')}-${b}.png`), fullPage: true });
+    }
     await ctx.close();
   }
 
@@ -98,6 +136,9 @@ try {
     const funde = [];
     for (const s of SEITEN) {
       await p.goto(haupt.basis + s, { waitUntil: 'networkidle' });
+      // erst messen, wenn die Einstiegsanimationen (CSS) fertig sind – sonst misst axe Zwischenstände
+      await p.evaluate(() => Promise.all(document.getAnimations().map(a => a.finished.catch(() => {}))));
+      await p.waitForTimeout(300);
       await p.addScriptTag({ content: AXE });
       const r = await p.evaluate(async () => (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] })).violations
         .map(v => ({ id: v.id, impact: v.impact, n: v.nodes.length, ziel: v.nodes[0]?.target?.join(' ') })));
@@ -213,7 +254,9 @@ try {
     await p.goto(haupt.basis, { waitUntil: 'networkidle' });
     const h1 = await p.isVisible('h1');
     const navLink = await p.locator('#hauptnav a').first().isVisible();
-    pruefe('Ohne JavaScript: Inhalt und Navigation sichtbar', h1 && navLink);
+    const zeichnung = await p.isVisible('.wandaufbau-rueckfall svg');
+    const inhalte = await p.evaluate(() => [...document.querySelectorAll('[data-zeigen]')].every(e => getComputedStyle(e).opacity === '1'));
+    pruefe('Ohne JavaScript: Inhalt, Navigation und Wandaufbau-Zeichnung sichtbar', h1 && navLink && zeichnung && inhalte, { h1, navLink, zeichnung, inhalte });
     await p.goto(haupt.basis + 'kontakt/', { waitUntil: 'networkidle' });
     const vorher = post(POST).length;
     await p.fill('#f-name', 'Ohne Skript');
@@ -230,10 +273,113 @@ try {
     const ctx = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 1440, height: 900 } });
     const p = await ctx.newPage();
     await p.goto(haupt.basis, { waitUntil: 'networkidle' });
-    const anim = await p.evaluate(() => [...document.querySelectorAll('.zg-zeichnen, .zg-einblenden')].map(e => getComputedStyle(e).animationName));
-    const deckend = await p.evaluate(() => [...document.querySelectorAll('.zg-einblenden')].every(e => getComputedStyle(e).opacity === '1'));
-    pruefe('Bewegung reduzieren: Zeichnung ohne Animation und sofort vollständig sichtbar', anim.every(a => a === 'none') && deckend, anim.slice(0, 3));
+    const klasse = await p.evaluate(() => document.documentElement.className);
+    const sichtbar = await p.evaluate(() => [...document.querySelectorAll('[data-zeigen], [data-zeilen], [data-enthuellen]')]
+      .every(e => getComputedStyle(e).opacity === '1' && getComputedStyle(e).visibility === 'visible'));
+    const zeilen = await p.evaluate(() => [...document.querySelectorAll('.buehne-titel .zeile > span')].map(e => getComputedStyle(e).transform));
+    const gepinnt = await p.evaluate(() => !!document.querySelector('.pin-spacer'));
+    pruefe('Bewegung reduzieren: keine Bewegungsklasse, alle Inhalte sofort sichtbar, kein Scroll-Pinning',
+      !klasse.split(' ').includes('bewegung') && sichtbar && zeilen.every(t => t === 'none') && !gepinnt, { klasse, sichtbar, zeilen, gepinnt });
     await ctx.close();
+  }
+
+  // ---------------------------------------------------------------- GSAP: nach dem Scrollen ist alles sichtbar
+  // Ohne WebGL: SwiftShader rendert die 3D-Szene in Software und bremst den Testbrowser so stark, dass GSAP
+  // (lagSmoothing) Animationen streckt. Das 3D-Modell wird unten gesondert geprüft.
+  {
+    const b3 = await chromium.launch({ ...STARTOPTIONEN, args: ['--disable-webgl', '--disable-3d-apis'] });
+    const p = await b3.newPage({ viewport: { width: 1440, height: 900 } });
+    const unsichtbar = [];
+    for (const s of ['', 'leistungen/', 'leistungen/trockenbau/', 'leistungen/reparatur-und-instandhaltung/', 'leistungen/hausmeisterservice/', 'netzwerk/', 'ueber-uns/', 'fragen/']) {
+      await p.goto(haupt.basis + s, { waitUntil: 'networkidle' });
+      await durchscrollen(p);
+      // Animationen dürfen unter Last länger brauchen – geprüft wird, dass am Ende alles sichtbar ist
+      const pruefen = () => [...document.querySelectorAll('[data-zeigen], main [data-zeilen], [data-enthuellen]')]
+        .filter(e => parseFloat(getComputedStyle(e).opacity) < .99 || getComputedStyle(e).visibility !== 'visible').length;
+      await p.waitForFunction(() => ![...document.querySelectorAll('[data-zeigen], main [data-zeilen], [data-enthuellen]')]
+        .some(e => parseFloat(getComputedStyle(e).opacity) < .99 || getComputedStyle(e).visibility !== 'visible'), null, { timeout: 8000 }).catch(() => {});
+      const n = await p.evaluate(pruefen);
+      if (n) unsichtbar.push(`${s || '/'}: ${n}`);
+    }
+    pruefe('Bewegung (GSAP): nach dem Scrollen sind auf allen Seiten alle animierten Inhalte vollständig sichtbar', unsichtbar.length === 0, unsichtbar.join(', '));
+    await b3.close();
+  }
+
+  // ---------------------------------------------------------------- Wandaufbau: Three.js
+  {
+    const p = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    const fehler = []; p.on('pageerror', e => fehler.push(e.message));
+    await p.goto(haupt.basis + 'leistungen/trockenbau/', { waitUntil: 'networkidle' });
+    await p.evaluate(() => document.querySelector('#wandaufbau').scrollIntoView());
+    await p.waitForFunction(() => document.querySelector('#wandaufbau').classList.contains('ist-3d'), null, { timeout: 15000 }).catch(() => {});
+    const dreiD = await p.evaluate(() => ({ klasse: document.querySelector('#wandaufbau').className, canvas: !!document.querySelector('.wandaufbau-canvas') }));
+    const st = await p.evaluate(() => { const r = document.querySelector('.wandaufbau-raster'); return !!r.closest('.pin-spacer'); });
+    await p.click('.wandaufbau-schritt[data-schritt="2"]');
+    await p.waitForTimeout(1200);
+    const gedrueckt = await p.getAttribute('.wandaufbau-schritt[data-schritt="2"]', 'aria-pressed');
+    await p.screenshot({ path: join(BERICHT, 'wandaufbau-1440.png') });
+    pruefe('Wandaufbau: Three.js lädt bei Annäherung, Canvas vorhanden, auf großen Bildschirmen an den Scroll gekoppelt, Schritt per Knopf wählbar',
+      dreiD.klasse.includes('ist-3d') && dreiD.canvas && st && gedrueckt === 'true' && !fehler.length, { dreiD, st, gedrueckt, fehler });
+    await p.close();
+  }
+  {
+    const b2 = await chromium.launch({ ...STARTOPTIONEN, args: ['--disable-webgl', '--disable-3d-apis'] });
+    const p = await b2.newPage({ viewport: { width: 390, height: 844 } });
+    await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+    await p.evaluate(() => document.querySelector('#wandaufbau').scrollIntoView());
+    await p.waitForTimeout(1500);
+    const rueckfall = await p.isVisible('.wandaufbau-rueckfall svg');
+    const kein3d = await p.evaluate(() => !document.querySelector('#wandaufbau').classList.contains('ist-3d') && !document.querySelector('.wandaufbau-canvas'));
+    await p.click('.wandaufbau-schritt[data-schritt="1"]');
+    await p.waitForTimeout(700);   // Übergang der Ebenen (0,45 s)
+    const schritt = await p.getAttribute('#wandaufbau', 'data-schritt');
+    const gedimmt = await p.evaluate(() => getComputedStyle(document.querySelector('.ex-4')).opacity);
+    pruefe('Ohne WebGL: Zeichnung als Rückfall, Schritte steuern die Ebenen der Zeichnung', rueckfall && kein3d && schritt === '1' && parseFloat(gedimmt) < .5, { rueckfall, kein3d, schritt, gedimmt });
+    await b2.close();
+  }
+
+  // ---------------------------------------------------------------- Formular: Vorauswahl, Rückruf, Fotos
+  {
+    const p = await browser.newPage({ viewport: { width: 1024, height: 900 } });
+    await p.goto(haupt.basis + 'kontakt/?leistung=reparatur&anliegen=T%C3%BCr+schleift#anfrage', { waitUntil: 'networkidle' });
+    const leistung = await p.inputValue('#f-leistung');
+    const text = await p.inputValue('#f-nachricht');
+    pruefe('Alltagsfall-Link füllt Leistung und Anliegen vor', leistung === 'Reparatur & Instandhaltung' && text.startsWith('Tür schleift'), { leistung, text });
+    const zeitVorher = await p.isVisible('#f-rueckrufzeit');
+    await p.check('#f-rueckruf');
+    const zeitNachher = await p.isVisible('#f-rueckrufzeit');
+    await p.fill('#f-name', 'Rolf Rückruf');
+    await p.fill('#f-email', 'rolf@test.invalid');
+    await p.fill('#f-nachricht', 'Tür schleift: Die Wohnungstür schleift unten am Boden.');
+    await p.click('button[type=submit]');
+    const telFehler = await p.textContent('#f-telefon-fehler');
+    pruefe('Rückruf: Zeitfenster erscheint erst bei Wunsch, ohne Telefonnummer klarer Fehler', !zeitVorher && zeitNachher && /Telefonnummer/.test(telFehler), { zeitVorher, zeitNachher, telFehler });
+    await p.fill('#f-telefon', '0123 456789');
+    await p.selectOption('#f-rueckrufzeit', 'Nachmittags (14–18 Uhr)');
+    await p.setInputFiles('#f-fotos', { name: 'tuer.png', mimeType: 'image/png', buffer: png() });
+    const liste = await p.textContent('[data-dateiliste]');
+    await p.waitForTimeout(3200);
+    const bekannt = new Set(post(POST));
+    await Promise.all([p.waitForURL(/kontakt\/danke\/\?ref=/, { timeout: 15000 }), p.click('button[type=submit]')]);
+    const neu = post(POST).filter(f => !bekannt.has(f));
+    const mail = neu.length ? readFileSync(join(POST, neu[neu.length - 1]), 'utf8') : '';
+    pruefe('Anfrage mit Rückrufwunsch und Foto: Danke-Seite, Nachricht mit Zeitfenster und Bildanhang',
+      /tuer\.png/.test(liste) && /Rückruf:\s+erwünscht, Nachmittags/.test(mail) && /Content-Type: image\/png; name="foto-1\.png"/.test(mail), { liste, laenge: mail.length });
+    await p.close();
+  }
+
+  // ---------------------------------------------------------------- Vorschau: Kundenansicht
+  {
+    const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await p.goto(vors.basis + 'leistungen/', { waitUntil: 'networkidle' });
+    const vorher = await p.locator('.redaktion').first().isVisible();
+    await p.click('[data-kundenansicht]');
+    const nachher = await p.locator('.redaktion').first().isVisible();
+    const gedrueckt = await p.getAttribute('[data-kundenansicht]', 'aria-pressed');
+    await p.reload({ waitUntil: 'networkidle' });
+    const gemerkt = !(await p.locator('.redaktion').first().isVisible());
+    pruefe('Vorschau: „Kundenansicht“ blendet Redaktionshinweise aus und bleibt beim Seitenwechsel erhalten', vorher && !nachher && gedrueckt === 'true' && gemerkt, { vorher, nachher, gedrueckt, gemerkt });
+    await p.close();
   }
 
   // ---------------------------------------------------------------- Galerie (Entwurfs-Build)
@@ -242,7 +388,16 @@ try {
     await p.goto(entw.basis + 'projekte/', { waitUntil: 'networkidle' });
     const karten = await p.locator('.projekt').count();
     const abzeichen = await p.locator('.abzeichen').count();
-    pruefe('Projektübersicht (Entwurfs-Build): Karten mit Kennzeichnung „Beispieldaten“', karten === 3 && abzeichen === 3, { karten, abzeichen });
+    pruefe('Projektübersicht (Entwurfs-Build): Karten mit Kennzeichnung „Beispieldaten“', karten === 4 && abzeichen === 4, { karten, abzeichen });
+    await p.click('.filter label:has(input[value="reparatur"])');
+    await p.waitForTimeout(1200);
+    const sichtbarNach = await p.evaluate(() => [...document.querySelectorAll('[data-projekt]')].filter(k => k.offsetParent !== null).map(k => k.dataset.kategorie));
+    const ansage = await p.textContent('#filter-ansage');
+    await p.click('.filter label:has(input[value="alle"])');
+    await p.waitForTimeout(1200);
+    const alle = await p.evaluate(() => [...document.querySelectorAll('[data-projekt]')].filter(k => k.offsetParent !== null && getComputedStyle(k).opacity === '1').length);
+    pruefe('Projektfilter (Flip): filtert nach Leistung, sagt das Ergebnis an und stellt alle wieder her',
+      sichtbarNach.length === 1 && sichtbarNach[0] === 'reparatur' && /1 Projekt/.test(ansage) && alle === 4, { sichtbarNach, ansage, alle });
     await p.goto(entw.basis + 'projekte/beispiel-trennwand-arbeitszimmer/', { waitUntil: 'networkidle' });
     await p.locator('.vergleich-regler').fill('20');
     const pos = await p.evaluate(() => getComputedStyle(document.querySelector('.vergleich-buehne')).getPropertyValue('--pos').trim());
@@ -256,12 +411,14 @@ try {
     const zu = await p.evaluate(() => !document.querySelector('.bildansicht').open);
     const fokus = await p.evaluate(() => document.activeElement.hasAttribute('data-gross'));
     pruefe('Bildansicht: per Tastatur öffnen, blättern, mit Escape schließen, Fokus zurück', offen && zaehler === '2 / 2' && zu && fokus, { offen, zaehler, zu, fokus });
+    await durchscrollen(p);
+    await p.evaluate(() => window.scrollTo(0, 0));
     await p.screenshot({ path: join(BERICHT, 'projekt-detail-1280.png'), fullPage: true });
     await p.close();
   }
 } finally {
   await browser.close();
-  haupt.proc.kill(); entw.proc.kill();
+  haupt.proc.kill(); entw.proc.kill(); vors.proc.kill();
 }
 
 const ok = ergebnisse.filter(e => e.ok).length;

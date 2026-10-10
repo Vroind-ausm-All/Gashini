@@ -4,14 +4,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leistungen: Trockenbau, Hausmeister, Reparaturen | Gashini</title>
-<meta name="description" content="Trockenbau und Innenausbau, Hausmeisterservice sowie Reparatur und Instandhaltung in {{REGION}} – und was wir bewusst nicht selbst ausführen.">
+<title>Leistungen: Trockenbau, Reparaturen, Hausmeister | Gashini</title>
+<meta name="description" content="Trockenbau und Innenausbau, Reparatur und Instandhaltung sowie Hausmeisterservice in {{REGION}} – und was wir bewusst nicht selbst ausführen.">
 <link rel="canonical" href="https://{{DOMAIN}}/leistungen/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:site_name" content="Gashini Dienstleistungen">
-<meta property="og:title" content="Leistungen: Trockenbau, Hausmeister, Reparaturen | Gashini">
-<meta property="og:description" content="Trockenbau und Innenausbau, Hausmeisterservice sowie Reparatur und Instandhaltung in {{REGION}} – und was wir bewusst nicht selbst ausführen.">
+<meta property="og:title" content="Leistungen: Trockenbau, Reparaturen, Hausmeister | Gashini">
+<meta property="og:description" content="Trockenbau und Innenausbau, Reparatur und Instandhaltung sowie Hausmeisterservice in {{REGION}} – und was wir bewusst nicht selbst ausführen.">
 <meta property="og:url" content="https://{{DOMAIN}}/leistungen/">
 <meta name="theme-color" content="#FAFAF8">
 <link rel="icon" href="../assets/marke/favicon.svg" type="image/svg+xml">
@@ -19,6 +19,11 @@
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/frueh.js"></script>
 <script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/vendor/gsap.min.js" defer></script>
+<script src="../assets/js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../assets/js/vendor/SplitText.min.js" defer></script>
+<script src="../assets/js/vendor/DrawSVGPlugin.min.js" defer></script>
+<script src="../assets/js/bewegung.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Start", "item": "https://{{DOMAIN}}/"}, {"@type": "ListItem", "position": 2, "name": "Leistungen"}]}</script>
 </head>
 <body>
@@ -28,15 +33,15 @@
     <a class="marke" href="../" aria-label="Gashini Dienstleistungen – Startseite"><img src="../assets/marke/logo.svg" width="254" height="80" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
-      <ul><li><a href="../leistungen/" aria-current="page">Leistungen</a></li><li><a href="../projekte/">Projekte</a></li><li><a href="../ueber-uns/">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
+      <ul><li><a href="../leistungen/" aria-current="page">Leistungen</a></li><li><a href="../projekte/">Projekte</a></li><li><a href="../netzwerk/">Netzwerk</a></li><li><a href="../ueber-uns/">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
       <div class="hauptnav-fuss">
-        <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
       </div>
     </nav>
     <div class="kopf-aktion">
       <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
-      <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen</a>
+      <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen</a>
     </div>
   </div>
 </header>
@@ -45,47 +50,64 @@
   <div class="rahmen">
     <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../">Start</a></li><li aria-current="page">Leistungen</li></ol></nav>
     <p class="label">Leistungen</p>
-    <h1>Was wir übernehmen – und was nicht</h1>
+    <h1 data-zeilen>Was wir übernehmen – und was nicht.</h1>
     <p class="einleitung">Drei Bereiche führen wir selbst aus. Für alles, was darüber hinausgeht, arbeiten wir mit Fachbetrieben zusammen und sagen Ihnen vorher, wer was macht.</p>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-label="Unsere Bereiche">
+  <div class="rahmen">
+    <article class="leistungszeile" aria-labelledby="lz-trockenbau">
+      <figure class="leistungszeile-bild" data-enthuellen><img src="../assets/bilder/visualisierung/wand-daemmung-1280.webp" srcset="../assets/bilder/visualisierung/wand-daemmung-640.webp 640w, ../assets/bilder/visualisierung/wand-daemmung-1280.webp 1280w, ../assets/bilder/visualisierung/wand-daemmung-1920.webp 1920w" sizes="(min-width: 900px) 55vw, 100vw" width="1280" height="853" alt="Visualisierung: Ständerwerk mit Mineralwolle, Rückseite beplankt." loading="lazy" decoding="async"></figure>
+      <div data-zeigen>
+        <span class="nr">01</span>
+        <h2 id="lz-trockenbau">Trockenbau &amp; Innenausbau</h2>
+        <p class="einleitung">Räume neu aufteilen, Wände und Decken verkleiden, Beschädigtes ersetzen – ohne Mauern und lange Trocknungszeiten.</p>
+        <ul><li>Nichttragende Trennwände, auch mit Tür</li><li>Vorsatzschalen und Verkleidungen</li><li>Abgehängte Decken</li><li>Anpassungen im Bestand</li></ul>
+        <a class="textlink" href="../leistungen/trockenbau/">Trockenbau im Detail <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="leistungszeile" aria-labelledby="lz-reparatur">
+      <figure class="leistungszeile-bild leistungszeile-bild--zeichnung" data-enthuellen><svg class="zg zg--flicken-einzeln" viewBox="0 0 300 340" role="img" aria-labelledby="fe-t fe-d" xmlns="http://www.w3.org/2000/svg"><title id="fe-t">Ausbesserung einer Wandfläche</title><desc id="fe-d">Ein neues Plattenstück ist eingesetzt und verschraubt; das Spachtelband deckt die Ränder; daneben der Spachtel.</desc><defs><pattern id="fe-wolle" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0,0 v8" class="zg-schraffur"/></pattern><pattern id="fe-mauer" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 v7" class="zg-schraffur zg-schraffur--dicht"/></pattern></defs><rect class="zg-fertig" x="20" y="20" width="260" height="300"/><path class="zg-duenn" d="M20,286 H280 M20,300 H280"/><rect class="zg-spachtelband" x="70" y="88" width="150" height="122"/><rect class="zg-platte" data-linie x="96" y="110" width="98" height="78"/><circle class="zg-schraube" cx="106" cy="120" r="1.6"/><circle class="zg-schraube" cx="184" cy="120" r="1.6"/><circle class="zg-schraube" cx="106" cy="178" r="1.6"/><circle class="zg-schraube" cx="184" cy="178" r="1.6"/><path class="zg-unsichtbar" d="M74,124 H216 M74,174 H216"/><path class="zg-akzent" data-linie d="M168,236 L232,190 L246,204 L186,254 Z M196,246 L174,268 M178,272 L170,264"/><path class="zg-mass" d="M96,226 H194 M96,222 v8 M194,222 v8"/><text class="zg-text" x="145" y="244" text-anchor="middle">Flicken</text></svg></figure>
+      <div data-zeigen>
+        <span class="nr">02</span>
+        <h2 id="lz-reparatur">Reparatur &amp; Instandhaltung</h2>
+        <p class="einleitung">Für die Arbeiten, die nicht groß genug für ein eigenes Projekt sind – aber auch nicht liegen bleiben sollten.</p>
+        <ul><li>Wand- und Deckenschäden ausbessern</li><li>Türen einstellen und instand setzen</li><li>Montagen und Möbelaufbau</li><li>Silikonfugen erneuern</li></ul>
+        <a class="textlink" href="../leistungen/reparatur-und-instandhaltung/">Alltagsbeispiele ansehen <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="leistungszeile" aria-labelledby="lz-hausmeister">
+      <figure class="leistungszeile-bild leistungszeile-bild--zeichnung" data-enthuellen><svg class="zg zg--rundgang" viewBox="0 0 520 400" role="img" aria-labelledby="rg-t rg-d" xmlns="http://www.w3.org/2000/svg"><title id="rg-t">Objektrundgang im Grundriss eines Mehrfamilienhauses</title><desc id="rg-d">Beispielhafte Route einer regelmäßigen Kontrolle: 1 Eingang und Briefkästen, 2 Treppenhaus, 3 Technik- und Kellerraum, 4 Müllplatz, 5 Außenanlagen. Danach erhält der Auftraggeber ein kurzes Protokoll.</desc><defs><pattern id="rg-wolle" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0,0 v8" class="zg-schraffur"/></pattern><pattern id="rg-mauer" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 v7" class="zg-schraffur zg-schraffur--dicht"/></pattern></defs><path class="zg-poche" fill-rule="evenodd" d="M60,40 H440 V300 H60 Z M68,48 V292 H432 V48 Z"/><path class="zg-wand" d="M200,48 V180 M200,212 V292 M300,48 V120 M300,152 V292 M200,180 H218 M282,180 H300"/><path class="zg-duenn" d="M210,200 V284"/><path class="zg-duenn" d="M219,200 V284"/><path class="zg-duenn" d="M228,200 V284"/><path class="zg-duenn" d="M237,200 V284"/><path class="zg-duenn" d="M246,200 V284"/><path class="zg-duenn" d="M255,200 V284"/><path class="zg-duenn" d="M264,200 V284"/><path class="zg-duenn" d="M273,200 V284"/><path class="zg-duenn" d="M282,200 V284"/><path class="zg-duenn" d="M206,242 H294"/><path class="zg-papier" d="M232,290 H268 V302 H232 Z"/><path class="zg-duenn" d="M232,292 A36,36 0 0 1 268,292"/><path class="zg-linie" d="M276,304 h30 v8 h-30 z M286,304 v8 M296,304 v8"/><path class="zg-duenn" d="M68,200 H200"/><text class="zg-text" x="134" y="252" text-anchor="middle">Technik</text><text class="zg-text" x="134" y="118" text-anchor="middle">Whg. 1</text><text class="zg-text" x="366" y="186" text-anchor="middle">Whg. 2</text><rect class="zg-flaeche" x="350" y="322" width="70" height="34"/><path class="zg-duenn" d="M360,330 h14 v18 h-14 z M380,330 h14 v18 h-14 z M400,330 h14 v18 h-14 z"/><circle class="zg-duenn" cx="494" cy="96" r="11"/><circle class="zg-duenn" cx="500" cy="150" r="11"/><circle class="zg-duenn" cx="492" cy="222" r="11"/><circle class="zg-duenn" cx="90" cy="342" r="11"/><circle class="zg-duenn" cx="140" cy="356" r="11"/><path class="zg-route" data-linie d="M250,392 L250,334 L291,320 L250,304 L250,262 L250,196 L160,196 L160,232 L160,196 L250,196 L250,304 L385,318 L462,262 L462,84"/><g class="zg-marke"><circle cx="291" cy="320" r="10"/><text x="291" y="324.2" text-anchor="middle">1</text></g><g class="zg-marke"><circle cx="250" cy="262" r="10"/><text x="250" y="266.2" text-anchor="middle">2</text></g><g class="zg-marke"><circle cx="160" cy="232" r="10"/><text x="160" y="236.2" text-anchor="middle">3</text></g><g class="zg-marke"><circle cx="385" cy="318" r="10"/><text x="385" y="322.2" text-anchor="middle">4</text></g><g class="zg-marke"><circle cx="462" cy="170" r="10"/><text x="462" y="174.2" text-anchor="middle">5</text></g></svg></figure>
+      <div data-zeigen>
+        <span class="nr">03</span>
+        <h2 id="lz-hausmeister">Hausmeisterservice</h2>
+        <p class="einleitung">Jemand, der regelmäßig nach dem Objekt sieht, kleine Arbeiten gleich erledigt und sich meldet, bevor aus einem kleinen Schaden ein großer wird.</p>
+        <ul><li>Regelmäßige Objektkontrollen mit Protokoll</li><li>Kleinere Instandhaltung</li><li>Vorbereitung von Mieterwechseln</li><li>Abstimmung mit Fachbetrieben</li></ul>
+        <a class="textlink" href="../leistungen/hausmeisterservice/">Hausmeisterservice im Detail <span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <details class="redaktion"><summary>Offener Punkt</summary><p>[FREIGABE ERFORDERLICH: Werden Gebäudereinigung, Entrümpelung und Umzüge weiterhin angeboten? Falls ja, als eigene Bereiche ergänzen; falls nein, bleiben sie hier bewusst weg.]</p></details>
+  </div>
+</section>
+
+<section class="abschnitt dunkel" aria-labelledby="koordination">
   <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Eigene Leistung</p>
-      <h2>Unsere Bereiche</h2>
-    </div>
-    <div class="sp-inhalt">
-      <ul class="leistungsliste">
-        <li><a href="../leistungen/trockenbau/"><h3>Trockenbau &amp; Innenausbau</h3><p>Nichttragende Trennwände, Vorsatzschalen, Deckenverkleidungen und Anpassungen im Bestand.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="../leistungen/hausmeisterservice/"><h3>Hausmeisterservice</h3><p>Regelmäßige Objektbetreuung, kleinere Arbeiten und Vorbereitung von Mieterwechseln.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="../leistungen/reparatur-und-instandhaltung/"><h3>Reparatur &amp; Instandhaltung</h3><p>Ausbesserungen, Montagen und Arbeiten, die nicht liegen bleiben sollen.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Werden Gebäudereinigung, Entrümpelung und Umzüge weiterhin angeboten? Falls ja, als eigene Bereiche ergänzen; falls nein, bleiben sie hier bewusst weg.]</p>
+    <div class="sp-breit">
+      <p class="label label--hell">Mit Partnern</p>
+      <h2 id="koordination" data-zeilen>Koordination weiterer Gewerke</h2>
+      <p class="einleitung">Manche Vorhaben brauchen mehr als ein Gewerk – etwa wenn in eine neue Trennwand Leitungen sollen. Dann stimmen wir die Arbeiten mit einem Fachbetrieb ab. Wer Ihr Vertragspartner ist, steht vor Beginn im Angebot.</p>
+      <p><a class="textlink" href="../netzwerk/">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Mit Partnern</p>
-      <h2 id="koordination">Koordination weiterer Gewerke</h2>
-    </div>
-    <div class="sp-inhalt">
-      <p class="einleitung">Manche Vorhaben brauchen mehr als ein Gewerk – etwa wenn in eine neue Trennwand Leitungen sollen. Dann stimmen wir die Arbeiten mit einem Fachbetrieb aus unserem Netzwerk ab.</p>
-      <p class="gedaempft">Wichtig dabei: Wir führen nur aus, was in unseren Leistungsumfang fällt. Arbeiten, die Fachbetrieben vorbehalten sind, erledigt der Fachbetrieb. Wer Ihr Vertragspartner ist, steht vor Beginn im Angebot.</p>
-      <p><a class="textlink" href="../ueber-uns/#netzwerk">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
-    </div>
-  </div>
-</section>
-
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="abgrenzung-titel">
   <div class="rahmen raster">
     <div class="sp-kopf">
       <p class="label">Abgrenzung</p>
-      <h2>Was wir nicht selbst ausführen</h2>
+      <h2 id="abgrenzung-titel">Was wir nicht selbst ausführen</h2>
+      <p class="gedaempft">Klarheit von Anfang an: Was einem Fachbetrieb vorbehalten ist, erledigt ein Fachbetrieb.</p>
     </div>
     <div class="sp-inhalt">
       <div class="abgrenzung">
@@ -96,12 +118,12 @@
           <li>Heizungs- und Lüftungstechnik</li>
         </ul>
       </div>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Abgrenzung mit dem tatsächlichen Gewerbe- und Handwerksrolleneintrag abgleichen. Insbesondere: Werden Maler-, Fliesen- oder Bodenarbeiten selbst ausgeführt? Maler und Lackierer, Fliesenleger und Parkettleger sind zulassungspflichtige Handwerke (Anlage A HwO).]</p>
+      <details class="redaktion"><summary>Offener Punkt</summary><p>[FREIGABE ERFORDERLICH: Abgrenzung mit dem tatsächlichen Gewerbe- und Handwerksrolleneintrag abgleichen. Insbesondere: Werden Maler-, Fliesen- oder Bodenarbeiten selbst ausgeführt? Maler und Lackierer, Fliesenleger und Parkettleger sind zulassungspflichtige Handwerke (Anlage A HwO).]</p></details>
     </div>
   </div>
 </section>
 
-<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel">Was steht bei Ihnen an?</h2><p class="einleitung">Erzählen Sie uns von Ihrem Vorhaben – auch wenn es nur eine kleine Arbeit ist.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/">Unverbindlich anfragen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
+<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Anfrage</p><h2 id="abschluss-titel" data-zeilen>Welche Leistung brauchen Sie?</h2><p class="einleitung">Wählen Sie den passenden Bereich – oder beschreiben Sie einfach, was ansteht. Die Zuordnung übernehmen wir.</p><ul class="schnellwahl" aria-label="Direkt zur passenden Anfrage"><li><a href="../kontakt/?leistung=trockenbau#anfrage">Trockenbau <span class="pfeil" aria-hidden="true">→</span></a></li><li><a href="../kontakt/?leistung=reparatur#anfrage">Reparatur <span class="pfeil" aria-hidden="true">→</span></a></li><li><a href="../kontakt/?leistung=hausmeister#anfrage">Hausmeisterservice <span class="pfeil" aria-hidden="true">→</span></a></li><li><a href="../kontakt/?leistung=mehrere#anfrage">Noch unklar <span class="pfeil" aria-hidden="true">→</span></a></li></ul><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/#anfrage">Vorhaben beschreiben <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
 </main>
 <footer class="fuss">
   <div class="rahmen">
@@ -114,9 +136,9 @@
         <h2>Leistungen</h2>
         <ul>
           <li><a href="../leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
-          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
           <li><a href="../leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
-          <li><a href="../ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
+          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="../netzwerk/">Netzwerk &amp; Zusammenarbeit</a></li>
         </ul>
       </div>
       <div>
@@ -124,7 +146,7 @@
         <ul>
           <li><a href="../projekte/">Projekte</a></li>
           <li><a href="../ueber-uns/">Über uns</a></li>
-          <li><a href="../ablauf/">Ablauf &amp; Fragen</a></li>
+          <li><a href="../fragen/">Fragen &amp; Ablauf</a></li>
           <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
           <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
@@ -146,7 +168,7 @@
 </footer>
 <nav class="kontaktleiste" aria-label="Schnellkontakt">
   <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a class="knopf knopf--primaer" href="../kontakt/">Anfragen</a>
+  <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfragen</a>
 </nav>
 </body>
 </html>

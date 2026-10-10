@@ -1,41 +1,134 @@
 {
-  "_anleitung": "Häufige Fragen. 'seiten' bestimmt, auf welchen Seiten eine Frage zusätzlich erscheint (ablauf zeigt immer alle). Antworten dürfen einfache Links enthalten (<a href=\"@/kontakt/\">…</a>). Keine Versprechen aufnehmen, die der Betrieb nicht sicher einhält.",
-  "fragen": [
-    {"id": "kleine-arbeiten", "seiten": ["reparatur"],
-     "frage": "Lohnt sich eine Anfrage auch für eine kleine Arbeit?",
-     "antwort": "Ja. Ein Großteil unserer Aufträge sind überschaubare Arbeiten: eine Wand ergänzen, eine Decke ausbessern, einen Raum für neue Mieter herrichten. Schreiben Sie uns, was ansteht – wenn es nicht zu uns passt, sagen wir Ihnen das direkt."},
-    {"id": "kosten", "seiten": ["kontakt"],
-     "frage": "Wie entsteht der Preis?",
-     "antwort": "Nachdem wir den Umfang geklärt haben – am Telefon, anhand von Fotos oder vor Ort – erhalten Sie ein schriftliches Angebot mit den vereinbarten Arbeiten. Ob für eine Besichtigung Kosten anfallen, sagen wir Ihnen vorher. Pauschale Preislisten veröffentlichen wir nicht, weil sich Arbeiten im Bestand selten gleichen."},
-    {"id": "eigene-leistung", "seiten": ["trockenbau", "hausmeisterservice"],
-     "frage": "Welche Arbeiten führen Sie selbst aus – und welche Partnerbetriebe?",
-     "antwort": "Trockenbau, Hausmeisterservice und die üblichen Reparatur- und Instandhaltungsarbeiten übernehmen wir selbst. Für Gewerke außerhalb unseres Leistungsumfangs arbeiten wir mit Fachbetrieben aus unserem Netzwerk zusammen. Bevor ein Partner beteiligt wird, erfahren Sie, wer es ist und in welcher Form er tätig wird."},
-    {"id": "vertragspartner", "seiten": [],
-     "frage": "Wer ist mein Vertragspartner, wenn ein Partnerbetrieb beteiligt ist?",
-     "antwort": "Das hängt von der Art der Zusammenarbeit ab und steht vor Auftragsbeginn im Angebot: Entweder koordinieren wir die Arbeiten und bleiben Ihr Vertragspartner, oder wir stellen den Kontakt her und Sie beauftragen den Fachbetrieb direkt. Sie wissen in jedem Fall vorher, wer haftet und wer abrechnet."},
-    {"id": "einsatzgebiet", "seiten": ["kontakt"],
-     "frage": "In welchem Gebiet arbeiten Sie?",
-     "antwort": "Wir sind in {{EINSATZGEBIET}} tätig. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung."},
-    {"id": "beginn", "seiten": [],
-     "frage": "Wie schnell können Sie anfangen?",
-     "antwort": "Das hängt vom Umfang und von unserer Auslastung ab. Wir nennen Ihnen einen Termin, den wir realistisch halten können, statt einen schnellen, der sich später verschiebt."},
-    {"id": "vorbereitung", "seiten": ["kontakt", "trockenbau"],
-     "frage": "Was sollte ich für eine Anfrage vorbereiten?",
-     "antwort": "Eine kurze Beschreibung, wo und was gemacht werden soll, und – wenn möglich – ungefähre Maße und zwei, drei Fotos. Mehr brauchen wir für eine erste Einschätzung nicht."},
-    {"id": "versicherung", "seiten": [],
-     "frage": "Sind Sie versichert?",
-     "antwort": "{{VERSICHERUNG_ANTWORT}}"},
-    {"id": "steuer", "seiten": ["hausmeisterservice", "reparatur"],
-     "frage": "Kann ich die Kosten steuerlich geltend machen?",
-     "antwort": "Für Handwerkerleistungen im eigenen Haushalt können Privatpersonen nach § 35a Einkommensteuergesetz 20 Prozent der Arbeitskosten, höchstens 1.200 Euro im Jahr, direkt von der Steuer abziehen. Voraussetzung sind eine Rechnung und eine Zahlung per Überweisung. Den Lohnanteil weisen wir auf der Rechnung gesondert aus. Ob die Voraussetzungen in Ihrem Fall vorliegen, klären Sie bitte mit Ihrer Steuerberatung."},
-    {"id": "gewerbe", "seiten": ["hausmeisterservice"],
-     "frage": "Arbeiten Sie auch für Hausverwaltungen und Gewerbebetriebe?",
-     "antwort": "Ja. Neben Privatkunden betreuen wir Vermieter, Hausverwaltungen, Eigentümergemeinschaften und kleinere Gewerbebetriebe – einmalig oder regelmäßig."},
-    {"id": "elektro-sanitaer", "seiten": ["hausmeisterservice", "reparatur"],
-     "frage": "Übernehmen Sie auch Elektro-, Gas- oder Wasserinstallationen?",
-     "antwort": "Nein, nicht selbst. Arbeiten an Elektro-, Gas- und Wasserinstallationen sind eingetragenen Fachbetrieben vorbehalten. Wenn solche Arbeiten anfallen, stellen wir den Kontakt zu einem Partnerbetrieb her oder stimmen die Arbeiten mit ihm ab."},
-    {"id": "daten", "seiten": ["kontakt"],
-     "frage": "Was passiert mit den Angaben aus dem Anfrageformular?",
-     "antwort": "Wir nutzen sie ausschließlich, um Ihre Anfrage zu beantworten und gegebenenfalls ein Angebot zu erstellen. Sie werden nicht für Werbung verwendet und nicht verkauft. Einzelheiten stehen in der <a href=\"@/datenschutz/#anfragen\">Datenschutzerklärung</a>."}
-  ]
+ "_anleitung": "Häufige Fragen. 'thema' ordnet die Frage auf der Seite Fragen & Ablauf ein (anfrage, kosten, leistungen, daten). 'seiten' bestimmt, auf welchen Seiten sie zusätzlich erscheint. Antworten dürfen einfache Links enthalten (<a href=\"@/kontakt/\">…</a>). Keine Versprechen aufnehmen, die der Betrieb nicht sicher einhält.",
+ "fragen": [
+  {
+   "id": "kleine-arbeiten",
+   "seiten": [
+    "reparatur"
+   ],
+   "frage": "Lohnt sich eine Anfrage auch für eine kleine Arbeit?",
+   "antwort": "Ja. Ein Großteil unserer Aufträge sind überschaubare Arbeiten: eine Wand ergänzen, eine Decke ausbessern, einen Raum für neue Mieter herrichten. Schreiben Sie uns, was ansteht – wenn es nicht zu uns passt, sagen wir Ihnen das direkt.",
+   "thema": "anfrage"
+  },
+  {
+   "id": "kosten",
+   "seiten": [
+    "kontakt"
+   ],
+   "frage": "Wie entsteht der Preis?",
+   "antwort": "Nachdem wir den Umfang geklärt haben – am Telefon, anhand von Fotos oder vor Ort – erhalten Sie ein schriftliches Angebot mit den vereinbarten Arbeiten. Ob für eine Besichtigung Kosten anfallen, sagen wir Ihnen vorher. Pauschale Preislisten veröffentlichen wir nicht, weil sich Arbeiten im Bestand selten gleichen.",
+   "thema": "kosten"
+  },
+  {
+   "id": "eigene-leistung",
+   "seiten": [
+    "trockenbau",
+    "hausmeisterservice",
+    "netzwerk"
+   ],
+   "frage": "Welche Arbeiten führen Sie selbst aus – und welche Partnerbetriebe?",
+   "antwort": "Trockenbau, Hausmeisterservice und die üblichen Reparatur- und Instandhaltungsarbeiten übernehmen wir selbst. Für Gewerke außerhalb unseres Leistungsumfangs arbeiten wir mit Fachbetrieben aus unserem Netzwerk zusammen. Bevor ein Partner beteiligt wird, erfahren Sie, wer es ist und in welcher Form er tätig wird.",
+   "thema": "leistungen"
+  },
+  {
+   "id": "vertragspartner",
+   "seiten": [
+    "netzwerk"
+   ],
+   "frage": "Wer ist mein Vertragspartner, wenn ein Partnerbetrieb beteiligt ist?",
+   "antwort": "Das hängt von der Art der Zusammenarbeit ab und steht vor Auftragsbeginn im Angebot: Entweder koordinieren wir die Arbeiten und bleiben Ihr Vertragspartner, oder wir stellen den Kontakt her und Sie beauftragen den Fachbetrieb direkt. Sie wissen in jedem Fall vorher, wer haftet und wer abrechnet.",
+   "thema": "leistungen"
+  },
+  {
+   "id": "einsatzgebiet",
+   "seiten": [
+    "kontakt"
+   ],
+   "frage": "In welchem Gebiet arbeiten Sie?",
+   "antwort": "Wir sind in {{EINSATZGEBIET}} tätig. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.",
+   "thema": "anfrage"
+  },
+  {
+   "id": "beginn",
+   "seiten": [],
+   "frage": "Wie schnell können Sie anfangen?",
+   "antwort": "Das hängt vom Umfang und von unserer Auslastung ab. Wir nennen Ihnen einen Termin, den wir realistisch halten können, statt einen schnellen, der sich später verschiebt.",
+   "thema": "anfrage"
+  },
+  {
+   "id": "vorbereitung",
+   "seiten": [
+    "kontakt",
+    "trockenbau"
+   ],
+   "frage": "Was sollte ich für eine Anfrage vorbereiten?",
+   "antwort": "Eine kurze Beschreibung, wo und was gemacht werden soll, und – wenn möglich – ungefähre Maße und zwei, drei Fotos. Die Fotos können Sie direkt im Anfrageformular hochladen. Mehr brauchen wir für eine erste Einschätzung nicht.",
+   "thema": "anfrage"
+  },
+  {
+   "id": "versicherung",
+   "seiten": [],
+   "frage": "Sind Sie versichert?",
+   "antwort": "{{VERSICHERUNG_ANTWORT}}",
+   "thema": "leistungen"
+  },
+  {
+   "id": "steuer",
+   "seiten": [
+    "hausmeisterservice",
+    "reparatur"
+   ],
+   "frage": "Kann ich die Kosten steuerlich geltend machen?",
+   "antwort": "Für Handwerkerleistungen im eigenen Haushalt können Privatpersonen nach § 35a Einkommensteuergesetz 20 Prozent der Arbeitskosten, höchstens 1.200 Euro im Jahr, direkt von der Steuer abziehen. Voraussetzung sind eine Rechnung und eine Zahlung per Überweisung. Den Lohnanteil weisen wir auf der Rechnung gesondert aus. Ob die Voraussetzungen in Ihrem Fall vorliegen, klären Sie bitte mit Ihrer Steuerberatung.",
+   "thema": "kosten"
+  },
+  {
+   "id": "gewerbe",
+   "seiten": [
+    "hausmeisterservice"
+   ],
+   "frage": "Arbeiten Sie auch für Hausverwaltungen und Gewerbebetriebe?",
+   "antwort": "Ja. Neben Privatkunden betreuen wir Vermieter, Hausverwaltungen, Eigentümergemeinschaften und kleinere Gewerbebetriebe – einmalig oder regelmäßig.",
+   "thema": "leistungen"
+  },
+  {
+   "id": "elektro-sanitaer",
+   "seiten": [
+    "hausmeisterservice",
+    "reparatur",
+    "netzwerk"
+   ],
+   "frage": "Übernehmen Sie auch Elektro-, Gas- oder Wasserinstallationen?",
+   "antwort": "Nein, nicht selbst. Arbeiten an Elektro-, Gas- und Wasserinstallationen sind eingetragenen Fachbetrieben vorbehalten. Wenn solche Arbeiten anfallen, stellen wir den Kontakt zu einem Partnerbetrieb her oder stimmen die Arbeiten mit ihm ab.",
+   "thema": "leistungen"
+  },
+  {
+   "id": "daten",
+   "seiten": [
+    "kontakt"
+   ],
+   "frage": "Was passiert mit den Angaben aus dem Anfrageformular?",
+   "antwort": "Wir nutzen sie ausschließlich, um Ihre Anfrage zu beantworten und gegebenenfalls ein Angebot zu erstellen. Sie werden nicht für Werbung verwendet und nicht verkauft. Einzelheiten stehen in der <a href=\"@/datenschutz/#anfragen\">Datenschutzerklärung</a>.",
+   "thema": "daten"
+  },
+  {
+   "id": "fotos",
+   "seiten": [
+    "kontakt",
+    "reparatur"
+   ],
+   "thema": "daten",
+   "frage": "Was passiert mit den Fotos, die ich hochlade?",
+   "antwort": "Die Fotos werden zusammen mit Ihrer Anfrage per E-Mail an uns übermittelt und nur für die Einschätzung Ihres Vorhabens verwendet – nicht veröffentlicht und nicht weitergegeben. Bitte fotografieren Sie keine Personen. Details stehen in der <a href=\"@/datenschutz/#anfragen\">Datenschutzerklärung</a>."
+  },
+  {
+   "id": "rueckruf",
+   "seiten": [
+    "kontakt"
+   ],
+   "thema": "anfrage",
+   "frage": "Kann ich um einen Rückruf bitten?",
+   "antwort": "Ja. Setzen Sie im Formular das Häkchen bei „Bitte rufen Sie mich zurück“, geben Sie Ihre Telefonnummer an und wählen Sie, wann Sie am besten erreichbar sind. Wir rufen Sie dann an, statt per E-Mail zu antworten."
+  }
+ ]
 }

@@ -4,15 +4,17 @@
 Aufruf:  python3 scripts/vorschau-markieren.py dist/web
 
 - noindex/nofollow in jeder Seite, robots.txt auf Disallow, sitemap.xml entfernt
-- Hinweisstreifen über jeder Seite, damit niemand die Vorschau für den Livebetrieb hält
+- Hinweisstreifen über jeder Seite, damit niemand die Vorschau für den Livebetrieb hält;
+  der Schalter „Kundenansicht“ blendet Redaktionshinweise und Fotobriefings für Präsentationen aus
 Nie auf einen Produktions-Build anwenden.
 """
 import io, os, sys
 
 ziel = sys.argv[1] if len(sys.argv) > 1 else "dist/web"
 NOINDEX = '<meta name="robots" content="noindex, nofollow">'
-STREIFEN = ('<div class="vorschau-streifen" role="note">Vorschau – noch nicht die veröffentlichte Website. '
-            'Angaben in [eckigen Klammern] sind noch nicht bestätigt. Das Formular sendet hier nichts.</div>')
+STREIFEN = ('<div class="vorschau-streifen" role="note"><span>Vorschau – noch nicht die veröffentlichte Website. '
+            'Gestrichelt unterstrichene Angaben sind noch nicht bestätigt. Das Formular sendet hier nichts.</span>'
+            '<button type="button" data-kundenansicht aria-pressed="false">Kundenansicht</button></div>')
 
 seiten = 0
 for root, _, dateien in os.walk(ziel):

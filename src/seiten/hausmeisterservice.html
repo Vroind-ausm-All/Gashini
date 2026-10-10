@@ -1,25 +1,29 @@
 <!--
 titel: Hausmeisterservice in {{ORT}} | Gashini
-beschreibung: Objektbetreuung, kleinere Instandhaltung und Vorbereitung von Mieterwechseln in {{REGION}} – für Vermieter, Hausverwaltungen und Gewerbe.
+beschreibung: Objektkontrollen mit Protokoll, kleinere Instandhaltung und Vorbereitung von Mieterwechseln in {{REGION}} – für Vermieter, Hausverwaltungen und Gewerbe.
 pfad: leistungen/hausmeisterservice/
 nav: leistungen/
 prioritaet: 0.9
 brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
 -->
-<header class="seitenkopf">
-  <div class="rahmen">
-    [[brotkrumen]]
-    <p class="label">Leistung</p>
-    <h1>Hausmeisterservice in {{ORT}}</h1>
-    <p class="einleitung">Jemand, der regelmäßig nach dem Objekt sieht, kleinere Arbeiten gleich erledigt und sich meldet, bevor aus einem kleinen Schaden ein großer wird.</p>
+<header class="seitenkopf seitenkopf--bild">
+  <div class="rahmen seitenkopf-raster">
+    <div class="seitenkopf-text">
+      [[brotkrumen]]
+      <p class="label">Leistung 03</p>
+      <h1 data-zeilen>Hausmeisterservice in {{ORT}}</h1>
+      <p class="einleitung">Jemand, der regelmäßig nach dem Objekt sieht, kleinere Arbeiten gleich erledigt und sich meldet, bevor aus einem kleinen Schaden ein großer wird.</p>
+      <div class="knopf-reihe"><a class="knopf knopf--primaer" href="[[kontakt-link leistung="hausmeister"]]">Objekt beschreiben <span class="pfeil" aria-hidden="true">→</span></a></div>
+    </div>
+    [[rundgang]]
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="fuerwen-titel">
   <div class="rahmen raster">
     <div class="sp-kopf">
       <p class="label">Für wen</p>
-      <h2>Wenn Sie nicht selbst vor Ort sein können</h2>
+      <h2 id="fuerwen-titel">Wenn Sie nicht selbst vor Ort sein können</h2>
     </div>
     <div class="sp-inhalt">
       <p class="einleitung">Vermieter, Hausverwaltungen und Eigentümergemeinschaften haben selten jemanden im Haus, der sich kümmert. Wir übernehmen das – regelmäßig nach Plan oder bei Bedarf.</p>
@@ -28,25 +32,22 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Typische Arbeiten</p>
-      <h2>Was dazugehört</h2>
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="plan-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Pflegeplan</p>
+        <h2 id="plan-titel" data-zeilen>Was regelmäßig dazugehört</h2>
+        <p class="einleitung">Ein Beispiel, wie ein Betreuungsplan aussehen kann. Takt und Umfang legen wir gemeinsam fest – passend zu Objekt und Budget.</p>
+      </div>
     </div>
-    <div class="sp-inhalt">
-      <ul class="aufzaehlung aufzaehlung--zweispaltig">
-        <li>Regelmäßige Objektkontrollen mit kurzem Protokoll</li>
-        <li>Kleinere Instandhaltungs- und Reparaturarbeiten</li>
-        <li>Pflege von Allgemeinflächen und Außenanlagen</li>
-        <li>Einfache Montagen: Briefkästen, Schilder, Handläufe</li>
-        <li>Austausch von Leuchtmitteln ohne Eingriff in die Elektroinstallation</li>
-        <li>Erster Ansprechpartner bei kleineren Schäden</li>
-        <li>Unterstützung von Vermietern bei Mieterwechseln</li>
-        <li>Koordination notwendiger Fachbetriebe</li>
-      </ul>
-      <p class="redaktion">[FREIGABE ERFORDERLICH: Umfang bestätigen – insbesondere Winterdienst, Grünpflege und Reinigung von Allgemeinflächen.]</p>
-    </div>
+    <ol class="pflegeplan">
+      <li data-zeigen><span class="takt">Bei jedem Rundgang</span><h3>Kontrolle</h3><ul><li>Eingang, Treppenhaus und Beleuchtung</li><li>Technik- und Kellerräume (Sichtkontrolle)</li><li>Kurzes Protokoll an Sie</li></ul></li>
+      <li data-zeigen><span class="takt">Laufend</span><h3>Kleinere Arbeiten</h3><ul><li>Kleinere Instandhaltung und Reparaturen</li><li>Leuchtmittel tauschen – ohne Eingriff in die Elektroinstallation</li><li>Einfache Montagen: Schilder, Briefkästen, Handläufe</li></ul></li>
+      <li data-zeigen><span class="takt">Saisonal</span><h3>Außenanlagen</h3><ul><li>Pflege von Allgemein- und Außenflächen</li><li>Kontrolle nach Sturm oder Starkregen</li></ul></li>
+      <li data-zeigen><span class="takt">Bei Bedarf</span><h3>Koordination</h3><ul><li>Erster Ansprechpartner bei Schäden</li><li>Fachbetriebe abstimmen und begleiten</li></ul></li>
+    </ol>
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Umfang bestätigen – insbesondere Winterdienst, Grünpflege und Reinigung von Allgemeinflächen.]</p>
   </div>
 </section>
 
@@ -55,24 +56,25 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
     <div class="sp-kopf">
       <p class="label">Mieterwechsel</p>
       <h2 id="mieterwechsel-titel">Zwischen zwei Mietverhältnissen</h2>
+      <p class="gedaempft">Zwischen Auszug und Einzug ist meist wenig Zeit. Wir helfen, die Wohnung so vorzubereiten, dass die neuen Mieter einziehen können.</p>
     </div>
     <div class="sp-inhalt">
-      <p class="einleitung">Zwischen Auszug und Einzug ist meist wenig Zeit. Wir helfen, die Wohnung so vorzubereiten, dass die neuen Mieter einziehen können.</p>
-      <ul class="aufzaehlung">
+      <ol class="kasten-liste">
         <li>Rundgang nach dem Auszug und Liste der offenen Punkte</li>
         <li>Ausbesserung von Wänden, Decken und Trockenbauflächen</li>
         <li>Kleinere Reparaturen und Montagen</li>
         <li>Abstimmung mit Fachbetrieben, wenn mehr anfällt</li>
-      </ul>
+        <li>Rückmeldung an Sie, wenn die Wohnung bereit ist</li>
+      </ol>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
+<section class="abschnitt abschnitt--linie" aria-labelledby="vorbereitung-titel">
   <div class="rahmen raster">
     <div class="sp-halb-l">
       <p class="label">Vorbereitung</p>
-      <h2>Was wir für eine Anfrage brauchen</h2>
+      <h2 id="vorbereitung-titel">Was wir für eine Anfrage brauchen</h2>
       <ol class="kasten-liste">
         <li>Art und Größe des Objekts</li>
         <li>Einmalig oder regelmäßig – und wenn regelmäßig, wie oft?</li>
@@ -94,13 +96,13 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
   </div>
 </section>
 
-<section class="abschnitt abschnitt--linie">
+<section class="abschnitt abschnitt--linie" aria-labelledby="fragen-titel">
   <div class="rahmen raster">
-    <div class="sp-kopf"><p class="label">Fragen</p><h2>Häufig gefragt</h2></div>
+    <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
     <div class="sp-inhalt">[[faq seite="hausmeisterservice"]]</div>
   </div>
 </section>
 
-[[abschluss]]
+[[abschluss titel="Beschreiben Sie Ihr Objekt." text="Art, Größe, gewünschter Takt – wir schlagen Ihnen einen passenden Betreuungsumfang vor." knopf="Objekt beschreiben" leistung="hausmeister" label="Hausmeisterservice"]]
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Hausmeisterservice","serviceType":"Hausmeisterservice","provider":{"@id":"https://{{DOMAIN}}/#firma"},"url":"https://{{DOMAIN}}/leistungen/hausmeisterservice/"}</script>

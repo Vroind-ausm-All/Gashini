@@ -1,7 +1,8 @@
 # Gashini Dienstleistungen – Website und Firmenauftritt
 
 Statische Website mit einem kleinen PHP-Formular-Backend, dazu Logo, Druckvorlagen und Strategiepapiere.
-Keine Frameworks, keine Laufzeit-Abhängigkeiten.
+Keine Frameworks. Bewegung mit GSAP, ein interaktives Wandmodell mit three.js – beide lokal ausgeliefert.
+Leitidee und Gestaltungsregeln: [`docs/CREATIVE-DIRECTION.md`](docs/CREATIVE-DIRECTION.md).
 
 ## Schnellstart
 
@@ -18,7 +19,9 @@ Details: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ```
 src/seiten/        Seiteninhalte – hier werden Texte geändert
-src/assets/        Stylesheet (Design-Tokens), Skripte, Schriften, Bilder
+src/assets/        Stylesheet (Design-Tokens), Skripte (site.js, bewegung.js, vendor/), Schriften, Bilder
+scripts/           Generator, Firmendaten, Zeichnungen (zeichnungen.py), Vorschau-Kennzeichnung
+scripts/werkzeuge/3d/  Entwicklungswerkzeug: Wandmodell (three.js), Visualisierungen, GSAP-Kopie
 src/api/           Formular-Backend (PHP) und Konfigurationsvorlage
 src/server/        .htaccess (Sicherheits-Header, CSP, Weiterleitungen)
 data/              firmendaten.env (öffentlich) · projekte.json · faq.json
@@ -34,11 +37,13 @@ strategie/         Strategiepapiere aus der ersten Projektphase
 
 | Dokument | Inhalt |
 |---|---|
+| [`docs/CREATIVE-AUDIT.md`](docs/CREATIVE-AUDIT.md) | Die zehn wichtigsten Schwächen vor dem Premium-Relaunch und ihre Behebung |
+| [`docs/CREATIVE-DIRECTION.md`](docs/CREATIVE-DIRECTION.md) | Leitidee, Farbe, Typografie, Bildsprache, Motion-System, Komponenten, Technologieentscheidungen |
 | [`docs/RELAUNCH-PLAN.md`](docs/RELAUNCH-PLAN.md) | Bestandsaufnahme, Risiken, Architekturentscheidung, Prioritäten, Rückfragen |
 | [`docs/CONTENT-PLAN.md`](docs/CONTENT-PLAN.md) | Headlines, Positionierung, Texte, CTAs, offene Freigaben |
 | [`docs/SEO-PLAN.md`](docs/SEO-PLAN.md) | Suchintentionen, Seitenzuordnung, Titel und Beschreibungen |
 | [`docs/LEGAL-CHECKLIST.md`](docs/LEGAL-CHECKLIST.md) | Datenschutz, Impressum, Gewerberecht, Bildrechte, Barrierefreiheit |
-| [`docs/ASSET-BRIEFS.md`](docs/ASSET-BRIEFS.md) | Bildgruppen, Motivlisten, Formate, Rechte |
+| [`docs/ASSET-BRIEFS.md`](docs/ASSET-BRIEFS.md) | Bildsystem, Motivlisten, Midjourney-Prompts, Content-Briefing, Rechte |
 | [`docs/TESTREPORT.md`](docs/TESTREPORT.md) | was geprüft wurde – und was nicht |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Hosting, Formular einrichten, Weiterleitungen, nginx |
 | [`docs/PFLEGE.md`](docs/PFLEGE.md) | Texte ändern, Projekte veröffentlichen, Fragen ergänzen |
@@ -49,7 +54,8 @@ strategie/         Strategiepapiere aus der ersten Projektphase
 ```
 python3 tests/pruefen.py                          # Build, Drift, Links, SEO-Grundlagen, CSP, Geheimnisse
 python3 tests/formular_test.py                    # Formular-Backend gegen php -S
-cd tests && npm ci && node e2e.mjs                # Browser: 5 Breiten, axe-core, Tastatur, Formular, ohne JS
+cd tests && npm ci && node e2e.mjs                # Browser: 5 Breiten, axe-core, Tastatur, Formular, Fotos,
+                                                  # Rückruf, ohne JS, reduzierte Bewegung, 3D mit/ohne WebGL, Flip
 ```
 Alle drei laufen auch in GitHub Actions (`.github/workflows/vorschau.yml`).
 

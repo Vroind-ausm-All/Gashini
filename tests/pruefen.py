@@ -214,9 +214,53 @@ def t_geheimnisse():
         if muster.search(text): funde.append(f)
     assert not funde, "verdächtige Inhalte in: %s" % funde
 
+@pruefung("Vorschau-Blöcke entfallen in Produktion, offene Angaben sind in der Vorschau markiert")
+def t_vorschau_bloecke():
+    sys.path.insert(0, os.path.join(WURZEL, "scripts"))
+    import importlib
+    fd = importlib.import_module("firmendaten")
+    probe = '<title>X {{ORT}}</title><p>in {{ORT}}</p><a href="tel:{{TEL}}">{{TEL}}</a><!--vorschau--><p class="fotobriefing-notiz">B</p><!--/vorschau-->'
+    werte = {"ORT": "[Ort]", "TEL": "0123"}
+    fd.PRODUKTION = False
+    v = fd.einsetzen(probe, werte, True)
+    assert '<span class="offen"' in v and ">Ort</span>" in v, "Vorschau markiert offene Angaben nicht"
+    assert "<title>X [Ort]</title>" in v, "Platzhalter im Titel darf nicht als HTML markiert werden"
+    assert "fotobriefing-notiz" in v, "Fotobriefing fehlt in der Vorschau"
+    fd.PRODUKTION = True
+    pr = fd.einsetzen(probe, werte, True)
+    assert "fotobriefing-notiz" not in pr and "<!--vorschau" not in pr, "Fotobriefing bleibt im Produktions-Build"
+    assert "offen" not in pr, "Produktion darf keine Vorschau-Markierung enthalten"
+
+@pruefung("Motion- und 3D-Dateien vorhanden, CSP-tauglich (kein eval), Rückfall-Zeichnung im Markup")
+def t_bewegung():
+    js = os.path.join(WURZEL, "web", "assets", "js")
+    for f in ("bewegung.js", "wandaufbau.js", "vendor/gsap.min.js", "vendor/ScrollTrigger.min.js", "vendor/SplitText.min.js",
+              "vendor/DrawSVGPlugin.min.js", "vendor/Flip.min.js", "vendor/LIZENZEN.txt"):
+        assert os.path.isfile(os.path.join(js, f)), "fehlt: " + f
+    for f in ("bewegung.js", "wandaufbau.js", "site.js", "vendor/gsap.min.js", "vendor/ScrollTrigger.min.js", "vendor/SplitText.min.js", "vendor/Flip.min.js"):
+        roh = io.open(os.path.join(js, f), encoding="utf-8").read()
+        assert not re.search(r"\beval\(|new Function\(", roh), "eval/new Function in " + f
+    start = io.open(os.path.join(WURZEL, "web", "index.html"), encoding="utf-8").read()
+    assert "data-wandaufbau" in start and 'class="wandaufbau-rueckfall"' in start and "zg--explosion" in start, "Wandaufbau ohne Rückfall-Zeichnung"
+    impressum = io.open(os.path.join(WURZEL, "web", "impressum", "index.html"), encoding="utf-8").read()
+    assert "gsap.min.js" not in impressum and "wandaufbau.js" not in impressum, "Rechtstexte laden unnötig Bewegungsskripte"
+
+@pruefung("Bildherkunft dokumentiert, keine KI-Bilder als Projektfotos")
+def t_bildherkunft():
+    herkunft = os.path.join(WURZEL, "src", "assets", "bilder", "visualisierung", "HERKUNFT.md")
+    assert os.path.isfile(herkunft), "HERKUNFT.md fehlt"
+    text = io.open(herkunft, encoding="utf-8").read()
+    for f in os.listdir(os.path.dirname(herkunft)):
+        if f.endswith(".webp"):
+            assert re.sub(r"-\d+\.webp$", "", f) in text, "Herkunft nicht dokumentiert: " + f
+    import json
+    for p in json.load(io.open(os.path.join(WURZEL, "data", "projekte.json"), encoding="utf-8"))["projekte"]:
+        for b in p.get("bilder", []):
+            assert not b["datei"].startswith("visualisierung/"), "Visualisierung als Projektbild: %s" % p["id"]
+
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)

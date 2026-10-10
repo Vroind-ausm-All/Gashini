@@ -37,17 +37,21 @@ gemeint ist – ein Label, der Fokus, die aktuelle Seite, ein Fehler.
 
 ## Material und Bewegung
 
-**Material:** Helle Flächen, Haarlinien, eine einzige Materialandeutung – die erzeugte Betonstruktur hinter der
-technischen Zeichnung im Einstieg. Die Holztexturen in `brand/material/` werden nicht verwendet, solange ihre Lizenz
-nicht geklärt ist (siehe `docs/ASSET-BRIEFS.md`). Echte Projektfotos haben immer Vorrang vor Texturen.
+**Material:** Helle Flächen, Haarlinien, die erzeugte Betonstruktur hinter Zeichnungen und Visualisierungen.
+Materialien erscheinen als eigene Renderings des Wandmodells (Stahlprofil, Mineralwolle, Gipsplatte, Spachtel), immer als
+„Visualisierung“ gekennzeichnet. Die Holztexturen in `brand/material/` werden nicht verwendet, solange ihre Lizenz
+nicht geklärt ist (siehe `docs/ASSET-BRIEFS.md`). Echte Projektfotos haben immer Vorrang.
 
-**Bewegung ist Verbesserung, nie Voraussetzung:**
-- Die technische Zeichnung zieht ihre Ständer und Maßlinien beim ersten Laden einmal auf (rund 2 Sekunden).
-- Hover-Zustände: Unterstreichung wächst, Pfeile rücken 4–6 px nach rechts, Projektbilder skalieren auf 102,5 %.
-- Mobilmenü und Bildansicht blenden kurz ein.
-- **Keine** Einblendung beim Scrollen: Inhalte sind immer sofort sichtbar, auch ohne JavaScript, beim Drucken und bei
-  der Suche im Browser.
-- Bei der Systemeinstellung *Bewegung reduzieren* entfällt jede Animation.
+**Bewegung erklärt Aufbau – sie ist Verbesserung, nie Voraussetzung** (vollständig in `docs/CREATIVE-DIRECTION.md`):
+- Engine: GSAP (ScrollTrigger, SplitText, DrawSVG, Flip), lokal ausgeliefert. Kurve `power3.out`, Reveals 0,7–0,9 s.
+- Drei Signature Motions: *Architectural Hero* (Zeilen und Wand bauen sich auf, Beschriftung zeichnet sich),
+  *Wall Construction Experience* (3D-Wandaufbau, auf großen Bildschirmen an den Scroll gekoppelt),
+  *Project Reveal* (Bildmaske entlang der Kante, Filter mit Flip).
+- Ruhezonen ohne Bewegung: Formulare, Rechtstexte, FAQ-Antworten, Fußbereich, je Seite mindestens ein Abschnitt.
+- Hover: Unterstreichung wächst, Pfeile rücken 4–6 px, Bilder skalieren auf 103 %.
+- Ohne JavaScript, beim Drucken und bei *Bewegung reduzieren* ist jeder Inhalt sofort sichtbar; eine CSS-Sicherung
+  zeigt alles nach spätestens 2,5 s, falls ein Skript nicht lädt.
+- Kein Smooth-Scrolling per Bibliothek (Lenis abgelehnt): natives Scrollen bleibt unangetastet.
 
 ## Schriften
 

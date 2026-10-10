@@ -10,13 +10,14 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 
 | Thema | Status | Stand |
 |---|---|---|
-| Keine Cookies, kein lokaler Speicher | ✅ | Kein Skript schreibt Cookies, `localStorage` oder `sessionStorage`. Kein Einwilligungsbanner nötig (§ 25 TDDDG). |
+| Keine Cookies, kein lokaler Speicher | ✅ | Im veröffentlichten Auftritt schreibt kein Skript Cookies, `localStorage` oder `sessionStorage`. Nur die gekennzeichnete **Vorschau** merkt sich im Browser den Schalter „Kundenansicht“ (`localStorage`); der Schalter existiert im Produktions-Build nicht. **Ergebnis der Prüfung: Ein Einwilligungsbanner ist nicht erforderlich** (§ 25 TDDDG), solange keine Analyse-, Karten- oder Social-Dienste ergänzt werden. |
 | Keine Analysewerkzeuge, keine Tracker | ✅ | Bewusster Verzicht. Lead-Quelle wird freiwillig im Formular abgefragt, nicht gemessen. |
-| Schriften lokal | ✅ | Instrument Sans und IBM Plex Mono liegen auf dem eigenen Server. Keine Verbindung zu Google. |
+| Schriften und Bibliotheken lokal | ✅ | Instrument Sans und IBM Plex Mono, GSAP und three.js liegen auf dem eigenen Server. Keine Verbindung zu Google oder CDNs. Auch die Druckvorlagen laden keine Google Fonts mehr. Das 3D-Modell wird vollständig im Browser berechnet. |
 | Keine externen Skripte, Karten, Videos, Social-Embeds | ✅ | Die Testsuite bricht ab, wenn eine Seite eine externe Ressource lädt. |
 | Content-Security-Policy | ✅ | `default-src 'self'`, keine Inline-Skripte, keine Inline-Stile (in `src/server/htaccess`). Gilt nur bei Apache. |
 | Rechtsgrundlage Anfrage | 📄 ⚖️ | Art. 6 Abs. 1 lit. b DSGVO (vorvertraglich), hilfsweise lit. f. **Keine Pflicht-Einwilligungs-Checkbox** mehr – sie war rechtlich nicht nötig und vermischte Rechtsgrundlagen. Hinweis mit Link direkt über dem Absendeknopf (Art. 13). |
-| Datenminimierung im Formular | ✅ | Pflicht: Name, eine Kontaktmöglichkeit, Leistung, Beschreibung. Alles andere freiwillig und gekennzeichnet. |
+| Datenminimierung im Formular | ✅ | Pflicht: Name, eine Kontaktmöglichkeit, Leistung, Beschreibung. Alles andere freiwillig und gekennzeichnet (Rückrufwunsch mit Zeitfenster, Fotos, PLZ, Zeitraum, Quelle). |
+| Foto-Upload | ✅ 📄 👤 | Bis 3 Bilder, Typ am Inhalt geprüft (finfo, getimagesize), neutrale Dateinamen, Übermittlung nur als E-Mail-Anhang, keine dauerhafte Speicherung auf dem Webserver. Hinweis auf Metadaten (Aufnahmeort) und „keine Personen fotografieren“ im Formular und in der Datenschutzerklärung. 👤 Postfach und Löschfrist gelten auch für die Anhänge. |
 | Speicherung Mengenlimit | ✅ 📄 | Nur HMAC-Prüfwert der IP (mit geheimem Schlüssel) und Zeitstempel, Löschung nach spätestens 24 h. Test prüft, dass keine IP im Klartext gespeichert wird. |
 | Server-Protokolle des Formulars | ✅ | `error_log` enthält nur Ereignisse („zugestellt“, „als Spam verworfen“), **keine** Inhalte. |
 | Weitergabe an Partnerbetriebe | 📄 👤 | Nur nach Rücksprache mit dem Anfragenden. Muss im Betrieb tatsächlich so gehandhabt werden. |
@@ -73,7 +74,10 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 | Holztexturen `brand/material/` | 👤 **Herkunft und Lizenz unbekannt.** Werden auf der neuen Website nicht verwendet. Vor jeder Nutzung Lizenz nachweisen. |
 | Projektfotos | ✅ technisch: Freigabefelder je Bild (`rechte.freigabe_kunde`, `fotograf`, `nutzungsrecht`, `ki_generiert`) – ohne Freigabe keine Veröffentlichung. 👤 Freigabe schriftlich einholen. |
 | Personen auf Fotos | 👤 Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, KUG) für Mitarbeitende und Dritte. |
-| KI-Bilder | ✅ Regel im Datenmodell: `ki_generiert: true` verhindert die Veröffentlichung als Projekt. Atmosphärische KI-Bilder nur außerhalb der Galerie und gekennzeichnet (`docs/ASSET-BRIEFS.md`). |
+| KI-Bilder | ✅ Regel im Datenmodell: `ki_generiert: true` verhindert die Veröffentlichung als Projekt. Derzeit wird **kein** KI-Bild verwendet. Atmosphärische KI-Bilder nur außerhalb der Galerie und gekennzeichnet (`docs/ASSET-BRIEFS.md`). |
+| Visualisierungen und Zeichnungen | ✅ eigene Erstellung (three.js-Renderings, SVG). Auf der Website als „Visualisierung“ bzw. „schematische Darstellung“ gekennzeichnet; Herkunft in `src/assets/bilder/visualisierung/HERKUNFT.md`. Ein Test verhindert ihre Verwendung als Projektbild. |
+| Software-Lizenzen | ✅ GSAP 3.15 (Standard „No Charge“ License, kommerzielle Websites erlaubt), three.js (MIT). Hinweise in `src/assets/js/vendor/LIZENZEN.txt`. |
+| Netzwerk ohne erfundene Partner | ✅ 👤 Gewerke sind ausdrücklich als Beispiele gekennzeichnet, keine Partnerzahl. 👤 Tatsächliche Gewerke und Form der Zusammenarbeit bestätigen. |
 
 ## 6. Barrierefreiheit (BFSG)
 
@@ -91,4 +95,5 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 - [ ] AV-Verträge mit Hoster und Mailanbieter abgeschlossen
 - [ ] Impressum und Datenschutzerklärung anwaltlich oder durch einen Generator eines Kammer-/Verbandsangebots gegengeprüft
 - [ ] Bildrechte aller veröffentlichten Fotos dokumentiert
-- [ ] Testanfrage über das Live-Formular abgeschickt und im Postfach angekommen
+- [ ] Testanfrage über das Live-Formular abgeschickt und im Postfach angekommen – einmal mit Foto und Rückrufwunsch
+- [ ] Hinweis: Diese Liste ersetzt keine Rechtsberatung. Eine vollständige DSGVO-Konformität kann erst nach rechtlicher und technischer Freigabe im Betrieb festgestellt werden.

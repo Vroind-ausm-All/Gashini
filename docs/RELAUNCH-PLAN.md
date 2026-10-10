@@ -100,9 +100,10 @@ Es gibt keine Live-Domain und damit keine Rankings. Weiterleitungen dienen nur d
 |---|---|---|
 | `wohnungsuebergabe.html` | zusammengeführt – „Vorbereitung von Mieterwechseln" ist Teil des Hausmeisterservice | `/leistungen/hausmeisterservice/#mieterwechsel` |
 | `haushaltsaufloesung.html` | **ruht** bis zur Bestätigung, dass Entrümpelung weiter angeboten wird (Rückfrage 2) | `/leistungen/` |
-| `preise.html` | **ruht** – es liegen keine bestätigten Preise vor; Kostenfragen beantwortet die FAQ | `/ablauf/#kosten` |
+| `preise.html` | **ruht** – es liegen keine bestätigten Preise vor; Kostenfragen beantwortet die FAQ | `/fragen/#kosten` |
 | `referenzen.html` | ersetzt durch Projektgalerie | `/projekte/` |
-| `leistungen.html`, `ablauf.html`, `ueber-uns.html`, `kontakt.html`, `impressum.html`, `datenschutz.html` | inhaltlich überarbeitet, neue URL | jeweilige Verzeichnis-URL |
+| `leistungen.html`, `ueber-uns.html`, `kontakt.html`, `impressum.html`, `datenschutz.html` | inhaltlich überarbeitet, neue URL | jeweilige Verzeichnis-URL |
+| `ablauf.html`, `/ablauf/` | aufgegangen in „Fragen & Ablauf“ | `/fragen/` |
 | `danke.html` | neue URL | `/kontakt/danke/` |
 
 Die Inhalte der ruhenden Seiten bleiben im Repository (`strategie/`, Git-Historie) erhalten und lassen sich reaktivieren.

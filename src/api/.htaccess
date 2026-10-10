@@ -5,3 +5,15 @@
 <Files "anfrage.php">
   Require all granted
 </Files>
+
+# PHP als Apache-Modul liest .user.ini nicht – dort gelten diese Werte (bei FPM/CGI wirkungslos und unschädlich).
+<IfModule mod_php.c>
+  php_value upload_max_filesize 8M
+  php_value post_max_size 14M
+  php_value max_file_uploads 5
+</IfModule>
+<IfModule mod_php7.c>
+  php_value upload_max_filesize 8M
+  php_value post_max_size 14M
+  php_value max_file_uploads 5
+</IfModule>

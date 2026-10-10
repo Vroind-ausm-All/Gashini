@@ -17,8 +17,14 @@ declare(strict_types=1);
 
 const LEISTUNGEN = ['Trockenbau & Innenausbau', 'Hausmeisterservice', 'Reparatur & Instandhaltung', 'Mehrere Arbeiten / noch unklar'];
 const QUELLEN = ['Google-Suche', 'Google-Profil / Karte', 'MyHammer', 'Empfehlung', 'Fahrzeug oder Flyer', 'Sonstiges'];
-const LAENGEN = ['name' => 100, 'email' => 254, 'telefon' => 40, 'leistung' => 80, 'nachricht' => 4000, 'ort' => 100, 'zeitraum' => 100, 'quelle' => 60];
+const RUECKRUFZEITEN = ['Vormittags (8–12 Uhr)', 'Mittags (12–14 Uhr)', 'Nachmittags (14–18 Uhr)'];
+const LAENGEN = ['name' => 100, 'email' => 254, 'telefon' => 40, 'leistung' => 80, 'nachricht' => 4000, 'ort' => 100, 'zeitraum' => 100, 'quelle' => 60, 'rueckrufzeit' => 40];
 const MIN_AUSFUELLZEIT = 3;
+const MAX_FOTOS = 3;
+const MAX_FOTO_BYTES = 8 * 1024 * 1024;        // je Foto
+const MAX_FOTOS_GESAMT = 12 * 1024 * 1024;     // alle Fotos zusammen
+const MAX_ANFRAGE_BYTES = 13 * 1024 * 1024;    // gesamte Übermittlung (Fotos + Text + Rahmen)
+const FOTO_TYPEN = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store');
@@ -44,8 +50,13 @@ if ($herkunft !== '' && !herkunft_erlaubt($herkunft, $konfig)) {
     antworten(403, ['ok' => false, 'meldung' => 'Die Anfrage wurde nicht von dieser Website gesendet.'], $will_json);
 }
 
-if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 20000) {
-    antworten(413, ['ok' => false, 'meldung' => 'Die Anfrage ist zu groß. Bitte kürzen Sie die Beschreibung.'], $will_json);
+if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > MAX_ANFRAGE_BYTES) {
+    antworten(413, ['ok' => false, 'fehler' => ['fotos' => 'Die Fotos sind zusammen zu groß (höchstens 12 MB).'],
+        'meldung' => 'Die Anfrage ist zu groß. Bitte senden Sie weniger oder kleinere Fotos.'], $will_json);
+}
+// Überschreitet die Übermittlung post_max_size, verwirft PHP alle Felder – das ist dann kein leeres Formular.
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && empty($_POST) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+    antworten(413, ['ok' => false, 'meldung' => 'Die Anfrage konnte wegen ihrer Größe nicht angenommen werden. Bitte senden Sie weniger oder kleinere Fotos.'], $will_json);
 }
 
 if (!limit_einhalten($_SERVER['REMOTE_ADDR'] ?? '', $konfig)) {
@@ -74,16 +85,20 @@ $d = [
     'ort'       => feld('ort', false),
     'zeitraum'  => feld('zeitraum', false),
     'quelle'    => feld('quelle', false),
+    'rueckruf'  => feld('rueckruf', false) === 'ja' ? 'ja' : '',
+    'rueckrufzeit' => feld('rueckrufzeit', false),
 ];
 
 $fehler = pruefen($d);
+[$fotos, $fotofehler] = fotos_lesen();
+if ($fotofehler !== '') $fehler['fotos'] = $fotofehler;
 if ($fehler) {
     antworten(422, ['ok' => false, 'fehler' => $fehler,
         'meldung' => count($fehler) === 1 ? 'Ein Feld muss noch korrigiert werden.' : count($fehler) . ' Felder müssen noch korrigiert werden.'], $will_json);
 }
 
 $ref = referenz();
-if (!zustellen($d, $ref, $konfig)) {
+if (!zustellen($d, $fotos, $ref, $konfig)) {
     antworten(502, ['ok' => false, 'meldung' => 'Die Anfrage konnte gerade nicht zugestellt werden. Ihre Eingaben sind nicht verloren – bitte versuchen Sie es in einigen Minuten erneut oder rufen Sie uns an.'], $will_json);
 }
 
@@ -161,7 +176,44 @@ function pruefen(array $d): array
     if ($d['nachricht'] === '') $f['nachricht'] = 'Bitte beschreiben Sie kurz Ihr Vorhaben.';
     elseif (!isset($f['nachricht']) && mb_strlen($d['nachricht']) < 10) $f['nachricht'] = 'Bitte beschreiben Sie Ihr Vorhaben in ein paar Worten mehr.';
     if ($d['quelle'] !== '' && !in_array($d['quelle'], QUELLEN, true)) $f['quelle'] = 'Ungültige Auswahl.';
+    if ($d['rueckruf'] === 'ja' && $d['telefon'] === '' && !isset($f['telefon'])) $f['telefon'] = 'Für einen Rückruf brauchen wir Ihre Telefonnummer.';
+    if ($d['rueckrufzeit'] !== '' && !in_array($d['rueckrufzeit'], RUECKRUFZEITEN, true)) $f['rueckrufzeit'] = 'Ungültige Auswahl.';
     return $f;
+}
+
+/**
+ * Liest bis zu drei hochgeladene Fotos. Der Typ wird am Inhalt erkannt (finfo, getimagesize),
+ * nie an Dateiname oder Browserangabe. Gibt [Liste, Fehlertext] zurück; Dateien bleiben im
+ * temporären Upload-Verzeichnis und werden nach der Anfrage von PHP gelöscht.
+ */
+function fotos_lesen(): array
+{
+    $roh = $_FILES['fotos'] ?? null;
+    if (!$roh || !is_array($roh['name'] ?? null)) return [[], ''];
+    $fotos = [];
+    $summe = 0;
+    $anzahl = 0;
+    foreach ($roh['name'] as $i => $name) {
+        $fehlercode = (int)($roh['error'][$i] ?? UPLOAD_ERR_NO_FILE);
+        if ($fehlercode === UPLOAD_ERR_NO_FILE) continue;
+        $anzahl++;
+        if ($anzahl > MAX_FOTOS) return [[], 'Bitte senden Sie höchstens ' . MAX_FOTOS . ' Fotos.'];
+        if (in_array($fehlercode, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)) return [[], 'Ein Foto ist zu groß (höchstens 8 MB je Foto).'];
+        if ($fehlercode !== UPLOAD_ERR_OK) return [[], 'Ein Foto konnte nicht übertragen werden. Bitte versuchen Sie es erneut.'];
+        $tmp = (string)$roh['tmp_name'][$i];
+        if (!is_uploaded_file($tmp)) return [[], 'Ein Foto konnte nicht übertragen werden.'];
+        $groesse = (int)filesize($tmp);
+        if ($groesse <= 0 || $groesse > MAX_FOTO_BYTES) return [[], 'Ein Foto ist zu groß (höchstens 8 MB je Foto).'];
+        $summe += $groesse;
+        if ($summe > MAX_FOTOS_GESAMT) return [[], 'Die Fotos sind zusammen zu groß (höchstens 12 MB).'];
+        $typ = (new finfo(FILEINFO_MIME_TYPE))->file($tmp) ?: '';
+        $info = @getimagesize($tmp);
+        if (!isset(FOTO_TYPEN[$typ]) || !$info || ($info['mime'] ?? '') !== $typ) {
+            return [[], 'Bitte nur Fotos als JPEG, PNG oder WebP hochladen.'];
+        }
+        $fotos[] = ['pfad' => $tmp, 'typ' => $typ, 'name' => 'foto-' . (count($fotos) + 1) . '.' . FOTO_TYPEN[$typ]];
+    }
+    return [$fotos, ''];
 }
 
 /** Datei-basiertes Mengenlimit je IP (als HMAC-Prüfwert gespeichert) und insgesamt. */
@@ -217,9 +269,9 @@ function kopfwert(string $s): string
     return trim(str_replace(["\r", "\n", "\0"], ' ', $s));
 }
 
-function zustellen(array $d, string $ref, array $k): bool
+function zustellen(array $d, array $fotos, string $ref, array $k): bool
 {
-    $betreff = 'Anfrage ' . $ref . ': ' . $d['leistung'] . ' – ' . mb_substr($d['name'], 0, 60);
+    $betreff = 'Anfrage ' . $ref . ': ' . ($d['rueckruf'] === 'ja' ? 'Rückruf – ' : '') . $d['leistung'] . ' – ' . mb_substr($d['name'], 0, 60);
     $zeilen = [
         'Neue Anfrage über die Website (Vorgang ' . $ref . ')',
         str_repeat('=', 48),
@@ -227,6 +279,7 @@ function zustellen(array $d, string $ref, array $k): bool
         'Name:      ' . $d['name'],
         'E-Mail:    ' . ($d['email'] ?: '–'),
         'Telefon:   ' . ($d['telefon'] ?: '–'),
+        'Rückruf:   ' . ($d['rueckruf'] === 'ja' ? 'erwünscht' . ($d['rueckrufzeit'] !== '' ? ', ' . $d['rueckrufzeit'] : '') : 'nein'),
         'Leistung:  ' . $d['leistung'],
         'Ort:       ' . ($d['ort'] ?: '–'),
         'Zeitraum:  ' . ($d['zeitraum'] ?: '–'),
@@ -234,6 +287,8 @@ function zustellen(array $d, string $ref, array $k): bool
         '',
         'Vorhaben:',
         $d['nachricht'],
+        '',
+        'Fotos:     ' . (count($fotos) ? count($fotos) . ' im Anhang' : 'keine'),
         '',
         '-- ',
         'Diese Nachricht wurde automatisch vom Anfrageformular erzeugt.',
@@ -254,6 +309,22 @@ function zustellen(array $d, string $ref, array $k): bool
     ];
     if ($d['email'] !== '' && filter_var($d['email'], FILTER_VALIDATE_EMAIL)) {
         $koepfe['Reply-To'] = '<' . kopfwert($d['email']) . '>';
+    }
+    if ($fotos) {
+        // multipart/mixed: Text plus Fotos als Base64-Anhänge
+        $grenze = '=_gashini_' . bin2hex(random_bytes(12));
+        $koepfe['Content-Type'] = 'multipart/mixed; boundary="' . $grenze . '"';
+        unset($koepfe['Content-Transfer-Encoding']);
+        $teile = "Diese Nachricht besteht aus mehreren Teilen.\r\n\r\n--" . $grenze . "\r\n"
+            . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n" . $text;
+        foreach ($fotos as $f) {
+            $teile .= "\r\n--" . $grenze . "\r\n"
+                . 'Content-Type: ' . $f['typ'] . '; name="' . $f['name'] . "\"\r\n"
+                . "Content-Transfer-Encoding: base64\r\n"
+                . 'Content-Disposition: attachment; filename="' . $f['name'] . "\"\r\n\r\n"
+                . chunk_split(base64_encode((string)file_get_contents($f['pfad'])), 76, "\r\n");
+        }
+        $text = $teile . "\r\n--" . $grenze . "--\r\n";
     }
     $betreff_kodiert = mb_encode_mimeheader(kopfwert($betreff), 'UTF-8', 'B', "\r\n");
     $empfaenger = kopfwert($k['empfaenger']);

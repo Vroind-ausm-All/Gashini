@@ -4,14 +4,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Über uns und unser Netzwerk | Gashini</title>
-<meta name="description" content="Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wie wir arbeiten und wie die Zusammenarbeit mit Partnerbetrieben geregelt ist.">
+<title>Über uns – inhabergeführt in {{ORT}} | Gashini</title>
+<meta name="description" content="Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer wir sind, wie wir arbeiten und woran Sie uns messen können.">
 <link rel="canonical" href="https://{{DOMAIN}}/ueber-uns/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:site_name" content="Gashini Dienstleistungen">
-<meta property="og:title" content="Über uns und unser Netzwerk | Gashini">
-<meta property="og:description" content="Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wie wir arbeiten und wie die Zusammenarbeit mit Partnerbetrieben geregelt ist.">
+<meta property="og:title" content="Über uns – inhabergeführt in {{ORT}} | Gashini">
+<meta property="og:description" content="Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer wir sind, wie wir arbeiten und woran Sie uns messen können.">
 <meta property="og:url" content="https://{{DOMAIN}}/ueber-uns/">
 <meta name="theme-color" content="#FAFAF8">
 <link rel="icon" href="../assets/marke/favicon.svg" type="image/svg+xml">
@@ -19,6 +19,11 @@
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/frueh.js"></script>
 <script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/vendor/gsap.min.js" defer></script>
+<script src="../assets/js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../assets/js/vendor/SplitText.min.js" defer></script>
+<script src="../assets/js/vendor/DrawSVGPlugin.min.js" defer></script>
+<script src="../assets/js/bewegung.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Start", "item": "https://{{DOMAIN}}/"}, {"@type": "ListItem", "position": 2, "name": "Über uns"}]}</script>
 </head>
 <body>
@@ -28,80 +33,90 @@
     <a class="marke" href="../" aria-label="Gashini Dienstleistungen – Startseite"><img src="../assets/marke/logo.svg" width="254" height="80" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
-      <ul><li><a href="../leistungen/">Leistungen</a></li><li><a href="../projekte/">Projekte</a></li><li><a href="../ueber-uns/" aria-current="page">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
+      <ul><li><a href="../leistungen/">Leistungen</a></li><li><a href="../projekte/">Projekte</a></li><li><a href="../netzwerk/">Netzwerk</a></li><li><a href="../ueber-uns/" aria-current="page">Über uns</a></li><li><a href="../kontakt/">Kontakt</a></li></ul>
       <div class="hauptnav-fuss">
-        <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
       </div>
     </nav>
     <div class="kopf-aktion">
       <a class="kopf-telefon" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
-      <a class="knopf knopf--primaer" href="../kontakt/">Projekt anfragen</a>
+      <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfrage stellen</a>
     </div>
   </div>
 </header>
 <main id="inhalt" tabindex="-1">
 <header class="seitenkopf">
-  <div class="rahmen">
-    <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../">Start</a></li><li aria-current="page">Über uns</li></ol></nav>
-    <p class="label">Über uns</p>
-    <h1>Ein Betrieb, ein Ansprechpartner</h1>
-    <p class="einleitung">Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer anruft, spricht mit jemandem, der die Arbeit kennt – und sie in den meisten Fällen selbst ausführt.</p>
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      <nav class="brotkrumen" aria-label="Brotkrumen"><ol><li><a href="../">Start</a></li><li aria-current="page">Über uns</li></ol></nav>
+      <p class="label">Über uns</p>
+      <h1 data-zeilen>Ein Betrieb. Ein Ansprechpartner.</h1>
+      <p class="editorial-einstieg">Gashini Dienstleistungen ist ein inhabergeführter Betrieb in {{ORT}}. Wer anruft, spricht mit jemandem, der die Arbeit kennt – und sie in den meisten Fällen selbst ausführt.</p>
+    </div>
   </div>
 </header>
 
-<section class="abschnitt">
+<section class="abschnitt" aria-labelledby="inhaber-titel">
   <div class="rahmen raster">
     <div class="sp-halb-l">
+      <figure class="portrait"><div class="portrait-flaeche portrait-flaeche--signet"><img src="../assets/marke/signet.svg" width="72" height="72" alt="" loading="lazy"></div><!--vorschau--><p class="fotobriefing-notiz"><strong>Fotobriefing</strong>Motiv: Der Inhaber bei der Arbeit oder am Firmenfahrzeug, Blick zur Kamera, Arbeitskleidung · Format: Hochformat 4:5, mindestens 1600 px hoch · Licht: Tageslicht, kein Blitz, ruhiger Hintergrund. Datei als <span class="mono">src/assets/bilder/fotos/inhaber-1280.webp</span> ablegen (zusätzlich -640 und -1920).</p><!--/vorschau--></figure>
+    </div>
+    <div class="sp-halb-r" data-zeigen>
       <p class="label">Inhaber</p>
-      <h2>{{INHABER}}</h2>
-      <p>{{INHABER_TEXT}}</p>
-    </div>
-    <div class="sp-halb-r">
-      <figure class="portrait">
-        <div class="portrait-flaeche" role="img" aria-label="Platz für ein Porträtfoto des Inhabers"><span class="mono">Porträt des Inhabers<br>Foto folgt</span></div>
-        <figcaption class="bildunterschrift">Ein eigenes Foto bei der Arbeit oder am Fahrzeug – keine Agenturaufnahme.</figcaption>
-      </figure>
+      <h2 id="inhaber-titel">{{INHABER}}</h2>
+      <p class="einleitung">{{INHABER_TEXT}}</p>
+      <p class="gedaempft">Kein Callcenter, keine Vermittlungsplattform: Ihre Anfrage landet direkt im Betrieb.</p>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Arbeitsweise</p>
-      <h2>Woran Sie uns messen können</h2>
-    </div>
-    <div class="sp-inhalt">
-      <ul class="leistungsliste">
-        <li><div class="eintrag"><h3>Erreichbar</h3><p>Sie haben einen festen Ansprechpartner – keine Zentrale, keine Warteschleife.</p></div></li>
-        <li><div class="eintrag"><h3>Offen über Grenzen</h3><p>Was wir nicht dürfen oder nicht gut können, sagen wir beim ersten Gespräch.</p></div></li>
-        <li><div class="eintrag"><h3>Klar bei Partnern</h3><p>Ist ein anderer Betrieb beteiligt, wissen Sie vorher, wer es ist und wer Ihr Vertragspartner ist.</p></div></li>
-        <li><div class="eintrag"><h3>Ordentlich</h3><p>Wir hinterlassen den Arbeitsplatz so, wie wir ihn selbst vorfinden möchten.</p></div></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="abschnitt dunkel" id="netzwerk" aria-labelledby="netzwerk-titel">
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="arbeitsweise-titel">
   <div class="rahmen">
-    <div class="raster">
-      <div class="sp-breit">
-        <p class="label label--hell">Netzwerk</p>
-        <h2 id="netzwerk-titel">Für vieles der richtige Ansprechpartner. Für Weiteres die richtigen Kontakte.</h2>
-        <p class="einleitung">Über die Jahre ist ein Netzwerk aus Fachbetrieben entstanden, mit denen wir regelmäßig zusammenarbeiten. Das heißt nicht, dass wir jedes Gewerk anbieten – sondern dass wir wissen, wen wir fragen.</p>
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Arbeitsweise</p>
+        <h2 id="arbeitsweise-titel" data-zeilen>Woran Sie uns messen können</h2>
       </div>
     </div>
-    <ul class="zustaendigkeit">
-      <li><span class="wer">Wir selbst</span><h3>Eigene Leistung</h3><p>Trockenbau, Hausmeisterservice, Reparatur und Instandhaltung im Rahmen unseres Gewerbes. Wir führen aus, wir rechnen ab, wir haften.</p><span class="vertrag">Ihr Vertragspartner: Gashini</span></li>
-      <li><span class="wer">Mit Partnern</span><h3>Koordinierte Gewerke</h3><p>Wenn mehrere Gewerke ineinandergreifen, stimmen wir Termine und Reihenfolge ab. Der Fachbetrieb führt die Arbeiten seines Gewerks aus.</p><span class="vertrag">Vertragspartner: steht vor Beginn im Angebot</span></li>
-      <li><span class="wer">Empfehlung</span><h3>Kontakt zum Fachbetrieb</h3><p>Für Arbeiten, die wir nicht koordinieren, nennen wir Ihnen einen Betrieb. Sie vereinbaren direkt mit ihm.</p><span class="vertrag">Ihr Vertragspartner: der Fachbetrieb</span></li>
-    </ul>
-    <p class="redaktion">[FREIGABE ERFORDERLICH: Gewerke im Netzwerk und Form der Zusammenarbeit bestätigen – Subunternehmer unter eigener Rechnung, Koordination oder reine Empfehlung. Erst danach Gewerke namentlich nennen.]</p>
+    <ol class="grundsaetze">
+      <li data-zeigen><h3>Erreichbar</h3><p>Sie haben einen festen Ansprechpartner – keine Zentrale, keine Warteschleife.</p></li>
+      <li data-zeigen><h3>Offen über Grenzen</h3><p>Was wir nicht dürfen oder nicht gut können, sagen wir beim ersten Gespräch – nicht erst auf der Baustelle.</p></li>
+      <li data-zeigen><h3>Klar bei Partnern</h3><p>Ist ein anderer Betrieb beteiligt, wissen Sie vorher, wer es ist und wer Ihr Vertragspartner ist.</p></li>
+      <li data-zeigen><h3>Ordentlich</h3><p>Wir hinterlassen den Arbeitsplatz so, wie wir ihn selbst vorfinden möchten – abgedeckt, gereinigt, ohne Reste.</p></li>
+    </ol>
   </div>
 </section>
 
-<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel">Was steht bei Ihnen an?</h2><p class="einleitung">Erzählen Sie uns von Ihrem Vorhaben – auch wenn es nur eine kleine Arbeit ist.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/">Unverbindlich anfragen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
+<!--vorschau-->
+<section class="abschnitt nur-redaktion" aria-labelledby="einblicke-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Einblicke</p>
+        <h2 id="einblicke-titel">Fotos, die hier entstehen sollen</h2>
+        <p class="einleitung">Diese Briefings erscheinen nur in der Vorschau. Sobald eigene Fotos vorliegen, ersetzen sie die Briefings; ohne Fotos entfällt der Abschnitt im veröffentlichten Auftritt.</p>
+      </div>
+    </div>
+    <ul class="einblicke">
+      <li class="fotobriefing-notiz"><strong>Fotobriefing</strong>Motiv: Werkzeug und Material vor einer Baustelle, ordentlich ausgelegt<br>Format: Querformat 3:2 · Licht: Tageslicht, seitlich<br>Datei: <span class="mono">fotos/einblick-werkzeug-1280.webp</span></li>
+      <li class="fotobriefing-notiz"><strong>Fotobriefing</strong>Motiv: Firmenfahrzeug vor einem Objekt, Logo lesbar, keine Kennzeichen<br>Format: Querformat 3:2 · Licht: Tageslicht, bedeckter Himmel<br>Datei: <span class="mono">fotos/einblick-fahrzeug-1280.webp</span></li>
+      <li class="fotobriefing-notiz"><strong>Fotobriefing</strong>Motiv: Detail einer frisch gespachtelten Fuge im Streiflicht<br>Format: Querformat 3:2 · Licht: Streiflicht von der Seite<br>Datei: <span class="mono">fotos/einblick-detail-1280.webp</span></li>
+    </ul>
+  </div>
+</section>
+<!--/vorschau-->
+
+<section class="ruhe abschnitt--linie" aria-labelledby="netz-titel">
+  <div class="rahmen raster">
+    <div class="sp-lang">
+      <h2 id="netz-titel" class="leitsatz">Was wir nicht selbst machen, machen wir nicht nach. <em>Dafür gibt es Fachbetriebe – und wir wissen, wen wir fragen.</em></h2>
+      <p><a class="textlink" href="../netzwerk/">Netzwerk &amp; Zusammenarbeit <span class="pfeil" aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<section class="abschluss" aria-labelledby="abschluss-titel"><div class="rahmen"><p class="label">Kontakt</p><h2 id="abschluss-titel" data-zeilen>Lernen wir uns kennen.</h2><p class="einleitung">Rufen Sie an oder schreiben Sie uns – auch wenn Sie noch nicht genau wissen, was gemacht werden soll.</p><div class="knopf-reihe"><a class="knopf knopf--primaer" href="../kontakt/#anfrage">Kontakt aufnehmen <span class="pfeil" aria-hidden="true">→</span></a></div><p class="abschluss-kontakt"><a href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p></div></section>
 </main>
 <footer class="fuss">
   <div class="rahmen">
@@ -114,9 +129,9 @@
         <h2>Leistungen</h2>
         <ul>
           <li><a href="../leistungen/trockenbau/">Trockenbau &amp; Innenausbau</a></li>
-          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
           <li><a href="../leistungen/reparatur-und-instandhaltung/">Reparatur &amp; Instandhaltung</a></li>
-          <li><a href="../ueber-uns/#netzwerk">Koordination weiterer Gewerke</a></li>
+          <li><a href="../leistungen/hausmeisterservice/">Hausmeisterservice</a></li>
+          <li><a href="../netzwerk/">Netzwerk &amp; Zusammenarbeit</a></li>
         </ul>
       </div>
       <div>
@@ -124,7 +139,7 @@
         <ul>
           <li><a href="../projekte/">Projekte</a></li>
           <li><a href="../ueber-uns/">Über uns</a></li>
-          <li><a href="../ablauf/">Ablauf &amp; Fragen</a></li>
+          <li><a href="../fragen/">Fragen &amp; Ablauf</a></li>
           <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
           <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
@@ -146,7 +161,7 @@
 </footer>
 <nav class="kontaktleiste" aria-label="Schnellkontakt">
   <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
-  <a class="knopf knopf--primaer" href="../kontakt/">Anfragen</a>
+  <a class="knopf knopf--primaer" href="../kontakt/#anfrage">Anfragen</a>
 </nav>
 </body>
 </html>

@@ -1,111 +1,101 @@
 <!--
-titel: Trockenbau & Hausmeisterservice in {{ORT}} | Gashini Dienstleistungen
+titel: Trockenbau, Reparaturen & Hausmeisterservice in {{ORT}} | Gashini
 og_titel: Gashini Dienstleistungen – Kleine Arbeiten. Großes Netzwerk. Ein Ansprechpartner.
-beschreibung: Trockenbau, Hausmeisterservice und Reparaturen rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.
+beschreibung: Trockenbau, Reparaturen und Hausmeisterservice rund um Ihre Immobilie in {{REGION}}. Auch kleine Arbeiten – persönlich betreut, bei Bedarf mit Fachbetrieben abgestimmt.
 pfad: /
 prioritaet: 1.0
 jsonld: firma
+vorladen: visualisierung/wand-schnitt
 -->
-<section class="einstieg" aria-labelledby="einstieg-titel">
-  <div class="rahmen raster">
-    <div class="einstieg-text">
+<section class="buehne" aria-labelledby="buehne-titel">
+  <div class="rahmen buehne-raster">
+    <div class="buehne-text">
       <p class="label">Gashini Dienstleistungen · {{REGION}}</p>
-      <h1 id="einstieg-titel"><span class="zeile">Kleine Arbeiten.</span><span class="zeile">Großes Netzwerk.</span><span class="zeile zeile--akzent">Ein Ansprechpartner.</span></h1>
-      <p class="einstieg-unterzeile">Trockenbau, Hausmeisterservice und individuelle Arbeiten rund um Ihre Immobilie – persönlich betreut und bei Bedarf mit qualifizierten Partnern abgestimmt.</p>
+      <h1 id="buehne-titel" class="buehne-titel"><span class="zeile"><span>Kleine Arbeiten.</span></span> <span class="zeile"><span>Großes Netzwerk.</span></span> <span class="zeile zeile--leise"><span>Ein Ansprechpartner.</span></span></h1>
+      <p class="buehne-unter">Trockenbau, Reparaturen und Hausmeisterservice rund um Ihre Immobilie – sauber geplant, ordentlich ausgeführt und bei Bedarf mit Fachbetrieben abgestimmt.</p>
       <div class="knopf-reihe">
-        <a class="knopf knopf--primaer" href="@/kontakt/">Projekt anfragen <span class="pfeil" aria-hidden="true">→</span></a>
-        <a class="knopf knopf--sekundaer" href="@/projekte/">Arbeiten ansehen</a>
+        <a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Vorhaben beschreiben <span class="pfeil" aria-hidden="true">→</span></a>
+        <a class="knopf knopf--sekundaer" href="#wandaufbau">So entsteht eine Wand</a>
       </div>
-      <ul class="einstieg-fakten" aria-label="Leistungsbereiche">
-        <li>Trockenbau</li><li>Hausmeisterservice</li><li>Reparatur &amp; Instandhaltung</li><li>Koordination</li>
+      <ul class="buehne-fakten" aria-label="Leistungsbereiche">
+        <li>Trockenbau</li><li>Reparatur</li><li>Hausmeisterservice</li><li>Koordination</li>
       </ul>
     </div>
-    <div class="einstieg-bild">
-      [[zeichnung]]
-    </div>
+    [[visual-schnitt]]
   </div>
 </section>
 
 <section class="abschnitt abschnitt--linie" aria-labelledby="leistungen-titel">
-  <div class="rahmen raster">
-    <div class="sp-kopf">
-      <p class="label">Leistungen</p>
-      <h2 id="leistungen-titel">Was wir übernehmen</h2>
-      <p class="gedaempft">Vier Bereiche, ein Ansprechpartner. Was wir nicht selbst ausführen, sagen wir offen – und vermitteln, wenn wir können.</p>
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Leistungen</p>
+        <h2 id="leistungen-titel" data-zeilen>Drei Bereiche, die wir selbst ausführen.</h2>
+      </div>
+      <a class="textlink" href="@/leistungen/">Alle Leistungen <span class="pfeil" aria-hidden="true">→</span></a>
     </div>
-    <div class="sp-inhalt">
-      <ul class="leistungsliste">
-        <li><a href="@/leistungen/trockenbau/"><h3>Trockenbau &amp; Innenausbau</h3><p>Trennwände, Vorsatzschalen, abgehängte Decken und Anpassungen im Bestand.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="@/leistungen/hausmeisterservice/"><h3>Hausmeisterservice</h3><p>Objektbetreuung, kleinere Arbeiten und laufende Unterstützung rund um die Immobilie.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="@/leistungen/reparatur-und-instandhaltung/"><h3>Reparatur &amp; Instandhaltung</h3><p>Praktische Hilfe bei Arbeiten, die nicht liegen bleiben sollen.</p><span class="pfeil" aria-hidden="true">→</span></a></li>
-        <li><a href="@/ueber-uns/#netzwerk"><h3>Koordination weiterer Gewerke</h3><p>Bei zusätzlichem Fachbedarf stimmen wir die Arbeiten mit geeigneten Partnerbetrieben ab.<span class="netzwerk-hinweis">Ausführung durch Partnerbetriebe</span></p><span class="pfeil" aria-hidden="true">→</span></a></li>
-      </ul>
+    [[leistungskarten]]
+    <div class="koordination-zeile" data-zeigen>
+      <h3>Koordination weiterer Gewerke</h3>
+      <p>Braucht ein Vorhaben mehr als ein Gewerk, stimmen wir die Arbeiten mit Fachbetrieben ab – und sagen vorher, wer was macht und wer Ihr Vertragspartner ist.</p>
+      <a class="textlink" href="@/netzwerk/">Zum Netzwerk <span class="pfeil" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
-<section class="abschnitt abschnitt--flaeche" aria-labelledby="klein-titel">
+<section class="ruhe abschnitt--flaeche" aria-labelledby="klein-titel">
   <div class="rahmen raster">
-    <div class="sp-halb-l">
+    <div class="sp-lang">
       <p class="label">Auch kleine Aufträge</p>
-      <h2 id="klein-titel">Nicht jedes Vorhaben braucht eine Großbaustelle.</h2>
-      <p class="einleitung">Viele Arbeiten an einer Immobilie sind überschaubar – und bleiben gerade deshalb liegen, weil sich niemand dafür zuständig fühlt. Genau dafür sind wir da.</p>
-      <p class="gedaempft">Schreiben Sie uns auch dann, wenn Sie unsicher sind, ob sich die Anfrage lohnt. Passt es nicht zu uns, sagen wir es Ihnen direkt.</p>
+      <h2 id="klein-titel" class="leitsatz">Nicht jedes Vorhaben braucht eine Großbaustelle. <em>Manches braucht nur jemanden, der es ordentlich erledigt.</em></h2>
     </div>
     <div class="sp-halb-r">
-      <ul class="situationen" aria-label="Typische Anlässe">
-        <li>Eine Wand ergänzen oder verändern</li>
-        <li>Eine Wohnung für neue Mieter vorbereiten</li>
-        <li>Kleinere Mängel beheben, bevor sie größer werden</li>
-        <li>Einen einzelnen Raum modernisieren</li>
-        <li>Laufende Objektpflege, ohne selbst hinzufahren</li>
-      </ul>
+      <p class="einleitung">Die Tür, die schleift. Das Loch nach dem Umzug. Die Wohnung zwischen zwei Mietern. Gerade die überschaubaren Arbeiten bleiben liegen, weil sich niemand zuständig fühlt. Genau dafür sind wir da.</p>
+      <p><a class="textlink" href="@/leistungen/reparatur-und-instandhaltung/">Beispiele aus dem Alltag <span class="pfeil" aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
+
+[[wandaufbau]]
 
 <section class="abschnitt" aria-labelledby="projekte-titel">
   <div class="rahmen">
-    <div class="raster">
-      <div class="sp-breit">
+    <div class="kopfzeile">
+      <div>
         <p class="label">Projekte</p>
-        <h2 id="projekte-titel">Ausgewählte Arbeiten</h2>
+        <h2 id="projekte-titel" data-zeilen>Ausgewählte Arbeiten</h2>
       </div>
-      <div class="sp-schmal-r projekte-link"><a class="textlink" href="@/projekte/">Alle Projekte <span class="pfeil" aria-hidden="true">→</span></a></div>
+      <a class="textlink" href="@/projekte/">Alle Projekte <span class="pfeil" aria-hidden="true">→</span></a>
     </div>
     [[projekte-vorschau]]
   </div>
 </section>
 
-<section class="abschnitt dunkel" id="netzwerk-kurz" aria-labelledby="netzwerk-titel">
+<section class="abschnitt dunkel" aria-labelledby="netzwerk-titel">
   <div class="rahmen">
-    <div class="raster">
-      <div class="sp-breit">
+    <div class="kopfzeile">
+      <div>
         <p class="label label--hell">Netzwerk</p>
-        <h2 id="netzwerk-titel">Für vieles der richtige Ansprechpartner. Für Weiteres die richtigen Kontakte.</h2>
-        <p class="einleitung">Rund um eine Immobilie fallen oft Arbeiten mehrerer Gewerke an. Wir übernehmen, was in unseren Leistungsumfang fällt – und arbeiten für alles Weitere mit Fachbetrieben zusammen, die wir kennen.</p>
+        <h2 id="netzwerk-titel" data-zeilen>Ein Ansprechpartner. Die richtigen Kontakte für alles Weitere.</h2>
+        <p class="einleitung">Rund um eine Immobilie fallen oft Arbeiten mehrerer Gewerke an. Wir übernehmen, was in unseren Leistungsumfang fällt, und stimmen alles Weitere mit Fachbetrieben ab.</p>
       </div>
+      <a class="textlink" href="@/netzwerk/">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a>
     </div>
-    <ul class="zustaendigkeit">
-      <li><span class="wer">Wir selbst</span><h3>Eigene Leistung</h3><p>Trockenbau, Hausmeisterservice, Reparatur und Instandhaltung im Rahmen unseres Gewerbes.</p><span class="vertrag">Ihr Vertragspartner: Gashini</span></li>
-      <li><span class="wer">Mit Partnern</span><h3>Koordinierte Gewerke</h3><p>Wir stimmen Termine und Reihenfolge mit einem Fachbetrieb ab, damit die Arbeiten ineinandergreifen.</p><span class="vertrag">Vertragspartner: steht vor Beginn im Angebot</span></li>
-      <li><span class="wer">Empfehlung</span><h3>Kontakt zum Fachbetrieb</h3><p>Für Arbeiten, die wir nicht koordinieren, nennen wir Ihnen einen Betrieb, mit dem Sie direkt vereinbaren.</p><span class="vertrag">Ihr Vertragspartner: der Fachbetrieb</span></li>
-    </ul>
-    <p class="netzwerk-link"><a class="textlink" href="@/ueber-uns/#netzwerk">Wie die Zusammenarbeit funktioniert <span class="pfeil" aria-hidden="true">→</span></a></p>
+    [[netzwerk]]
   </div>
 </section>
 
 <section class="abschnitt" aria-labelledby="ablauf-titel">
   <div class="rahmen">
-    <div class="raster">
-      <div class="sp-breit">
+    <div class="kopfzeile">
+      <div>
         <p class="label">Ablauf</p>
-        <h2 id="ablauf-titel">So läuft eine Anfrage ab</h2>
+        <h2 id="ablauf-titel" data-zeilen>Vier Schritte, keine Überraschungen.</h2>
       </div>
+      <a class="textlink" href="@/fragen/">Fragen &amp; Ablauf <span class="pfeil" aria-hidden="true">→</span></a>
     </div>
     [[ablauf]]
-    <p class="ablauf-link"><a class="textlink" href="@/ablauf/">Ablauf und häufige Fragen <span class="pfeil" aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
-[[abschluss]]
+[[abschluss titel="Was können wir für Sie umsetzen?" text="Wählen Sie, worum es geht – oder beschreiben Sie es einfach in ein paar Sätzen. Fotos helfen, sind aber kein Muss." knopf="Vorhaben beschreiben" schnellwahl="ja" label="Anfrage"]]
