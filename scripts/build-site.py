@@ -154,7 +154,7 @@ def beweis(titel="Warum Kunden uns glauben"):
 </section>"""
 
 def abschluss(titel="Sagen Sie uns, bis wann es fertig sein muss"):
-    return f"""<section class="abschluss">
+    return f"""<section class="abschluss material material--hell">
   <div class="wrap">
     <h2>{titel}</h2>
     <p>Besichtigung und Kostenvoranschlag sind kostenlos und unverbindlich. Sie erhalten Ihren Festpreis in der Regel innerhalb von 24 Stunden.</p>
@@ -241,11 +241,11 @@ page("index.html",
   </div>
 </section>
 
-<section class="alt">
+<section class="material material--dunkel">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Das Paket</span>
-      <h2>Vier Gewerke, eine Reihenfolge</h2>
+      <h2><span class="fuell">Vier Gewerke, eine Reihenfolge</span></h2>
       <p>Der Grund, warum Übergaben schiefgehen, ist selten schlechte Arbeit – es ist die Reihenfolge. Wer streicht, bevor geräumt ist, streicht zweimal. Wir planen die Schritte als einen Ablauf.</p>
     </div>
     <ol class="paket">

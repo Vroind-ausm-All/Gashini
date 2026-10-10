@@ -38,6 +38,35 @@ ungestrichenem Papier sichtbar ins Stumpfe.
 wo etwas passieren soll – Schaltfläche, Link, Hervorhebung. Als Fläche niemals
 über mehr als ein Zehntel der Gestaltung.
 
+
+## Material und Bewegung
+
+Schwarz, Weiß und Ziegelrot bleiben die Grundlage. Material tritt nur an drei
+Stellen auf, sonst verliert es seine Wirkung:
+
+| Ort | Material | Regel |
+|---|---|---|
+| Einstieg (Hero) | Beton, als SVG-Rauschen erzeugt | blendet auf 50 % Deckkraft ein, kostet keine Ladezeit |
+| Paket-Abschnitt | Nussbaum dunkel, 86 % schwarz überlagert | weiße Schrift, Überschrift mit **hellem** Holz gefüllt |
+| Abschlussband | Kiefer hell, 60–70 % weiß überlagert | dunkle Schrift |
+
+**Die Füllung ist ein Einzelstück.** Genau eine Überschrift pro Seite geht im Holz
+auf (`background-clip: text` über einer schwarzen Grundschrift, die beim Einblenden
+durchscheint). Zwei solche Überschriften heben sich gegenseitig auf.
+
+**Bewegung folgt dem Gewerk:** Überschriften steigen wortweise auf, als würde eine
+Wand hochgezogen; über dem Einstieg zieht eine rote Linie auf wie ein Anriss mit der
+Schlagschnur; Karten bauen sich in Reihenfolge auf, nicht gleichzeitig.
+
+**Grenzen:** Jede Bewegung läuft genau einmal, beim ersten Erscheinen. Keine
+Dauerschleifen, kein Parallax, keine Bewegung an Bedienelementen. Bei aktivierter
+Systemeinstellung *Bewegung reduzieren* wird alles still dargestellt, und ohne
+JavaScript ist jeder Text von Anfang an sichtbar.
+
+**Bildrechte:** Die Texturen in `brand/material/` müssen lizenziert sein. Vor dem
+Livegang die Herkunft und die Lizenzbedingungen jeder Datei dokumentieren –
+Stockmaterial ohne Nachweis ist ein vermeidbares Risiko.
+
 ## Schriften
 - **Überschriften:** Barlow Condensed, 600/700, Versalien, Laufweite +1 bis +3.
   Ersatz: Oswald, Arial Narrow Bold.

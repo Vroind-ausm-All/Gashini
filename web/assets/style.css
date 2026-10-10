@@ -77,7 +77,7 @@ nav.main a:hover,nav.main a[aria-current="page"]{border-color:var(--akzent);colo
 .hero{background:var(--flaeche-2);color:var(--ink);position:relative;overflow:hidden;border-bottom:4px solid var(--akzent)}
 .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:var(--line)}
 .hero .wrap{position:relative;z-index:1;padding-block:clamp(44px,8vw,96px);max-width:920px;margin-inline:auto}
-.hero h1 span{color:var(--akzent-dark)}
+.hero h1 span:not(.wort){color:var(--akzent-dark)}
 .hero .lead{font-size:1.14rem;color:var(--ink-soft);max-width:60ch}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
 .trustbar{display:grid;gap:10px 28px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:32px;padding-top:22px;border-top:1px solid var(--line);font-size:1rem;color:var(--ink-soft)}
@@ -238,4 +238,122 @@ footer.site li{margin-bottom:9px}
   header.site,footer.site,.callbar,.topbar,.hero-actions{display:none}
   body{font-size:11pt;padding-bottom:0}
   .hero{border:none;background:none}
+}
+
+/* ===================================================================
+   Material und Bewegung
+   Schwarz/Weiß bleibt die Grundlage. Material erscheint an drei
+   Stellen: als Betonwand hinter dem Einstieg, als Holzband in zwei
+   Abschnitten und als Füllung einer einzigen Überschrift.
+   Alle Bewegungen laufen nur, wenn JavaScript die Klasse js-motion
+   gesetzt hat – ohne Skript ist jeder Text sofort sichtbar.
+   =================================================================== */
+
+:root{
+  --beton:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='wolke'><feTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='3' seed='7'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.38'/></feComponentTransfer></filter><filter id='korn'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='3'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.2'/></feComponentTransfer></filter><rect width='600' height='600' filter='url(%23wolke)'/><rect width='600' height='600' filter='url(%23korn)'/></svg>");
+  --holz-dunkel:url("material/holz-nussbaum-dunkel.webp");
+  --holz-hell:url("material/holz-kiefer-hell.webp");
+}
+
+/* ---------- Beton hinter dem Einstieg ---------- */
+.hero{isolation:isolate}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:var(--beton);background-size:600px 600px;
+  opacity:0;transition:opacity 1.6s ease .15s;mix-blend-mode:multiply;
+}
+.hero.sichtbar::before,html:not(.js-motion) .hero::before{opacity:.5}
+
+/* ---------- Materialbänder ---------- */
+.material{position:relative;isolation:isolate;overflow:hidden}
+.material > .wrap{position:relative;z-index:2}
+.material::before{
+  content:"";position:absolute;inset:-6% 0;z-index:0;
+  background-image:var(--holz-dunkel);background-size:cover;background-position:center;
+  transform:scale(1.04);
+}
+.material::after{content:"";position:absolute;inset:0;z-index:1}
+
+/* dunkles Band: Nussbaum, weiße Schrift */
+.material--dunkel{background:#0E0E0E;color:#fff;border-block:4px solid var(--akzent)}
+.material--dunkel::after{background:linear-gradient(180deg,rgba(8,8,8,.86),rgba(8,8,8,.9))}
+.material--dunkel h2,.material--dunkel h3{color:#fff}
+.material--dunkel p{color:#D8D2CC}
+.material--dunkel .eyebrow{color:#EA9478}
+.material--dunkel .paket li{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.16);backdrop-filter:blur(2px)}
+.material--dunkel .paket li p{color:#CFC9C3}
+.material--dunkel .paket-nr{background:var(--akzent);color:#fff}
+.material--dunkel .paket-fuss{color:#D8D2CC}
+.material--dunkel .paket-fuss a{color:#fff}
+
+/* helles Band: Kiefer, dunkle Schrift */
+.material--hell{background:var(--flaeche-2);color:var(--ink);border-top:4px solid var(--akzent)}
+.material--hell::before{background-image:var(--holz-hell)}
+.material--hell::after{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.6))}
+.material--hell p{color:#4A4440}
+
+/* Beton im Vertrauensband */
+.vertrauensband{position:relative;isolation:isolate;overflow:hidden}
+.vertrauensband::after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:var(--beton);background-size:420px 420px;opacity:.28;
+}
+.vertrauensband .wrap{position:relative;z-index:1}
+
+/* ---------- Überschrift, die im Holz aufgeht ---------- */
+.fuell{position:relative;display:inline-block}
+.fuell::after{
+  content:attr(data-text);position:absolute;left:0;top:0;width:100%;
+  background-image:var(--holz-dunkel);background-size:140% auto;background-position:30% 40%;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  opacity:0;transition:opacity 1.3s ease,background-position 9s linear;
+  pointer-events:none;
+}
+.fuell.sichtbar::after{opacity:1;background-position:70% 60%}
+.material--dunkel .fuell::after{background-image:var(--holz-hell)}
+
+/* ---------- Textbewegung ---------- */
+.wort{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em;margin-bottom:-.06em}
+.js-motion .wort > i{display:inline-block;font-style:inherit;transform:translateY(110%)}
+.js-motion .bewegt.sichtbar .wort > i{
+  animation:material-aufsteigen .66s cubic-bezier(.2,.75,.25,1) both;
+  animation-delay:calc(var(--i,0) * 55ms);
+}
+@keyframes material-aufsteigen{from{transform:translateY(110%)}to{transform:translateY(0)}}
+
+/* Anreißen: die Linie, die den Einstieg aufzieht */
+.anriss{position:relative}
+.js-motion .anriss::before{
+  content:"";position:absolute;left:0;top:-14px;height:3px;width:100%;
+  background:var(--akzent);transform-origin:left;transform:scaleX(0);
+}
+.js-motion .anriss.sichtbar::before{animation:material-anreissen .85s cubic-bezier(.16,.8,.3,1) both}
+@keyframes material-anreissen{0%{transform:scaleX(0)}55%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+
+/* Fließtext und Schaltflächen ziehen leicht nach */
+.js-motion .nachzug{opacity:0;transform:translateY(14px)}
+.js-motion .nachzug.sichtbar{animation:material-nachzug .7s ease .32s both}
+@keyframes material-nachzug{to{opacity:1;transform:none}}
+
+/* Karten bauen sich gestaffelt auf */
+.js-motion .staffel > *{opacity:0;transform:translateY(18px)}
+.js-motion .staffel.sichtbar > *{
+  animation:material-nachzug .6s ease both;
+  animation-delay:calc(var(--k,0) * 90ms);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .js-motion .wort > i,
+  .js-motion .nachzug,
+  .js-motion .staffel > *{transform:none!important;opacity:1!important;animation:none!important}
+  .js-motion .anriss::before{transform:scaleX(1);animation:none}
+  .fuell::after{transition:none}
+  .hero::before{transition:none}
+  .material::before{transform:none}
+}
+
+@media print{
+  .material::before,.material::after,.hero::before,.vertrauensband::after{display:none}
+  .fuell::after{display:none}
 }
