@@ -10,8 +10,10 @@ Leistungswerte unten stammen aus einer eigenen Labormessung und sind als solche 
 ## 1. Automatisch getestet
 
 Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push (`.github/workflows/vorschau.yml`).
-Lokal liefen alle drei Suiten vollständig grün. Der CI-Lauf für diesen Stand ist im Commit-Verlauf verlinkt
-(Abschnitt 5).
+Lokal liefen alle drei Suiten vollständig grün, ebenso auf einem GitHub-Runner: Workflow-Lauf
+[38086679465](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38086679465) für Commit 17d6fba – Jobs `pruefen`
+(statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
+erfolgreich.
 
 ### `tests/pruefen.py` – 14 von 14 bestanden
 
