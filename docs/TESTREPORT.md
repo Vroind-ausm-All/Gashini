@@ -8,7 +8,8 @@ Kein Ergebnis in diesem Dokument ist geschätzt oder hochgerechnet.
 
 ## 1. Automatisch getestet
 
-Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push.
+Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push. Zusätzlich zur lokalen Ausführung
+liefen alle drei Suiten auf einem GitHub-Runner grün (Workflow-Lauf 38079016485, Jobs `pruefen` und `browser`).
 
 ### `tests/pruefen.py` – 11 von 11 bestanden
 
