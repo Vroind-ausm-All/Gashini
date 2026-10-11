@@ -10,9 +10,9 @@ Leistungswerte unten stammen aus einer eigenen Labormessung und sind als solche 
 ## 1. Automatisch getestet
 
 Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push (`.github/workflows/vorschau.yml`).
-Lokal liefen alle drei Suiten am 11.10.2026 (nach der Überarbeitung der Navigation) vollständig grün, ebenso auf
-einem GitHub-Runner: Workflow-Lauf
-[38099016382](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38099016382) für Commit 6eddae7 – Jobs `pruefen`
+Lokal liefen alle drei Suiten am 11.10.2026 (nach Navigation, Symbolbildern und Kurzvideo-Grundlage) vollständig
+grün, ebenso auf einem GitHub-Runner: Workflow-Lauf
+[38102992289](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38102992289) für Commit 50af3af – Jobs `pruefen`
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
 
