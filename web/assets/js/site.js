@@ -70,14 +70,23 @@
     document.addEventListener('click', function (e) { if (!eintrag.contains(e.target)) unterKnopf.setAttribute('aria-expanded', 'false'); });
   });
 
-  // Kopf auf kleinen Bildschirmen beim Herunterscrollen ausblenden, beim Hochscrollen zeigen
+  // Kopf auf kleinen Bildschirmen beim Herunterscrollen ausblenden, beim Hochscrollen zeigen.
+  // Ab 960 px verdichtet er sich stattdessen: Kompakt-Logo statt Hauptvariante, flachere Leiste.
   if (kopf) {
     var letzte = window.scrollY, geplant = false;
+    var verdichten = function () {
+      var klein = !mobil.matches && window.scrollY > 72;
+      kopf.classList.toggle('kopf--klein', klein);
+      html.classList.toggle('kopf-klein', klein);
+    };
+    verdichten();
+    mobil.addEventListener('change', verdichten);
     window.addEventListener('scroll', function () {
       if (geplant) return;
       geplant = true;
       window.requestAnimationFrame(function () {
         geplant = false;
+        verdichten();
         var y = window.scrollY, delta = y - letzte;
         if (Math.abs(delta) < 6) return;
         var weg = mobil.matches && y > 160 && delta > 0 &&

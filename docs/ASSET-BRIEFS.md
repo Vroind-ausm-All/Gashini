@@ -106,7 +106,7 @@ Stichpunkte: …
 
 | Datei | Herkunft | Lizenz | Verwendung |
 |---|---|---|---|
-| `brand/logo*.svg`, `signet.svg`, `favicon.svg` | eigene Gestaltung | eigen | Website, Druck |
+| `brand/svg/`, `brand/png/`, `brand/favicon.ico`, `brand/markenblatt.pdf` | Logo-Paket, für Gashini erstellt (Oktober 2026) | eigen; Markenrecherche beim DPMA empfohlen | Website (Web-Kopien unter `assets/marke/`), Druck, Fahrzeug, Kleidung |
 | `src/assets/fonts/*` | Fontsource, SIL OFL 1.1 | frei, Lizenztext beiliegend | Website |
 | `brand/material/holz-*.webp` (5 Dateien) | **unbekannt** (vom Betreiber bereitgestellt) | **ungeklärt** | **nicht verwendet** – erst nach Lizenznachweis |
 | `src/assets/bilder/platzhalter/*.svg` | eigene, neutrale Platzhalter | eigen | nur im Entwurfs-Build |

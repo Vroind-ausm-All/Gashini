@@ -26,8 +26,8 @@ const H = MASSE.hoehe;
 const T = MASSE.profil / 2;                   // halbe Ständertiefe
 
 export const FARBEN = {
-  hintergrund: 0xF2F1ED, beton: 0xB9B5AE, stahl: 0xC3C6C8, wolle: 0xCDBB8E, platte: 0xE7E4DD,
-  kern: 0xD8D3C8, spachtel: 0xF3F1EC, oberflaeche: 0xF6F5F1, schraube: 0x3A3B3D, linie: 0x0E0E0E, ziegel: 0xB5391C
+  hintergrund: 0xEBE8E1, beton: 0xB9B5AE, stahl: 0xC3C6C8, wolle: 0xCDBB8E, platte: 0xE7E4DD,
+  kern: 0xD8D3C8, spachtel: 0xF3F1EC, oberflaeche: 0xF6F5F1, schraube: 0x3A3B3D, linie: 0x1E2124, gelb: 0xFFC93C   // Hausfarben: Kalkweiß-Ton der Bühne, Anthrazit, Signalgelb
 };
 
 /* ------------------------------------------------------------------ Zufall und Texturen */
@@ -185,7 +185,7 @@ export function erstelleSzene(optionen = {}) {
     spachtel: new MeshStandardMaterial({ map: tex.spachtel, color: 0xffffff, roughness: .7, clippingPlanes: [schnitt.spachtel], clipShadows: true }),
     oberflaeche: new MeshStandardMaterial({ map: tex.oberflaeche, color: 0xffffff, roughness: .9, clippingPlanes: [schnitt.oberflaeche], clipShadows: true }),
     schraube: new MeshStandardMaterial({ color: FARBEN.schraube, roughness: .4, metalness: .7, clippingPlanes: [schnitt.platten], clipShadows: true }),
-    akzent: new MeshStandardMaterial({ color: FARBEN.ziegel, roughness: .6 })
+    akzent: new MeshStandardMaterial({ color: FARBEN.gelb, roughness: .6 })
   };
 
   // Boden
@@ -195,7 +195,7 @@ export function erstelleSzene(optionen = {}) {
 
   // Anriss: Lage der Wand auf dem Boden, wie vor dem Setzen der Profile angezeichnet
   const anriss = new Group();
-  const anrissMat = new MeshStandardMaterial({ color: FARBEN.ziegel, roughness: .8 });
+  const anrissMat = new MeshStandardMaterial({ color: FARBEN.gelb, roughness: .8 });
   for (const z of [-T, T]) {
     const l = new Mesh(new BoxGeometry(B + 0.5, 0.0008, 0.005), anrissMat);
     l.position.set(B / 2, 0.0004, z); l.receiveShadow = true; anriss.add(l);

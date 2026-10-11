@@ -269,6 +269,70 @@ try {
     await p.close();
   }
 
+  // ---------------------------------------------------------------- Marke im Kopf (Regeln aus brand/markenblatt.pdf)
+  // Hauptvariante mindestens 220 px, Kompakt mindestens 180 px; das Verdichten am Desktop verschiebt den Inhalt nicht.
+  {
+    const ergebnis = {};
+    for (const [b, h] of [[1280, 900], [390, 844], [320, 640]]) {
+      const p = await browser.newPage({ viewport: { width: b, height: h } });
+      await p.goto(haupt.basis + 'leistungen/', { waitUntil: 'networkidle' });
+      const r = await p.evaluate(() => {
+        const breite = el => getComputedStyle(el).display === 'none' ? 0 : Math.round(el.getBoundingClientRect().width);
+        return { voll: breite(document.querySelector('.marke-voll')), kompakt: breite(document.querySelector('.marke-kompakt')) };
+      });
+      if (b >= 960) {
+        // gemessen an <main>: Überschriften laufen beim Laden noch in ihrer Einblendung
+        const lage = () => p.evaluate(() => Math.round(document.querySelector('main').getBoundingClientRect().top + window.scrollY));
+        const vorher = await lage();
+        await p.evaluate(() => window.scrollTo(0, 400)); await p.waitForTimeout(600);
+        Object.assign(r, await p.evaluate(() => ({
+          klein: document.querySelector('.kopf').classList.contains('kopf--klein'),
+          kompaktNachScroll: Math.round(document.querySelector('.marke-kompakt').getBoundingClientRect().width),
+          kopfHoehe: Math.round(document.querySelector('.kopf').getBoundingClientRect().height)
+        })));
+        r.sprung = (await lage()) - vorher;
+      }
+      ergebnis[b] = r;
+      await p.close();
+    }
+    const d = ergebnis[1280];
+    pruefe('Marke im Kopf: ab 960 px Hauptvariante ≥ 220 px, beim Scrollen Kompakt ≥ 180 px ohne Sprung des Inhalts; auf dem Handy Kompakt ≥ 180 px',
+      d.voll >= 220 && d.kompakt === 0 && d.klein && d.kompaktNachScroll >= 180 && d.kopfHoehe <= 66 && d.sprung === 0 &&
+      ergebnis[390].voll === 0 && ergebnis[390].kompakt >= 180 && ergebnis[320].voll === 0 && ergebnis[320].kompakt >= 180, ergebnis);
+  }
+
+  // ---------------------------------------------------------------- Netzwerk-Geschichte (Scroll-Kopplung)
+  {
+    const zustand = p => p.evaluate(() => {
+      const sek = document.querySelector('[data-netzstory]');
+      const svg = sek.querySelector('.zg--netzwerk-breit');
+      const zu = sel => [...svg.querySelectorAll(sel)].filter(e => getComputedStyle(e).visibility !== 'hidden' && parseFloat(getComputedStyle(e).opacity) > .5).length;
+      return { lebendig: sek.classList.contains('netzstory--lebendig'), sie: zu('.nz-knoten--sie'), mitte: zu('.nz-knoten--mitte'),
+               eigen: zu('.nz-knoten--eigen'), partner: zu('.nz-knoten--partner'), alle: svg.querySelectorAll('.nz-knoten').length,
+               aktiv: [...sek.querySelectorAll('.netzstory-schritt')].findIndex(s => s.classList.contains('aktiv')) + 1,
+               legende: parseFloat(getComputedStyle(sek.querySelector('.netzstory-legende')).opacity) };
+    });
+    const p = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await p.goto(haupt.basis + 'netzwerk/', { waitUntil: 'networkidle' });
+    const schritt = async i => {
+      const ziel = await p.evaluate(i => { const s = document.querySelectorAll('.netzstory-schritt')[i].getBoundingClientRect(); return s.top + window.scrollY + s.height / 2 - window.innerHeight * .55; }, i);
+      await p.evaluate(y => window.scrollTo(0, y), ziel); await p.waitForTimeout(1500);
+      return zustand(p);
+    };
+    const s1 = await schritt(0), s3 = await schritt(2), s5 = await schritt(4);
+    await p.close();
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+    const q = await ctx.newPage();
+    await q.goto(haupt.basis + 'netzwerk/', { waitUntil: 'networkidle' });
+    const ruhig = await zustand(q);
+    await ctx.close();
+    pruefe('Netzwerk-Geschichte: das Schema wächst mit dem Scrollen (Schritt 1 nur „Sie“, Schritt 3 mit eigener Leistung, Schritt 5 vollständig mit Legende), aktiver Schritt hervorgehoben; bei reduzierter Bewegung sofort vollständig',
+      s1.lebendig && s1.sie === 1 && s1.mitte === 0 && s1.eigen === 0 && s1.aktiv === 1 &&
+      s3.mitte === 1 && s3.eigen === 3 && s3.partner === 0 && s3.aktiv === 3 &&
+      s5.partner === 8 && s5.legende > .9 && s5.aktiv === 5 &&
+      !ruhig.lebendig && ruhig.sie + ruhig.mitte + ruhig.eigen + ruhig.partner === ruhig.alle, { s1, s3, s5, ruhig });
+  }
+
   // ---------------------------------------------------------------- Bewegtbild über einem Symbolbild
   // Noch liegen keine Clips im Repository. Damit die ausgelieferte site.js/site.css trotzdem geprüft wird, erzeugt
   // der Test einen kurzen WebM-Clip (Canvas + MediaRecorder) und fügt ihn beim Ausliefern der Startseite ein. Der
@@ -283,7 +347,7 @@ try {
       const t0 = performance.now();
       await new Promise(fertig => (function bild() {
         const t = (performance.now() - t0) / 1000;
-        x.fillStyle = '#e9e6e0'; x.fillRect(0, 0, 320, 180); x.fillStyle = '#b5391c'; x.fillRect(20 + t * 120, 70, 30, 30);
+        x.fillStyle = '#e9e6e0'; x.fillRect(0, 0, 320, 180); x.fillStyle = '#ffc93c'; x.fillRect(20 + t * 120, 70, 30, 30);
         if (t < 1.5) requestAnimationFrame(bild); else fertig();
       })());
       rec.stop(); await new Promise(r => { rec.onstop = r; });

@@ -56,6 +56,7 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[kontakt-link leistung="trockenbau" anliegen="…"]]` | Link ins Formular mit Vorauswahl (in `href="…"` verwendbar) |
 | `[[wandaufbau]]` | interaktiver Wandaufbau (3D mit Zeichnung als Rückfall) |
 | `[[visual-schnitt]]`, `[[bild datei="…" alt="…"]]` | Visualisierung der Startseite bzw. ein Bild mit `srcset` |
+| `[[netzwerk-geschichte]]` | Netzwerk-Schema, das sich beim Scrollen in fünf Schritten aufbaut (Texte in `NETZ_SCHRITTE`, `scripts/build-site.py`) |
 | `[[symbolbild datei="symbol/…" alt="…"]]` | fremdes Foto mit Marke „Symbolbild“ und Alt-Präfix (Herkunft in `src/assets/bilder/symbol/HERKUNFT.md` eintragen) |
 | `[[symbolbild … video="name"]]` | dazu ein stummer Kurzclip, sobald `src/assets/videos/name.webm` oder `.mp4` existiert; vorher in der Vorschau der Hinweis „Video geplant“ |
 | `[[anwendungen]]`, `[[faelle]]`, `[[flicken]]`, `[[rundgang]]`, `[[netzwerk]]`, `[[zeichnung art="…"]]` | Zeichnungen und Tafeln der Leistungsseiten |
@@ -75,13 +76,22 @@ und Fotobriefings aus.
 Blöcke zwischen `<!--vorschau-->` und `<!--/vorschau-->` (z. B. Fotobriefings) erscheinen nur in der Vorschau und
 entfallen im Produktions-Build automatisch.
 
+## Logo und Hausfarben
+
+Das Logo-Paket liegt in `brand/` (Regeln im Markenblatt `brand/markenblatt.pdf`, Übersicht in `brand/styleguide.md`).
+Die Website nutzt schlanke Kopien unter `assets/marke/`, die der Generator bei jedem Lauf aus `brand/svg/` und
+`brand/png/` erzeugt (Liste `MARKE_WEB` in `scripts/build-site.py`). Ein neues Logo-Paket also nur in `brand/`
+austauschen – Dateinamen beibehalten – und neu bauen. Die Hausfarben stehen als Tokens am Anfang von `site.css`;
+Signalgelb nie als Textfarbe auf hellem Grund verwenden.
+
 ## Navigation ändern
 
 Die Hauptpunkte stehen in `NAV`, die Einträge des Untermenüs „Leistungen“ in `UNTERMENUE` (beide in
 `scripts/build-site.py`). Die Kopfdaten `nav: leistungen/` markieren den Bereich, zu dem eine Seite gehört. Verhalten:
 
 - **ab 960 px:** volle Navigation mit Untermenü, das sich per Maus, Fokus oder Pfeil-Knopf öffnet und mit Escape schließt.
-  Die Telefonnummer im Kopf erscheint erst ab 1240 px.
+  Die Telefonnummer im Kopf erscheint erst ab 1240 px. Beim Scrollen verdichtet sich der Kopf: Kompakt-Logo statt
+  Hauptvariante, 64 statt 92 px hoch – ein mitlaufender Abstand verhindert, dass der Inhalt springt.
 - **unter 960 px:** Knopf „Menü“ öffnet ein Vollbild-Menü direkt unter dem Kopf. Es enthält zusätzlich „Fragen & Ablauf“,
   „Anfrage stellen“, den Anruf-Knopf und das Einsatzgebiet. Beim Herunterscrollen weicht der Kopf und kommt beim
   Hochscrollen zurück.

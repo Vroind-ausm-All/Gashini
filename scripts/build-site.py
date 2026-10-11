@@ -9,7 +9,7 @@ Liest ausschließlich:
   src/server/           Serverkonfiguration (.htaccess)
   data/projekte.json    Projektgalerie
   data/faq.json         Häufige Fragen
-  brand/*.svg           Logo, Signet, Favicon
+  brand/                Logo-Paket (svg/, png/, favicon.ico, markenblatt.pdf) – Web-Kopien unter assets/marke/
   scripts/zeichnungen.py  technische Zeichnungen (SVG)
 
 Schreibt ausschließlich nach web/ – das Verzeichnis wird bei jedem Lauf
@@ -541,7 +541,35 @@ def kontaktwege():
             '<li><span class="art">Anschrift</span><span>{{STRASSE}}<br>{{PLZ_ORT}}</span></li>'
             '</ul>')
 
+# ------------------------------------------------------------------ Netzwerk-Geschichte (Netzwerk-Seite)
+# Das Schema baut sich beim Scrollen in fünf Stufen auf (bewegung.js). Ohne JavaScript oder bei reduzierter
+# Bewegung steht es vollständig da, die Schritte bleiben eine gewöhnliche Liste. Die Texte nehmen nur Aussagen
+# auf, die an anderer Stelle der Seite bereits stehen – keine neuen Zusagen.
+NETZ_SCHRITTE = [
+    ("Ihr Vorhaben", "Eine Wand, eine Reparatur, eine Wohnung zwischen zwei Mietern – oder ein Vorhaben, bei dem mehrere Gewerke ineinandergreifen."),
+    ("Ein Ansprechpartner", "Sie wenden sich an uns. Wir sehen uns das Vorhaben an und klären, welche Arbeiten wir selbst übernehmen und wo ein Fachbetrieb gebraucht wird."),
+    ("Was wir selbst ausführen", "Trockenbau, Reparatur und Instandhaltung sowie Hausmeisterservice übernehmen wir selbst. Wir führen aus, wir rechnen ab, wir haften."),
+    ("Wo Fachbetriebe dazukommen", "Für Arbeiten außerhalb unseres Leistungsumfangs kommen Fachbetriebe dazu. Welche das sind, klären wir im Einzelfall – die Gewerke im Schema sind Beispiele."),
+    ("Wer Ihr Vertragspartner ist", "Vor Beginn steht im Angebot, wer welche Arbeiten ausführt und wer Ihr Vertragspartner ist. Sie behalten einen Ansprechpartner."),
+]
+
+def netzwerk_geschichte(titel="Vom Vorhaben zum abgestimmten Netzwerk", label="So arbeiten wir"):
+    schritte = "".join('<li class="netzstory-schritt"><span class="nr">%02d</span><h3>%s</h3><p>%s</p></li>' % (i, esc(t), esc(x))
+                       for i, (t, x) in enumerate(NETZ_SCHRITTE, 1))
+    return ('<section class="netzstory dunkel" aria-labelledby="netzstory-titel" data-netzstory><div class="rahmen">'
+            '<div class="kopfzeile"><div><p class="label label--hell">%s</p><h2 id="netzstory-titel" data-zeilen>%s</h2></div></div>'
+            '<div class="netzstory-raster">'
+            '<figure class="netzstory-buehne netzwerk-diagramm">%s%s'
+            '<p class="netzstory-legende"><span class="durchgezogen">Eigene Leistung – Ihr Vertragspartner ist Gashini</span>'
+            '<span class="gestrichelt">Fachbetrieb, koordiniert oder empfohlen – wer Vertragspartner ist, wissen Sie vorher</span></p></figure>'
+            '<div class="netzstory-text"><ol class="netzstory-schritte">%s</ol><span class="netzstory-fortschritt" aria-hidden="true"></span></div>'
+            '</div>'
+            '<p class="netzstory-hinweis">Schema. Gestrichelt: Beispiele für Gewerke, die bei einem Vorhaben dazukommen können. Welche davon wir '
+            'koordinieren, klären wir im Einzelfall – eine feste Partnerliste ist damit nicht gemeint.</p>'
+            '</div></section>' % (esc(label), esc(titel), zg.netzwerk("breit"), zg.netzwerk("schmal"), schritte))
+
 BAUSTEINE = {
+    "netzwerk-geschichte": lambda von, a: netzwerk_geschichte(**a),
     "visual-schnitt": lambda von, a: visual_schnitt(von),
     "wandaufbau": lambda von, a: wandaufbau(von, **a),
     "explosion": lambda von, a: tafel(zg.explosion("ex2"), [t for t, _ in WAND_SCHRITTE], "Explosionsdarstellung, schematisch. Beispielaufbau."),
@@ -614,7 +642,7 @@ def kopfbereich(aktiv, pfad=""):
     return '''<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
 <header class="kopf">
   <div class="rahmen kopf-innen">
-    <a class="marke" href="@/" aria-label="Gashini Dienstleistungen – Startseite"><img src="@/assets/marke/logo.svg" width="254" height="80" alt=""></a>
+    <a class="marke" href="@/" aria-label="Gashini Dienstleistungen – Startseite"><img class="marke-voll" src="@/assets/marke/logo-hauptvariante-klein.svg" width="329" height="100" alt=""><img class="marke-kompakt" src="@/assets/marke/logo-kompakt.svg" width="546" height="74" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
       <ul>%s</ul>
@@ -635,7 +663,7 @@ FUSS = '''<footer class="fuss">
   <div class="rahmen">
     <div class="fuss-raster">
       <div class="fuss-marke">
-        <img src="@/assets/marke/logo-invers.svg" width="254" height="80" alt="Gashini Dienstleistungen">
+        <img src="@/assets/marke/logo-hauptvariante-negativ.svg" width="329" height="100" alt="Gashini Dienstleistungen – Trockenbau, Innenausbau, Renovierung">
         <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
       </div>
       <div>
@@ -747,9 +775,11 @@ def seite_rendern(meta, inhalt, quelle):
 <meta property="og:title" content="%s">
 <meta property="og:description" content="%s">
 <meta property="og:url" content="https://{{DOMAIN}}/%s">
-<meta name="theme-color" content="#FAFAF8">
+<meta name="theme-color" content="#F4F2ED">
+<link rel="icon" href="@/favicon.ico" sizes="32x32">
 <link rel="icon" href="@/assets/marke/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="@/assets/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="apple-touch-icon" href="@/assets/marke/apple-touch-icon.png">
+<link rel="preload" href="@/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 %s<link rel="stylesheet" href="@/assets/css/site.css">
 %s
 %s
@@ -851,6 +881,27 @@ def projektseite(p):
             "indexieren": "nein" if p["_entwurf"] else "ja"}
     return seite_rendern(meta, "\n".join(teile), "data/projekte.json (%s)" % p["id"])
 
+# ------------------------------------------------------------------ Marke
+# Web-Kopien aus dem Logo-Paket (brand/, Regeln: brand/markenblatt.pdf). Kopf ab 960 px: Hauptvariante klein
+# (für schmale Leisten vorgesehen, mindestens 220 px breit); schmaler und beim Scrollen: Kompakt (mindestens 180 px).
+MARKE_WEB = {
+    "logo-hauptvariante-klein.svg": "svg/logo-hauptvariante-klein.svg",
+    "logo-hauptvariante-negativ.svg": "svg/logo-hauptvariante-negativ.svg",
+    "logo-kompakt.svg": "svg/logo-kompakt.svg",
+    "signet.svg": "svg/signet.svg",
+    "favicon.svg": "svg/favicon.svg",
+    "apple-touch-icon.png": "png/favicon-180.png",
+    "signet-512.png": "png/signet-512.png",
+    "logo-email.png": "png/logo-hauptvariante-1000.png",
+}
+
+def svg_verschlanken(text):
+    """Rundet nur die Koordinaten in Pfaddaten (d="…") auf zwei Nachkommastellen. Bei 1000 px Logobreite weicht
+    kein Punkt um mehr als 0,02 px ab; viewBox, Maße, Verschiebungen und Farben bleiben exakt. Die Datei wird
+    etwa ein Drittel so groß, die Originale in brand/ bleiben unverändert."""
+    runden = lambda m: ("%.2f" % float(m.group())).rstrip("0").rstrip(".")
+    return re.sub(r'\bd="([^"]*)"', lambda m: 'd="%s"' % re.sub(r"-?\d+\.\d{3,}", runden, m.group(1)), text)
+
 # ------------------------------------------------------------------ Lauf
 def main():
     if os.path.isdir(OUT):
@@ -859,8 +910,13 @@ def main():
     ignorieren = ["anker.json", "HERKUNFT.md"] + ([] if ENTWUERFE else ["platzhalter"])
     shutil.copytree(os.path.join(SRC, "assets"), os.path.join(OUT, "assets"), ignore=shutil.ignore_patterns(*ignorieren))
     os.makedirs(os.path.join(OUT, "assets", "marke"))
-    for f in ("logo.svg", "logo-invers.svg", "signet.svg", "favicon.svg"):
-        shutil.copy(os.path.join(WURZEL, "brand", f), os.path.join(OUT, "assets", "marke", f))
+    for ziel, quelle in MARKE_WEB.items():
+        von = os.path.join(WURZEL, "brand", quelle)
+        if ziel.endswith(".svg"):
+            schreiben(os.path.join(OUT, "assets", "marke", ziel), svg_verschlanken(lesen(von)))
+        else:
+            shutil.copy(von, os.path.join(OUT, "assets", "marke", ziel))
+    shutil.copy(os.path.join(WURZEL, "brand", "favicon.ico"), os.path.join(OUT, "favicon.ico"))
     shutil.copytree(os.path.join(SRC, "api"), os.path.join(OUT, "api"),
                     ignore=shutil.ignore_patterns("konfiguration*.php", "*.log"))
     shutil.copy(os.path.join(SRC, "server", "htaccess"), os.path.join(OUT, ".htaccess"))

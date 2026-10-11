@@ -12,7 +12,7 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 |---|---|---|
 | Keine Cookies, kein lokaler Speicher | ✅ | Im veröffentlichten Auftritt schreibt kein Skript Cookies, `localStorage` oder `sessionStorage`. Nur die gekennzeichnete **Vorschau** merkt sich im Browser den Schalter „Kundenansicht“ (`localStorage`); der Schalter existiert im Produktions-Build nicht. **Ergebnis der Prüfung: Ein Einwilligungsbanner ist nicht erforderlich** (§ 25 TDDDG), solange keine Analyse-, Karten- oder Social-Dienste ergänzt werden. |
 | Keine Analysewerkzeuge, keine Tracker | ✅ | Bewusster Verzicht. Lead-Quelle wird freiwillig im Formular abgefragt, nicht gemessen. |
-| Schriften und Bibliotheken lokal | ✅ | Instrument Sans und IBM Plex Mono, GSAP und three.js liegen auf dem eigenen Server. Keine Verbindung zu Google oder CDNs. Auch die Druckvorlagen laden keine Google Fonts mehr. Das 3D-Modell wird vollständig im Browser berechnet. |
+| Schriften und Bibliotheken lokal | ✅ | Archivo (Hausschrift laut Markenblatt), GSAP und three.js liegen auf dem eigenen Server. Keine Verbindung zu Google oder CDNs. Auch die Druckvorlagen laden keine Google Fonts mehr. Das 3D-Modell wird vollständig im Browser berechnet. |
 | Keine externen Skripte, Karten, Videos, Social-Embeds | ✅ | Die Testsuite bricht ab, wenn eine Seite eine externe Ressource lädt. |
 | Content-Security-Policy | ✅ | `default-src 'self'`, keine Inline-Skripte, keine Inline-Stile (in `src/server/htaccess`). Gilt nur bei Apache. |
 | Rechtsgrundlage Anfrage | 📄 ⚖️ | Art. 6 Abs. 1 lit. b DSGVO (vorvertraglich), hilfsweise lit. f. **Keine Pflicht-Einwilligungs-Checkbox** mehr – sie war rechtlich nicht nötig und vermischte Rechtsgrundlagen. Hinweis mit Link direkt über dem Absendeknopf (Art. 13). |
@@ -69,7 +69,8 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 
 | Thema | Status |
 |---|---|
-| Schriften | ✅ SIL Open Font License, Lizenztexte liegen neben den Dateien (`src/assets/fonts/`, `brand/OFL-barlow-condensed.txt`). |
+| Schriften | ✅ Archivo, SIL Open Font License; Lizenztext liegt neben der Datei (`src/assets/fonts/OFL-archivo.txt`). Im Logo ist die Schrift in Pfade umgewandelt. |
+| Marke (Wort-Bild-Marke, Oktober 2026) | 👤 Für Gashini Dienstleistungen erstellt. Vor einer Anmeldung als eingetragene Marke eine Recherche beim DPMA durchführen (Hinweis aus `brand/LIESMICH.txt`). |
 | Logo | ✅ eigene Gestaltung; Schrift jetzt als Pfad (OFL erlaubt das). |
 | Holztexturen `brand/material/` | 👤 **Herkunft und Lizenz unbekannt.** Werden auf der neuen Website nicht verwendet. Vor jeder Nutzung Lizenz nachweisen. |
 | Projektfotos | ✅ technisch: Freigabefelder je Bild (`rechte.freigabe_kunde`, `fotograf`, `nutzungsrecht`, `ki_generiert`) – ohne Freigabe keine Veröffentlichung. 👤 Freigabe schriftlich einholen. |

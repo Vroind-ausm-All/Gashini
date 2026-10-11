@@ -6,44 +6,44 @@
 .blatt{width:297mm;height:210mm;padding:14mm}
 h2.titel{font-size:16pt;margin-bottom:6mm;border-bottom:2pt solid var(--akzent);padding-bottom:2mm}
 .auto{background:var(--ink);border-radius:6mm;height:105mm;position:relative;overflow:hidden;color:#fff;padding:12mm}
-.auto .keil{position:absolute;right:-30mm;top:-20mm;width:150mm;height:150mm;background:var(--akzent);opacity:.2;transform:rotate(22deg)}
+.auto .keil{display:none}
 .auto img{height:26mm;position:relative;z-index:1}
-.auto .claim{font-family:var(--font-head);font-stretch:78%;font-weight:600;text-transform:uppercase;font-size:34pt;line-height:1;margin-top:8mm;position:relative;z-index:1}
-.auto .liste{font-family:var(--font-head);font-stretch:78%;font-weight:600;text-transform:uppercase;letter-spacing:1.4pt;font-size:13pt;margin-top:6mm;color:#C9C9C9;position:relative;z-index:1}
+.auto .claim{font-family:var(--font-head);font-weight:600;text-transform:uppercase;font-size:34pt;line-height:1;margin-top:8mm;position:relative;z-index:1}
+.auto .liste{font-family:var(--font-head);font-weight:600;text-transform:uppercase;letter-spacing:1pt;font-size:11pt;margin-top:6mm;max-width:60%;color:#DAD7D0;position:relative;z-index:1}
 .auto .tel{position:absolute;right:12mm;bottom:10mm;text-align:right;z-index:1}
-.auto .tel .nr{font-family:var(--font-head);font-stretch:78%;font-weight:600;font-size:30pt;color:var(--akzent);line-height:1}
-.auto .tel small{font-size:11pt;color:#C9C9C9}
+.auto .tel .nr{font-family:var(--font-head);font-weight:600;font-size:30pt;color:var(--akzent);line-height:1}
+.auto .tel small{font-size:11pt;color:#DAD7D0}
 .reihe{display:flex;gap:8mm;margin-top:8mm}
 .shirt{flex:1;border:1pt solid var(--line);border-radius:4mm;padding:8mm;text-align:center;background:var(--flaeche)}
 .shirt .feld{background:#fff;border-radius:3mm;padding:8mm;margin-bottom:4mm}
 .shirt .feld.dark{background:var(--ink)}
 .shirt h3{font-size:11pt;margin-bottom:3mm;letter-spacing:1pt}
 .shirt p{font-size:8.5pt;color:var(--ink-soft);line-height:1.6;margin:0}
-.rueckendruck{font-family:var(--font-head);font-stretch:78%;font-weight:600;text-transform:uppercase;color:#fff;font-size:15pt;letter-spacing:1.4pt;line-height:1.25}
-.rueckendruck span{color:var(--akzent)}
+.rueckendruck{display:grid;justify-items:center;gap:2mm;color:#DAD7D0;font-family:var(--font-head);font-weight:500;font-size:9pt;letter-spacing:2pt}
+.rueckendruck img{width:42mm;height:auto}
 </style></head><body>
 <div class="hinweis"><h1>Fahrzeug- &amp; Kleidungsbeschriftung</h1>
-<p>Gestaltungsvorgabe für die Folierung (Transporter-Seitenfläche, Heck) und für Arbeitskleidung. Die Datei dient als Vorlage für den Werbetechniker – dieser benötigt zusätzlich die Logodatei <code>brand/logo-invers.svg</code> als Vektor sowie die Farbwerte: Schwarz #0E0E0E, Ziegelrot #B5391C (Folie z. B. RAL 3016 / Pantone 1805 C).</p></div>
+<p>Gestaltungsvorgabe für die Folierung (Transporter-Seitenfläche, Heck) und für Arbeitskleidung. Die Datei dient als Vorlage für den Werbetechniker – dieser benötigt zusätzlich die Vektordateien aus <code>brand/svg/</code> – Heck und Kleidung: <code>logo-gestapelt.svg</code> bzw. <code>-negativ</code>, Fahrzeugtür: <code>logo-kompakt-negativ.svg</code> – sowie <code>brand/markenblatt.pdf</code>. Farben: Anthrazit #1E2124 (RAL 9011), Signalgelb #FFC93C (RAL 1021), Kalkweiß #F4F2ED (RAL 9003); RAL-Werte sind Näherungen, vor der Produktion ein Muster prüfen.</p></div>
 <div class="blatt">
   <h2 class="titel">Transporter – Seitenfläche</h2>
   <div class="auto">
     <div class="keil"></div>
-    <img src="../brand/logo-invers.svg" alt="Gashini Dienstleistungen">
+    <img src="../brand/svg/logo-hauptvariante-negativ.svg" alt="Gashini Dienstleistungen – Trockenbau, Innenausbau, Renovierung">
     <div class="claim">Sauber. Gepflegt.<br><span style="color:var(--akzent)">Termintreu.</span></div>
     <div class="liste">Gebäudereinigung · Hausmeisterservice · Umzug · Renovierung</div>
     <div class="tel"><div class="nr">{{TELEFON}}</div><small>{{DOMAIN}}</small></div>
   </div>
   <div class="reihe">
     <div class="shirt">
-      <div class="feld"><img src="../brand/signet.svg" style="height:20mm" alt="Signet"></div>
-      <h3>Polo / Brust links</h3><p>Signet gestickt, Höhe 55 mm, auf schwarzem Polo. Alternativ Logo komplett bei hellen Textilien.</p>
+      <div class="feld"><img src="../brand/svg/signet.svg" style="height:20mm" alt="Signet"></div>
+      <h3>Polo / Brust links</h3><p>Signet gestickt, Höhe 55 mm, auf anthrazitfarbenem Polo (Stickerei mindestens 25 mm). Alternativ Hauptvariante bei hellen Textilien.</p>
     </div>
     <div class="shirt">
-      <div class="feld dark"><div class="rueckendruck">Gashini<br><span>Dienstleistungen</span><br><span style="font-size:9pt;color:#C9C9C9;letter-spacing:2pt">{{TELEFON}}</span></div></div>
-      <h3>Rückendruck</h3><p>Schriftzug 260 mm breit, mittig zwischen den Schulterblättern, Flexdruck weiß/rot.</p>
+      <div class="feld dark"><div class="rueckendruck"><img src="../brand/svg/logo-gestapelt-negativ.svg" alt="Gashini Dienstleistungen – gestapelte Variante"><span>{{TELEFON}}</span></div></div>
+      <h3>Rückendruck</h3><p>Gestapelte Variante (<code>logo-gestapelt-negativ.svg</code>) 260 mm breit, mittig zwischen den Schulterblättern, Flexdruck Kalkweiß/Signalgelb. Die Wortmarke steht nie ohne Gewerkezeile.</p>
     </div>
     <div class="shirt">
-      <div class="feld"><div style="font-family:var(--font-head);font-stretch:78%;font-weight:600;font-size:14pt;letter-spacing:1.4pt;text-transform:uppercase">Warnweste<br><span style="color:var(--akzent)">+ Signet</span></div></div>
+      <div class="feld"><div style="font-family:var(--font-head);font-weight:600;font-size:14pt;letter-spacing:1.4pt;text-transform:uppercase">Warnweste<br><span style="color:var(--ink);border-bottom:1mm solid var(--akzent)">+ Signet</span></div></div>
       <h3>Sicherheitskleidung</h3><p>Warnwesten und Jacken nach EN ISO 20471 in Gelb mit aufgedrucktem Signet – die Corporate-Farben treten hier hinter die Sicherheitsnorm zurück.</p>
     </div>
   </div>

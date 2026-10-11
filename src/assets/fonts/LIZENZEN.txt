@@ -1,10 +1,10 @@
 Schriftlizenzen
 ===============
 
-Instrument Sans – Copyright 2022 The Instrument Sans Project Authors – SIL Open Font License 1.1
-IBM Plex Mono   – Copyright © 2017 IBM Corp. – SIL Open Font License 1.1
-Barlow Condensed (nur als Pfad im Logo) – Copyright 2017 The Barlow Project Authors – SIL Open Font License 1.1
+Archivo – Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo) – SIL Open Font License 1.1
+          Hausschrift laut Markenblatt (brand/markenblatt.pdf). Im Logo liegt sie als Vektorpfad vor.
 
-Bezogen über die Fontsource-Pakete (Version 5.3.0), Teilmenge Latin.
-Die OFL erlaubt Nutzung, Einbettung und Weitergabe, auch kommerziell; die Schriften dürfen nicht einzeln verkauft werden.
-Volltext der Lizenz: https://openfontlicense.org
+Datei archivo-var.woff2: variable Schrift, Achse Strichstärke 100–900, Teilmenge Latin.
+Bezogen über das Fontsource-Paket @fontsource-variable/archivo (Version 5.3.0).
+Die OFL erlaubt Nutzung, Einbettung und Weitergabe, auch kommerziell; die Schrift darf nicht einzeln verkauft werden.
+Volltext der Lizenz: OFL-archivo.txt

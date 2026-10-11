@@ -25,7 +25,7 @@ scripts/werkzeuge/3d/  Entwicklungswerkzeug: Wandmodell (three.js), Visualisieru
 src/api/           Formular-Backend (PHP) und Konfigurationsvorlage
 src/server/        .htaccess (Sicherheits-Header, CSP, Weiterleitungen)
 data/              firmendaten.env (öffentlich) · projekte.json · faq.json
-brand/             Logo, Signet, Favicon, Gestaltungsrichtlinien
+brand/             Logo-Paket (svg/, png/, favicon.ico, markenblatt.pdf), Gestaltungsrichtlinien
 web/               GENERIERT – nicht von Hand ändern (CI prüft das)
 print/             Visitenkarte, Briefbogen, Flyer, E-Mail-Signatur, Fahrzeug
 tests/             statische Prüfungen, Formular-Tests, Browser-Tests
@@ -48,7 +48,7 @@ strategie/         Strategiepapiere aus der ersten Projektphase
 | [`docs/TESTREPORT.md`](docs/TESTREPORT.md) | was geprüft wurde – und was nicht |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Hosting, Formular einrichten, Weiterleitungen, nginx |
 | [`docs/PFLEGE.md`](docs/PFLEGE.md) | Texte ändern, Projekte veröffentlichen, Fragen ergänzen |
-| [`brand/styleguide.md`](brand/styleguide.md) | Farben, Schriften, Logo, Bewegung |
+| [`brand/styleguide.md`](brand/styleguide.md) | Logo-Paket und Markenblatt, Hausfarben, Archivo, Bewegung |
 
 ## Tests
 

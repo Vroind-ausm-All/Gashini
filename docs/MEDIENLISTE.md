@@ -99,7 +99,7 @@ Gesichter.
 ```
 Photorealistic editorial interior photograph for a German craftsman's website. Warm, low morning sunlight through
 tall windows, soft long shadows, a faint haze of fine gypsum dust in the light. Palette: off-white gypsum, warm light
-grey, galvanized steel, dark grey workwear, one small brick-red accent (#B5391C), for example a tool handle.
+grey, galvanized steel, dark anthracite workwear (#1E2124), one small signal-yellow accent (#FFC93C), for example a tool handle.
 Calm, tidy, precise, generous negative space. Full-frame camera, 35-50 mm lens, f/4, natural colour grading,
 realistic textures, high detail. No text, no letters, no logos, no brand names, no watermark. No faces - only hands
 and forearms. No house numbers, no name plates, no licence plates.
@@ -147,7 +147,7 @@ Zeichnungen). Ausgangsbild für V7.
 
 ```
 Close-up of a hand in a grey work glove adjusting the upper hinge of a white interior door with a slim hex key.
-The door stands half open in a bright hallway with light oak parquet; a cordless screwdriver with a brick-red accent
+The door stands half open in a bright hallway with light oak parquet; a cordless screwdriver with a signal-yellow accent
 rests on the floor near the door. Classic two-part door hinge with a visible pin, white door frame, soft daylight
 from the side, shallow depth of field on the hinge.
 ```
@@ -161,7 +161,7 @@ Ausgangsbild für V6.
 ```
 Clean, well-kept stairwell of a German multi-family apartment building: light stone stairs, white painted walls,
 a simple dark metal handrail, a neat row of grey letterboxes without any names or numbers on the ground floor, a
-large stairwell window with soft daylight, warm light pooling on the landing, freshly swept floor, a brick-red
+large stairwell window with soft daylight, warm light pooling on the landing, freshly swept floor, a signal-yellow
 doormat as the only accent. No people. View from the bottom of the stairs looking up diagonally.
 ```
 Prüfen: Briefkästen **ohne** Schrift und Namen, keine Hausnummer, nichts beschädigt.

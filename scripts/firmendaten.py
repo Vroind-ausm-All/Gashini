@@ -50,7 +50,8 @@ def jsonld_firma(w):
         return ""
     d = {"@context": "https://schema.org", "@type": "HomeAndConstructionBusiness",
          "@id": "https://%s/#firma" % w["DOMAIN"], "name": "Gashini Dienstleistungen",
-         "url": "https://%s/" % w["DOMAIN"], "image": "https://%s/assets/marke/logo.svg" % w["DOMAIN"],
+         "url": "https://%s/" % w["DOMAIN"], "logo": "https://%s/assets/marke/signet-512.png" % w["DOMAIN"],
+         "image": "https://%s/assets/marke/signet-512.png" % w["DOMAIN"],
          "description": "Trockenbau, Hausmeisterservice sowie Reparatur und Instandhaltung rund um Immobilien."}
     if ok("TELEFON"): d["telephone"] = w["TELEFON"]
     if ok("EMAIL"): d["email"] = w["EMAIL"]

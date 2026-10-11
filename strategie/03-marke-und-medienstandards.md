@@ -1,4 +1,9 @@
 # Marke, Kreation und Medienstandards
+
+> **Abgelöst (Oktober 2026):** Logo, Farben und Schrift sind durch das Logo-Paket mit Markenblatt ersetzt –
+> Anthrazit #1E2124, Signalgelb #FFC93C, Kalkweiß #F4F2ED, Schrift Archivo (`brand/markenblatt.pdf`,
+> `brand/styleguide.md`). Die Abschnitte zu Fotografie und Medienstandards gelten weiter; Farb- und Schriftangaben
+> unten sind historisch.
 Senior Creative Direction · Senior Brand & Graphic Design · Senior Media Production
 
 ## 3.1 Prüfung: Passt das Erscheinungsbild zur Positionierung?

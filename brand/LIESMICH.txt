@@ -1,0 +1,44 @@
+GASHINI DIENSTLEISTUNGEN - WORT-BILD-MARKE
+Version 1.0, Oktober 2026
+
+WAS IST WAS
+  svg/   Vektordateien. Diese gehen an Folierer, Sticker, Druckerei und Schilderbauer.
+         Die Buchstaben sind in Pfade umgewandelt - die Datei sieht auf jedem Rechner
+         gleich aus, auch ohne installierte Schrift.
+  png/   Pixeldateien mit transparentem Hintergrund fuer Web, Word, PowerPoint, Social.
+         -1000 fuer Bildschirm, -3000 fuer Druck und grosse Flaechen.
+  favicon.ico        Browser-Tab der Website.
+  markenblatt.pdf    Eine Seite mit allen Varianten, Farbwerten und Regeln.
+                     Dieses PDF geht an jeden externen Dienstleister mit.
+
+WELCHE DATEI WOFUER
+  Website-Kopf, Briefkopf, Angebot, Rechnung ... logo-hauptvariante.svg
+  Sehr kleine Anwendung, schmale Leiste ....... logo-hauptvariante-klein.svg
+  Dunkler Hintergrund ......................... *-negativ.svg
+  Stempel, Gravur, einfarbige Stickerei ....... *-sw.svg
+  Fahrzeugheck, Kleidung, Banner .............. logo-gestapelt.svg
+  Fahrzeugtuer, schmale Flaechen .............. logo-kompakt-negativ.svg
+  Profilbild, App-Icon, Aufkleber ............. signet.svg
+  Aufkleber, Bauschild, Auffaelliges .......... signet-gelb.svg
+
+FARBEN
+  Anthrazit   #1E2124   RAL 9011 Graphitschwarz   CMYK 72/64/59/70
+  Signalgelb  #FFC93C   RAL 1021 Rapsgelb         CMYK 0/23/85/0
+  Kalkweiss   #F4F2ED   RAL 9003 Signalweiss      CMYK 2/2/4/0
+  RAL und CMYK sind Naeherungen. Vor Produktion ein Muster gegen den HEX-Wert pruefen.
+
+REGELN
+  - Die Wortmarke steht nie ohne die Gewerkezeile. Fehlt der Platz, steht das Signet allein.
+  - Schutzraum ringsum: mindestens die Hoehe des gelben Bandes.
+  - Mindestgroessen: Signet 24 px bzw. 8 mm, Stickerei 25 mm.
+  - Nicht verzerren, drehen, mit Schatten oder Verlauf versehen oder umfaerben.
+  - Das gelbe Band ist exakt so breit wie das G. Dieses Verhaeltnis nicht veraendern.
+
+SCHRIFT
+  Archivo Medium (SIL Open Font License, kostenlos und gewerblich nutzbar).
+  Im Logo sind die Buchstaben in Pfade umgewandelt, eine Installation ist dafuer nicht noetig.
+  Fuer Website und Dokumente kann Archivo frei eingebunden werden.
+
+RECHTE
+  Die Marke wurde fuer Gashini Dienstleistungen erstellt. Vor der Nutzung als
+  eingetragene Marke sollte eine Recherche beim DPMA erfolgen.

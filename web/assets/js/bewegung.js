@@ -5,7 +5,8 @@
    Signature Motions:
    1 Architectural Hero      – Zeilen und Wand per CSS (kritischer Pfad), Beschriftung per DrawSVG
    2 Wall Construction       – Three.js-Modell, auf großen Bildschirmen an den Scrollfortschritt gekoppelt
-   3 Project Reveal          – Bildmasken entlang der Kante, Filter mit Flip */
+   3 Project Reveal          – Bildmasken entlang der Kante, Filter mit Flip
+   4 Netzwerk-Geschichte     – das Schema der Netzwerk-Seite wächst mit dem Scrollen in fünf Stufen */
 (function () {
   'use strict';
   var html = document.documentElement;
@@ -80,7 +81,7 @@
     // ---------- Zeichnungen: Linien ziehen sich nach
     if (window.DrawSVGPlugin) {
       gsap.utils.toArray('main svg.zg').forEach(function (svg) {
-        if (svg.closest('.seitenkopf') || svg.closest('.leistungskarte-bild')) return;
+        if (svg.closest('.seitenkopf') || svg.closest('.leistungskarte-bild') || svg.closest('[data-netzstory]')) return;
         // Gestrichelte Linien (Route, Fluchtlinien) behalten ihr Muster: einblenden statt nachzeichnen
         var linien = Array.prototype.filter.call(svg.querySelectorAll('[data-linie]'), function (l) { return !gestrichelt(l); });
         var strich = Array.prototype.filter.call(svg.querySelectorAll('[data-linie], .zg-flucht'), gestrichelt);
@@ -100,7 +101,21 @@
       tl3.from(svg.querySelectorAll('.nz-knoten--eigen, .nz-knoten--partner, .nz-knoten--gruppe'), { autoAlpha: 0, duration: .5, stagger: .05 }, .7);
     });
 
-    // ---------- Ablauf: Fortschrittslinie über den vier Schritten
+    // ---------- Leitsatz: färbt sich Wort für Wort ein (an den Scroll gekoppelt). Startfarbe #84888D hält auf
+    // Kalkweiß 3,2 : 1 – genug für große Schrift, auch bevor gescrollt wurde; Endfarbe ist die eigene Farbe des Worts.
+    if (window.SplitText) {
+      document.querySelectorAll('[data-wortweise]').forEach(function (el) {
+        window.SplitText.create(el, {
+          type: 'words', wordsClass: 'wort',
+          onSplit: function (self) {
+            return gsap.from(self.words, { color: '#84888D', ease: 'none', stagger: .12,
+              scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: .5 } });
+          }
+        });
+      });
+    }
+
+    // ---------- Ablauf: Fortschrittslinie über den Schritten
     document.querySelectorAll('[data-schritte]').forEach(function (liste) {
       var linie = document.createElement('span');
       linie.className = 'schritte-fortschritt';
@@ -109,6 +124,61 @@
       gsap.to(linie, { width: '100%', ease: 'none', scrollTrigger: { trigger: liste, start: 'top 80%', end: 'bottom 55%', scrub: .6 } });
     });
 
+  });
+
+  // ---------- Netzwerk-Geschichte: Schema steht, Schritte ziehen vorbei, das Netz wächst mit dem Scrollen.
+  // Drei Lagen: breit nebeneinander, breit über den Schritten (Tablet), schmal über den Schritten (Handy).
+  // Zu niedrige Bildschirme und reduzierte Bewegung behalten das vollständige Schema ohne Kopplung.
+  document.querySelectorAll('[data-netzstory]').forEach(function (sek) {
+    var liste = sek.querySelector('.netzstory-schritte');
+    var schritte = Array.prototype.slice.call(sek.querySelectorAll('.netzstory-schritt'));
+    var band = sek.querySelector('.netzstory-fortschritt');
+    var legende = sek.querySelector('.netzstory-legende');
+    var lagen = [
+      ['(min-width: 900px) and (prefers-reduced-motion: no-preference)', '.zg--netzwerk-breit', '55%'],
+      ['(min-width: 700px) and (max-width: 899px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)', '.zg--netzwerk-breit', '78%'],
+      ['(max-width: 699px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)', '.zg--netzwerk-schmal', '78%']
+    ];
+    lagen.forEach(function (lage) {
+      mm.add(lage[0], function () {
+        var svg = sek.querySelector(lage[1]);
+        if (!svg || !liste) return;
+        var q = function (sel) { return svg.querySelectorAll(sel); };
+        var linie = lage[2];
+        sek.classList.add('netzstory--lebendig');
+        // Zeitachse in fünf gleich langen Abschnitten (ein Abschnitt je Schritt). Jeder Aufbau ist in der ersten
+        // Hälfte fertig – steht ein Schritt mittig an der Auslöselinie, ist sein Bild vollständig.
+        var tl = gsap.timeline({ defaults: { ease: 'power2.out', duration: .35 } });
+        // 1 Ihr Vorhaben
+        tl.from(q('.nz-knoten--sie'), { autoAlpha: 0, scale: .3, transformOrigin: '50% 50%', ease: 'back.out(2)' }, .05);
+        // 2 Ein Ansprechpartner
+        if (window.DrawSVGPlugin) tl.from(q('.nz-linie--sie'), { drawSVG: '0%', ease: 'power1.inOut' }, 1);
+        else tl.from(q('.nz-linie--sie'), { autoAlpha: 0 }, 1);
+        tl.from(q('.nz-knoten--mitte'), { autoAlpha: 0, scale: .5, transformOrigin: '50% 50%', ease: 'back.out(1.6)' }, 1.15);
+        // 3 Was wir selbst ausführen
+        if (window.DrawSVGPlugin) tl.from(q('.nz-linie--eigen'), { drawSVG: '0%', stagger: .06, duration: .25, ease: 'power1.inOut' }, 2);
+        else tl.from(q('.nz-linie--eigen'), { autoAlpha: 0, stagger: .06 }, 2);
+        tl.from(q('.nz-knoten--eigen'), { autoAlpha: 0, scale: .4, transformOrigin: '50% 50%', stagger: .06, duration: .25, ease: 'back.out(2)' }, 2.15);
+        // 4 Wo Fachbetriebe dazukommen
+        tl.from(q('.nz-linie--partner'), { autoAlpha: 0, stagger: .02, duration: .25 }, 3)
+          .from(q('.nz-knoten--partner, .nz-knoten--gruppe'), { autoAlpha: 0, y: 10, stagger: .02, duration: .25 }, 3.1);
+        // 5 Wer Ihr Vertragspartner ist: eigene Leistung leuchtet gelb, die Legende erklärt die Linien
+        tl.to(q('.nz-linie--eigen'), { stroke: '#FFC93C', duration: .3 }, 4)
+          .to(q('.nz-knoten--eigen circle'), { stroke: '#FFC93C', fill: '#FFC93C', duration: .3 }, 4);
+        if (legende) tl.from(legende, { autoAlpha: 0, y: 12, duration: .3 }, 4.1);
+        tl.to({}, { duration: .01 }, 4.99);
+        ST.create({ trigger: liste, start: 'top ' + linie, end: 'bottom ' + linie, scrub: .7, animation: tl });
+        if (band) gsap.fromTo(band, { scaleY: 0 }, { scaleY: 1, ease: 'none',
+          scrollTrigger: { trigger: liste, start: 'top ' + linie, end: 'bottom ' + linie, scrub: .3 } });
+        schritte.forEach(function (s) {
+          ST.create({ trigger: s, start: 'top ' + linie, end: 'bottom ' + linie, toggleClass: { targets: s, className: 'aktiv' } });
+        });
+        return function () {
+          sek.classList.remove('netzstory--lebendig');
+          schritte.forEach(function (s) { s.classList.remove('aktiv'); });
+        };
+      });
+    });
   });
 
   // ---------- Wandaufbau: Scroll-Kopplung nur auf großen Bildschirmen mit erlaubter Bewegung

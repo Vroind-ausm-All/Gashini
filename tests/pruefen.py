@@ -285,9 +285,35 @@ def t_bewegtbilder():
         ohne = re.sub(r"<!--vorschau-->.*?<!--/vorschau-->", "", html, flags=re.S)
         assert "video-geplant" not in ohne, "Hinweis „Video geplant“ außerhalb eines Vorschau-Blocks: " + rel
 
+@pruefung("Marke: Logos aus dem Logo-Paket (gleiche Maße), Hausfarben statt Ziegelrot, Archivo als einzige Schrift")
+def t_marke():
+    web = os.path.join(WURZEL, "web")
+    paket = {"logo-hauptvariante-klein.svg": "svg/logo-hauptvariante-klein.svg", "logo-hauptvariante-negativ.svg": "svg/logo-hauptvariante-negativ.svg",
+             "logo-kompakt.svg": "svg/logo-kompakt.svg", "signet.svg": "svg/signet.svg", "favicon.svg": "svg/favicon.svg"}
+    for ziel, quelle in paket.items():
+        a = io.open(os.path.join(WURZEL, "brand", quelle), encoding="utf-8").read()
+        b = io.open(os.path.join(web, "assets", "marke", ziel), encoding="utf-8").read()
+        assert re.search(r'viewBox="([^"]+)"', a).group(1) == re.search(r'viewBox="([^"]+)"', b).group(1), "Logo-Maße verändert: " + ziel
+        assert re.findall(r'fill="(#[0-9A-Fa-f]{6})"', a) == re.findall(r'fill="(#[0-9A-Fa-f]{6})"', b), "Logo-Farben verändert: " + ziel
+        assert len(re.findall(r"<path", a)) == len(re.findall(r"<path", b)), "Logo-Pfade verändert: " + ziel
+    assert os.path.isfile(os.path.join(web, "favicon.ico")), "favicon.ico fehlt im Wurzelverzeichnis"
+    css = io.open(os.path.join(web, "assets", "css", "site.css"), encoding="utf-8").read()
+    for alt in ("#B5391C", "#8E2A12", "Instrument Sans", "IBM Plex"):
+        assert alt.lower() not in css.lower(), "Alte CI im Stylesheet: " + alt
+    for farbe in ("#1E2124", "#FFC93C", "#F4F2ED"):
+        assert farbe.lower() in css.lower(), "Hausfarbe fehlt: " + farbe
+    schriften = sorted(f for f in os.listdir(os.path.join(web, "assets", "fonts")) if f.endswith(".woff2"))
+    assert schriften == ["archivo-var.woff2"], "Unerwartete Schriftdateien: %s" % schriften
+    for rel, pfad, _ in seiten(web):
+        html = io.open(pfad, encoding="utf-8").read()
+        if 'class="kopf"' in html:
+            assert "marke/logo-hauptvariante-klein.svg" in html and "marke/logo-kompakt.svg" in html, "Kopf ohne Logo-Varianten: " + rel
+        if 'class="fuss"' in html:
+            assert "marke/logo-hauptvariante-negativ.svg" in html, "Fuß ohne Negativ-Logo: " + rel
+
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_marke):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)
