@@ -12,7 +12,7 @@ Leistungswerte unten stammen aus einer eigenen Labormessung und sind als solche 
 
 Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push (`.github/workflows/vorschau.yml`).
 Auf einem GitHub-Runner liefen alle Suiten grün: Workflow-Lauf
-[38180180625](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38180180625) für Commit 2e1136b – Jobs `pruefen`
+[38183541288](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38183541288) für Commit ff68d11 – Jobs `pruefen`
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
 Lokal (12.10.2026, nach Bildern, Stuttgart-SEO und Scroll-Fix): statische Prüfungen 17/17, Formular-Backend 30/30,
