@@ -1,6 +1,6 @@
 # Testbericht
 
-Stand: 10.10.2026, Premium-Relaunch auf `claude/relaunch-premium`. Geprüft in der Entwicklungsumgebung mit
+Stand: 11.10.2026, Premium-Relaunch mit überarbeiteter Navigation auf `claude/relaunch-premium`. Geprüft in der Entwicklungsumgebung mit
 Python 3.11, PHP 8.4, Node 22, Chromium über Playwright 1.56 und axe-core 4.11.
 
 Vier Kategorien, streng getrennt: **automatisch getestet** · **manuell geprüft** · **nicht prüfbar** · **noch offen**.
@@ -10,7 +10,8 @@ Leistungswerte unten stammen aus einer eigenen Labormessung und sind als solche 
 ## 1. Automatisch getestet
 
 Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push (`.github/workflows/vorschau.yml`).
-Lokal liefen alle drei Suiten vollständig grün, ebenso auf einem GitHub-Runner: Workflow-Lauf
+Lokal liefen alle drei Suiten am 11.10.2026 (nach der Überarbeitung der Navigation) vollständig grün. Auf einem
+GitHub-Runner zuletzt bestätigt: Workflow-Lauf
 [38086679465](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38086679465) für Commit 17d6fba – Jobs `pruefen`
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
@@ -48,7 +49,7 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 30 von 30 bestanden
+### `tests/e2e.mjs` – 35 von 35 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -56,6 +57,9 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Textvergrößerung 200 % bei 375 px ohne Überlauf (Start, Kontakt, Trockenbau) | ✓ |
 | axe-core (WCAG 2.0/2.1/2.2 A+AA, Best Practices) auf 14 Seiten bei 1440 und 375 px, gemessen nach Ende der Einstiegsanimationen | ✓ **0 Funde** jeder Schwere |
 | Sprunglink, sichtbarer Fokus, Mobilmenü per Tastatur | ✓ (3) |
+| **neu:** Vollbild-Menü bei 390, 768 und 360 × 600 px direkt unter dem Kopf, alle Hauptpunkte sichtbar bzw. im Menü scrollbar, Kontaktknöpfe erreichbar | ✓ (3) |
+| **neu:** Desktop (1280 px) ohne Menü-Knopf; Untermenü „Leistungen“ per Hover und Tastatur, Escape schließt mit Fokus zurück, Bereich als aktuell markiert | ✓ |
+| **neu:** Kopf weicht auf dem Handy beim Herunterscrollen und kehrt zurück; keine Schnellkontakt-Leiste auf der Kontaktseite | ✓ |
 | Formular: Feldfehler mit `aria-invalid`/`aria-describedby`, Erfolg, Doppelklick, Serverfehler | ✓ (5) |
 | Ohne JavaScript: Inhalt, Navigation, **Wandaufbau-Zeichnung** sichtbar; Formular serverseitig angenommen | ✓ (2) |
 | **neu:** Bewegung reduzieren: keine Bewegungsklasse, alle animierten Inhalte sofort sichtbar, kein Scroll-Pinning | ✓ |
@@ -76,6 +80,7 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | Sichtprüfung aller Seiten bei 1440 px, Start/Kontakt/Wandaufbau auch bei 390 px | Gefunden und behoben: Hero-Überschrift brach in fünf Zeilen (Schriftgrad und Spaltenverhältnis angepasst); Beschriftungen im Hero überlagerten sich (jetzt Nummern mit Legende); Zeichnungen in Bildrahmen beschnitten (absolut eingepasst); Kachelkanten in der Betonstruktur (`stitchTiles`); gestrichelte Linien verloren durch DrawSVG ihr Muster (werden jetzt eingeblendet statt nachgezeichnet); Legende des Rundgangs mit sechs statt fünf Punkten; 3D-Bühne verschwand auf Mobilgeräten beim Antippen eines Schritts (jetzt mitlaufend) |
 | 3D-Szene fachlich | Achsmaß 625 mm, Platte 1250 mm über zwei Felder, UW oben/unten, CW 75, Mineralwolle 60 mm, GKB 12,5 mm, Schraubabstand 250 mm. Reihenfolge vereinfacht (Rückseite vor der Dämmung). Als „vereinfachter Beispielaufbau“ ohne Brand- oder Schallschutzaussage gekennzeichnet |
 | Nahaufnahmen aus der 3D-Szene | verworfen – prozedurale Texturen wirkten aus der Nähe künstlich. Verwendet werden nur drei Totalen; Reparatur und Hausmeister erhalten Zeichnungen |
+| **Navigation und Responsive** (11.10.2026) – alle 14 Seiten bei 320, 360, 390, 600, 768, 900, 1024 und 1280 px | Gefunden und behoben: Mobilmenü wurde durch den Unschärfe-Filter des Kopfes beschnitten und war nur teilweise sichtbar (Filter auf eine Hintergrundebene verlegt, Menü jetzt Vollbild unter dem Kopf); Klassenname für offene Angaben kollidierte mit dem Menüzustand (rote Unterstreichung im ganzen Menü); Knopftext im Menü schwarz auf schwarz; Vorschau-Streifen stand vor dem Sprunglink. Neu: Untermenü „Leistungen“ ab 960 px, Kopf weicht auf dem Handy beim Herunterscrollen, Tablet-Raster (600–899 px) für Leistungskarten, Schritte, Projekte und Fußbereich, Schnellkontakt-Leiste entfällt auf den Kontaktseiten |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)
