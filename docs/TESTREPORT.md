@@ -10,11 +10,13 @@ Leistungswerte unten stammen aus einer eigenen Labormessung und sind als solche 
 ## 1. Automatisch getestet
 
 Alle Tests liegen im Repository und laufen in GitHub Actions bei jedem Push (`.github/workflows/vorschau.yml`).
-Lokal liefen alle drei Suiten am 11.10.2026 (nach Navigation, Symbolbildern und Kurzvideo-Grundlage) vollständig
-grün, ebenso auf einem GitHub-Runner: Workflow-Lauf
-[38102992289](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38102992289) für Commit 50af3af – Jobs `pruefen`
+Auf einem GitHub-Runner liefen alle Suiten grün: Workflow-Lauf
+[38180180625](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38180180625) für Commit 2e1136b – Jobs `pruefen`
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
+Lokal liefen statische Prüfungen und Formular-Backend grün. Im letzten lokalen Browser-Lauf schlug einmal die
+Überlaufprüfung der Kontaktseite bei 375 px fehl (+179 px); in 42 gezielten Wiederholungen unter denselben Bedingungen
+trat das nicht wieder auf, und auf dem Runner bestand die Prüfung. Ursache nicht gefunden – beim nächsten Lauf beobachten.
 
 ### `tests/pruefen.py` – 16 von 16 bestanden
 
