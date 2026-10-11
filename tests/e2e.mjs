@@ -192,6 +192,83 @@ try {
     await p.close();
   }
 
+  // Vollbild-Menü: beginnt direkt unter dem Kopf, alle Hauptpunkte sichtbar, auf kleinen Höhen scrollbar
+  for (const [b, h] of [[390, 844], [768, 1024], [360, 600]]) {
+    const p = await browser.newPage({ viewport: { width: b, height: h } });
+    await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+    await p.click('.menue-knopf');
+    await p.waitForTimeout(400);
+    const r = await p.evaluate(() => {
+      const nav = document.getElementById('hauptnav'), kopf = document.querySelector('.kopf').getBoundingClientRect();
+      const q = nav.getBoundingClientRect();
+      const punkte = [...nav.querySelectorAll(':scope > ul > li > a')].filter(a => getComputedStyle(a).display !== 'none');
+      const verdeckt = punkte.filter(a => { const r = a.getBoundingClientRect(); return r.top < q.top || r.bottom > innerHeight; }).map(a => a.textContent.trim());
+      const fuss = nav.querySelector('.hauptnav-fuss .knopf');
+      fuss.scrollIntoView({ block: 'nearest' });
+      const f = fuss.getBoundingClientRect();
+      return {
+        abstand: Math.abs(q.top - kopf.bottom), bisUnten: Math.abs(q.bottom - innerHeight),
+        punkte: punkte.length, verdeckt,
+        fussErreichbar: f.top >= q.top && f.bottom <= innerHeight + 1,
+        seiteGescrollt: scrollY,
+        leiste: (() => { const l = document.querySelector('.kontaktleiste'); return l ? getComputedStyle(l).display : 'none'; })()
+      };
+    });
+    const ganz = b >= 390 ? r.verdeckt.length === 0 : true;
+    pruefe(`Mobilmenü bei ${b}×${h}: direkt unter dem Kopf, bis zum unteren Rand, ${b >= 390 ? 'alle Hauptpunkte sichtbar' : 'Inhalt im Menü scrollbar'}, Kontaktknöpfe erreichbar`,
+      r.abstand <= 1 && r.bisUnten <= 1 && r.punkte >= 6 && ganz && r.fussErreichbar && r.seiteGescrollt === 0 && r.leiste === 'none', r);
+    await p.close();
+  }
+
+  // Desktop: volle Navigation ohne Menü-Knopf, Untermenü „Leistungen“ per Maus und Tastatur
+  {
+    const p = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+    const knopfSichtbar = await p.locator('.menue-knopf').isVisible();
+    const punkte = await p.locator('#hauptnav > ul > li > a:visible').count();
+    const unter = p.locator('.untermenue');
+    const anfangs = await unter.isVisible();
+    await p.hover('.hat-unter > a');
+    const hover = await unter.isVisible();
+    await p.mouse.move(640, 700);
+    await p.waitForTimeout(100);
+    const wegNachHover = !(await unter.isVisible());
+    await p.focus('.unter-knopf');
+    await p.keyboard.press('Enter');
+    const ausgeklappt = await p.getAttribute('.unter-knopf', 'aria-expanded');
+    await p.keyboard.press('Tab');
+    const imUntermenue = await p.evaluate(() => !!document.activeElement.closest('.untermenue'));
+    await p.keyboard.press('Escape');
+    const zu = !(await unter.isVisible());
+    const fokusKnopf = await p.evaluate(() => document.activeElement.classList.contains('unter-knopf'));
+    const aktuell = await p.goto(haupt.basis + 'leistungen/trockenbau/', { waitUntil: 'networkidle' }).then(() =>
+      p.getAttribute('.hat-unter > a', 'aria-current'));
+    pruefe('Desktop-Navigation (1280px): kein Menü-Knopf, Untermenü per Hover und Tastatur, Escape schließt, Fokus zurück, Bereich markiert',
+      !knopfSichtbar && punkte >= 5 && !anfangs && hover && wegNachHover && ausgeklappt === 'true' && imUntermenue && zu && fokusKnopf && aktuell === 'true',
+      { knopfSichtbar, punkte, anfangs, hover, wegNachHover, ausgeklappt, imUntermenue, zu, fokusKnopf, aktuell });
+    await p.close();
+  }
+
+  // Kopf auf dem Handy: weicht beim Herunterscrollen, kommt beim Hochscrollen zurück;
+  // Schnellkontakt-Leiste fehlt auf der Kontaktseite (dort steht das Formular)
+  {
+    const p = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await p.goto(haupt.basis + 'leistungen/', { waitUntil: 'networkidle' });
+    const kopfOben = () => p.evaluate(() => Math.round(document.querySelector('.kopf').getBoundingClientRect().bottom));
+    for (let y = 100; y <= 1200; y += 100) { await p.evaluate(y => window.scrollTo(0, y), y); await p.waitForTimeout(40); }
+    await p.waitForTimeout(450);
+    const runter = await kopfOben();
+    for (let y = 1100; y >= 700; y -= 100) { await p.evaluate(y => window.scrollTo(0, y), y); await p.waitForTimeout(40); }
+    await p.waitForTimeout(450);
+    const hoch = await kopfOben();
+    const leisteStart = await p.locator('.kontaktleiste').isVisible();
+    await p.goto(haupt.basis + 'kontakt/', { waitUntil: 'networkidle' });
+    const leisteKontakt = await p.locator('.kontaktleiste').count();
+    pruefe('Kopf (390px) weicht beim Herunterscrollen und kehrt beim Hochscrollen zurück; Schnellkontakt-Leiste nicht auf der Kontaktseite',
+      runter <= 0 && hoch >= 60 && leisteStart && leisteKontakt === 0, { runter, hoch, leisteStart, leisteKontakt });
+    await p.close();
+  }
+
   // ---------------------------------------------------------------- Formular: Validierung
   {
     const p = await browser.newPage({ viewport: { width: 1024, height: 900 } });

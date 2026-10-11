@@ -28,10 +28,11 @@
     <a class="marke" href="./" aria-label="Gashini Dienstleistungen – Startseite"><img src="assets/marke/logo.svg" width="254" height="80" alt=""></a>
     <button class="menue-knopf" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="striche" aria-hidden="true"></span><span class="text">Menü</span></button>
     <nav class="hauptnav" id="hauptnav" aria-label="Hauptnavigation">
-      <ul><li><a href="leistungen/">Leistungen</a></li><li><a href="projekte/">Projekte</a></li><li><a href="netzwerk/">Netzwerk</a></li><li><a href="ueber-uns/">Über uns</a></li><li><a href="kontakt/">Kontakt</a></li></ul>
+      <ul><li class="hat-unter"><a href="leistungen/">Leistungen</a><button class="unter-knopf" type="button" aria-expanded="false" aria-controls="untermenue-leistungen"><span class="nur-screenreader">Untermenü Leistungen</span><svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button><ul class="untermenue" id="untermenue-leistungen"><li><a href="leistungen/trockenbau/"><strong>Trockenbau &amp; Innenausbau</strong><span>Trennwände, Vorsatzschalen, Decken</span></a></li><li><a href="leistungen/reparatur-und-instandhaltung/"><strong>Reparatur &amp; Instandhaltung</strong><span>Ausbessern, einstellen, montieren</span></a></li><li><a href="leistungen/hausmeisterservice/"><strong>Hausmeisterservice</strong><span>Rundgänge, Pflege, Mieterwechsel</span></a></li><li class="alle"><a href="leistungen/">Alle Leistungen im Überblick →</a></li></ul></li><li><a href="projekte/">Projekte</a></li><li><a href="netzwerk/">Netzwerk</a></li><li><a href="ueber-uns/">Über uns</a></li><li class="nav-nur-mobil"><a href="fragen/">Fragen &amp; Ablauf</a></li><li><a href="kontakt/">Kontakt</a></li></ul>
       <div class="hauptnav-fuss">
         <a class="knopf knopf--primaer" href="kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+        <p class="einsatz">Einsatzgebiet: {{EINSATZGEBIET}}</p>
       </div>
     </nav>
     <div class="kopf-aktion">

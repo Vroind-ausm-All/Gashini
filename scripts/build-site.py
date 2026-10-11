@@ -566,8 +566,27 @@ def redaktion_umformen(text):
                   r'<details class="redaktion"><summary>Offener Punkt</summary><p>\1</p></details>', text, flags=re.S)
 
 # ------------------------------------------------------------------ Seitengerüst
-def kopfbereich(aktiv):
-    punkte = "".join('<li><a href="@/%s"%s>%s</a></li>' % (z, ' aria-current="page"' if z == aktiv else "", t) for z, t in NAV)
+UNTERMENUE = [("leistungen/trockenbau/", "Trockenbau &amp; Innenausbau", "Trennwände, Vorsatzschalen, Decken"),
+              ("leistungen/reparatur-und-instandhaltung/", "Reparatur &amp; Instandhaltung", "Ausbessern, einstellen, montieren"),
+              ("leistungen/hausmeisterservice/", "Hausmeisterservice", "Rundgänge, Pflege, Mieterwechsel")]
+
+def kopfbereich(aktiv, pfad=""):
+    """Kopf mit Hauptnavigation. Desktop: Leistungen mit Untermenü; mobil: Vollbild-Menü mit allen Zielen."""
+    def oben(ziel, text):
+        # "page" nur auf der Seite selbst, "true" für den Bereich (z. B. Leistungen auf einer Leistungsseite)
+        strom = ' aria-current="page"' if ziel == pfad else ' aria-current="true"' if ziel == aktiv else ""
+        return '<a href="@/%s"%s>%s</a>' % (ziel, strom, text)
+    unter = "".join('<li><a href="@/%s"%s><strong>%s</strong><span>%s</span></a></li>'
+                    % (z, ' aria-current="page"' if z == pfad else "", t, b) for z, t, b in UNTERMENUE)
+    unter += '<li class="alle"><a href="@/leistungen/">Alle Leistungen im Überblick →</a></li>'
+    punkte = ('<li class="hat-unter">%s'
+              '<button class="unter-knopf" type="button" aria-expanded="false" aria-controls="untermenue-leistungen">'
+              '<span class="nur-screenreader">Untermenü Leistungen</span>'
+              '<svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg></button>'
+              '<ul class="untermenue" id="untermenue-leistungen">%s</ul></li>' % (oben("leistungen/", "Leistungen"), unter))
+    for ziel, text in NAV[1:]:
+        punkte += "<li>%s</li>" % oben(ziel, text)
+    punkte = punkte.replace('<li><a href="@/kontakt/"', '<li class="nav-nur-mobil">%s</li><li><a href="@/kontakt/"' % oben("fragen/", "Fragen &amp; Ablauf"), 1)
     return '''<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
 <header class="kopf">
   <div class="rahmen kopf-innen">
@@ -578,6 +597,7 @@ def kopfbereich(aktiv):
       <div class="hauptnav-fuss">
         <a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
+        <p class="einsatz">Einsatzgebiet: {{EINSATZGEBIET}}</p>
       </div>
     </nav>
     <div class="kopf-aktion">
@@ -627,7 +647,12 @@ FUSS = '''<footer class="fuss">
       <span><a href="@/impressum/">Impressum</a> · <a href="@/datenschutz/">Datenschutz</a></span>
     </div>
   </div>
-</footer>
+</footer>'''
+
+# Feste Schnellkontakt-Leiste am unteren Rand (nur schmale Bildschirme). Auf den
+# Kontaktseiten entfällt sie: Dort steht das Formular bereits, und beim Tippen
+# würde die Leiste Eingabefelder verdecken.
+KONTAKTLEISTE = '''
 <nav class="kontaktleiste" aria-label="Schnellkontakt">
   <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">Anrufen</a>
   <a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Anfragen</a>
@@ -683,6 +708,7 @@ def seite_rendern(meta, inhalt, quelle):
     vorladen = vorlade_html(meta["vorladen"] + ".webp", "(min-width: 1000px) 46vw, 100vw") if meta.get("vorladen") else ""
     kanonisch = "" if pfad == "404.html" else '<link rel="canonical" href="https://{{DOMAIN}}/%s">\n' % pfad
     robots = "" if indexieren else '<meta name="robots" content="noindex, follow">\n'
+    leiste = not pfad.startswith("kontakt/")
     dokument = '''<!DOCTYPE html>
 <!-- Generiert aus %s durch scripts/build-site.py. Änderungen in dieser Datei gehen beim nächsten Build verloren. -->
 <html lang="de">
@@ -704,7 +730,7 @@ def seite_rendern(meta, inhalt, quelle):
 %s
 %s
 </head>
-<body>
+<body%s>
 %s
 <main id="inhalt" tabindex="-1">
 %s
@@ -714,7 +740,8 @@ def seite_rendern(meta, inhalt, quelle):
 </html>
 ''' % (quelle, esc(meta["titel"]), esc(meta["beschreibung"]), kanonisch, robots,
        esc(meta.get("og_titel", meta["titel"])), esc(meta["beschreibung"]), "" if pfad == "404.html" else pfad,
-       vorladen, skripte(meta), zusatz_kopf, kopfbereich(meta.get("nav", "")), inhalt.strip(), FUSS)
+       vorladen, skripte(meta), zusatz_kopf, "" if leiste else ' class="ohne-leiste"',
+       kopfbereich(meta.get("nav", ""), pfad), inhalt.strip(), FUSS + (KONTAKTLEISTE if leiste else ""))
     von = pfad if pfad != "404.html" else ""
     dokument = srcset_aufloesen(links_aufloesen(dokument, von), von)
     ziel = os.path.join(OUT, pfad, "index.html") if not pfad.endswith(".html") else os.path.join(OUT, pfad)

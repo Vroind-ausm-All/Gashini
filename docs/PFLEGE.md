@@ -71,6 +71,19 @@ und Fotobriefings aus.
 Blöcke zwischen `<!--vorschau-->` und `<!--/vorschau-->` (z. B. Fotobriefings) erscheinen nur in der Vorschau und
 entfallen im Produktions-Build automatisch.
 
+## Navigation ändern
+
+Die Hauptpunkte stehen in `NAV`, die Einträge des Untermenüs „Leistungen“ in `UNTERMENUE` (beide in
+`scripts/build-site.py`). Die Kopfdaten `nav: leistungen/` markieren den Bereich, zu dem eine Seite gehört. Verhalten:
+
+- **ab 960 px:** volle Navigation mit Untermenü, das sich per Maus, Fokus oder Pfeil-Knopf öffnet und mit Escape schließt.
+  Die Telefonnummer im Kopf erscheint erst ab 1240 px.
+- **unter 960 px:** Knopf „Menü“ öffnet ein Vollbild-Menü direkt unter dem Kopf. Es enthält zusätzlich „Fragen & Ablauf“,
+  „Anfrage stellen“, den Anruf-Knopf und das Einsatzgebiet. Beim Herunterscrollen weicht der Kopf und kommt beim
+  Hochscrollen zurück.
+- **unter 760 px:** feste Schnellkontakt-Leiste („Anrufen“ / „Anfragen“) am unteren Rand. Auf den Kontaktseiten entfällt
+  sie, weil dort das Formular steht.
+
 ## Ein Projekt veröffentlichen
 
 1. Fotos aufnehmen (Regeln: `docs/ASSET-BRIEFS.md`, Gruppe A) und Freigabe des Auftraggebers **schriftlich** einholen.

@@ -223,13 +223,13 @@ def t_vorschau_bloecke():
     werte = {"ORT": "[Ort]", "TEL": "0123"}
     fd.PRODUKTION = False
     v = fd.einsetzen(probe, werte, True)
-    assert '<span class="offen"' in v and ">Ort</span>" in v, "Vorschau markiert offene Angaben nicht"
+    assert '<span class="angabe-offen"' in v and ">Ort</span>" in v, "Vorschau markiert offene Angaben nicht"
     assert "<title>X [Ort]</title>" in v, "Platzhalter im Titel darf nicht als HTML markiert werden"
     assert "fotobriefing-notiz" in v, "Fotobriefing fehlt in der Vorschau"
     fd.PRODUKTION = True
     pr = fd.einsetzen(probe, werte, True)
     assert "fotobriefing-notiz" not in pr and "<!--vorschau" not in pr, "Fotobriefing bleibt im Produktions-Build"
-    assert "offen" not in pr, "Produktion darf keine Vorschau-Markierung enthalten"
+    assert "angabe-offen" not in pr, "Produktion darf keine Vorschau-Markierung enthalten"
 
 @pruefung("Motion- und 3D-Dateien vorhanden, CSP-tauglich (kein eval), Rückfall-Zeichnung im Markup")
 def t_bewegung():

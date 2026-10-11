@@ -14,7 +14,7 @@ Regeln
 - Werte in [eckigen Klammern] gelten als nicht bestätigt.
 - <!--@jsonld-firma--> wird durch strukturierte Daten aus bestätigten Werten ersetzt.
 - <!--vorschau-->…<!--/vorschau--> (Fotobriefings) bleibt in der Vorschau und entfällt in Produktion.
-- In der Vorschau erscheinen nicht bestätigte Werte im Fließtext als <span class="offen"> ohne Klammern;
+- In der Vorschau erscheinen nicht bestätigte Werte im Fließtext als <span class="angabe-offen"> ohne Klammern;
   in Attributen, Titeln und Skripten bleiben sie unverändert.
 """
 import html, io, json, os, re, shutil, sys
@@ -72,7 +72,7 @@ def text_einsetzen(teil, werte):
             return m.group(0)
         wert = werte[m.group(1)]
         if not PRODUKTION and unbestaetigt(wert):
-            return '<span class="offen" title="Angabe noch nicht bestätigt">%s</span>' % html.escape(wert[1:-1], quote=True)
+            return '<span class="angabe-offen" title="Angabe noch nicht bestätigt">%s</span>' % html.escape(wert[1:-1], quote=True)
         return html.escape(wert, quote=True)
     return re.sub(r"\{\{([A-Z0-9_]+)\}\}", ersetzen, teil)
 

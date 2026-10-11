@@ -8,12 +8,13 @@ Aufruf:  python3 scripts/vorschau-markieren.py dist/web
   der Schalter „Kundenansicht“ blendet Redaktionshinweise und Fotobriefings für Präsentationen aus
 Nie auf einen Produktions-Build anwenden.
 """
-import io, os, sys
+import io, os, re, sys
 
 ziel = sys.argv[1] if len(sys.argv) > 1 else "dist/web"
 NOINDEX = '<meta name="robots" content="noindex, nofollow">'
-STREIFEN = ('<div class="vorschau-streifen" role="note"><span>Vorschau – noch nicht die veröffentlichte Website. '
+STREIFEN = ('<div class="vorschau-streifen" role="note"><span class="vs-lang">Vorschau – noch nicht die veröffentlichte Website. '
             'Gestrichelt unterstrichene Angaben sind noch nicht bestätigt. Das Formular sendet hier nichts.</span>'
+            '<span class="vs-kurz">Vorschau · unveröffentlicht</span>'
             '<button type="button" data-kundenansicht aria-pressed="false">Kundenansicht</button></div>')
 
 seiten = 0
@@ -27,7 +28,11 @@ for root, _, dateien in os.walk(ziel):
         if NOINDEX not in s:
             s = s.replace("</head>", NOINDEX + "\n</head>", 1)
         if "vorschau-streifen" not in s:
-            s = s.replace("<body>", "<body>\n" + STREIFEN, 1)
+            # nach dem Sprunglink, damit er der erste Tab-Halt bleibt
+            if '<a class="sprunglink"' in s:
+                s = re.sub(r'(<a class="sprunglink"[^>]*>.*?</a>)', lambda m: m.group(1) + "\n" + STREIFEN, s, count=1, flags=re.S)
+            else:
+                s = re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + "\n" + STREIFEN, s, count=1)
         io.open(p, "w", encoding="utf-8", newline="\n").write(s)
         seiten += 1
 

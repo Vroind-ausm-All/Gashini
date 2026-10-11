@@ -4,10 +4,17 @@
 (function () {
   'use strict';
 
-  /* ---------- Mobile Navigation ---------- */
+  /* ---------- Navigation ---------- */
+  var html = document.documentElement;
+  var kopf = document.querySelector('.kopf');
   var knopf = document.querySelector('.menue-knopf');
   var nav = document.getElementById('hauptnav');
+  var mobil = window.matchMedia('(max-width: 959px)');
+
+  // Mobiles Menü: Vollbild unter dem Kopf. Die Oberkante folgt dem Kopf, auch wenn darüber
+  // noch etwas steht (z. B. der Vorschau-Streifen).
   if (knopf && nav) {
+    var oberkante = function () { html.style.setProperty('--menue-oben', Math.max(0, Math.round(kopf.getBoundingClientRect().bottom)) + 'px'); };
     var schliessen = function (fokusZurueck) {
       nav.classList.remove('offen');
       knopf.setAttribute('aria-expanded', 'false');
@@ -16,24 +23,70 @@
       if (fokusZurueck) knopf.focus();
     };
     knopf.addEventListener('click', function () {
-      var offen = !nav.classList.contains('offen');
-      if (!offen) return schliessen(false);
+      if (nav.classList.contains('offen')) return schliessen(false);
+      kopf.classList.remove('kopf--weg'); html.classList.remove('kopf-weg');
+      oberkante();
       nav.classList.add('offen');
       knopf.setAttribute('aria-expanded', 'true');
       knopf.querySelector('.text').textContent = 'Schließen';
       document.body.classList.add('menue-offen');
       var erster = nav.querySelector('a');
-      if (erster) erster.focus();
+      if (erster) erster.focus({ preventScroll: true });
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && nav.classList.contains('offen')) schliessen(true);
     });
     nav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) schliessen(false);
+      if (e.target.closest('a') && nav.classList.contains('offen')) schliessen(false);
     });
-    window.matchMedia('(min-width: 1080px)').addEventListener('change', function (m) {
-      if (m.matches) schliessen(false);
+    // Tab-Fokus bleibt im offenen Menü: vom letzten Element zurück zum Menü-Knopf
+    nav.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || !nav.classList.contains('offen')) return;
+      var ziele = nav.querySelectorAll('a, button:not(.unter-knopf)');
+      if (!e.shiftKey && document.activeElement === ziele[ziele.length - 1]) { e.preventDefault(); knopf.focus(); }
     });
+    window.addEventListener('resize', function () { if (nav.classList.contains('offen')) oberkante(); });
+    mobil.addEventListener('change', function (m) { if (!m.matches) schliessen(false); });
+  }
+
+  // Untermenü Leistungen (Desktop): Knopf, Hover und Fokus öffnen; Escape und Klick daneben schließen
+  document.querySelectorAll('.hat-unter').forEach(function (eintrag) {
+    var unterKnopf = eintrag.querySelector('.unter-knopf');
+    if (!unterKnopf) return;
+    var zu = function (fokus) {
+      unterKnopf.setAttribute('aria-expanded', 'false');
+      eintrag.classList.add('zu');
+      if (fokus) unterKnopf.focus();
+    };
+    unterKnopf.addEventListener('click', function () {
+      var offen = unterKnopf.getAttribute('aria-expanded') === 'true';
+      if (offen) return zu(false);
+      eintrag.classList.remove('zu');
+      unterKnopf.setAttribute('aria-expanded', 'true');
+    });
+    eintrag.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !mobil.matches) { e.stopPropagation(); zu(true); } });
+    eintrag.addEventListener('mouseleave', function () { eintrag.classList.remove('zu'); if (document.activeElement !== unterKnopf) unterKnopf.setAttribute('aria-expanded', 'false'); });
+    eintrag.addEventListener('focusout', function (e) { if (!eintrag.contains(e.relatedTarget)) { eintrag.classList.remove('zu'); unterKnopf.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('click', function (e) { if (!eintrag.contains(e.target)) unterKnopf.setAttribute('aria-expanded', 'false'); });
+  });
+
+  // Kopf auf kleinen Bildschirmen beim Herunterscrollen ausblenden, beim Hochscrollen zeigen
+  if (kopf) {
+    var letzte = window.scrollY, geplant = false;
+    window.addEventListener('scroll', function () {
+      if (geplant) return;
+      geplant = true;
+      window.requestAnimationFrame(function () {
+        geplant = false;
+        var y = window.scrollY, delta = y - letzte;
+        if (Math.abs(delta) < 6) return;
+        var weg = mobil.matches && y > 160 && delta > 0 &&
+          !document.body.classList.contains('menue-offen') && !kopf.contains(document.activeElement);
+        kopf.classList.toggle('kopf--weg', weg);
+        html.classList.toggle('kopf-weg', weg);
+        letzte = y;
+      });
+    }, { passive: true });
   }
 
   var jahr = document.getElementById('jahr');
