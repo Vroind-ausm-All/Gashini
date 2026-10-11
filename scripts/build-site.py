@@ -32,6 +32,7 @@ import zeichnungen as zg  # noqa: E402
 
 SRC = os.path.join(WURZEL, "src")
 BILDER = os.path.join(SRC, "assets", "bilder")
+VIDEOS = os.path.join(SRC, "assets", "videos")
 OUT = os.path.abspath(os.environ.get("AUSGABE", os.path.join(WURZEL, "web")))
 LINKSTIL = os.environ.get("LINKSTIL", "sauber")
 ENTWUERFE = os.environ.get("ENTWUERFE") == "1"
@@ -155,13 +156,25 @@ def bild_html(von, datei, alt, klasse="", laden="lazy", groessen="(min-width: 90
             % (esc(src), srcset, w, h, esc(alt), laden, "sync" if prioritaet else "async",
                ' fetchpriority="high"' if prioritaet else "", ' class="%s"' % klasse if klasse else ""))
 
-def symbolbild_html(von, datei, alt, groessen="(min-width: 900px) 50vw, 100vw", laden="lazy", prioritaet=False):
+def symbolbild_html(von, datei, alt, groessen="(min-width: 900px) 50vw, 100vw", laden="lazy", prioritaet=False, video=None):
     """Fremdes Foto (src/assets/bilder/symbol/): Alt-Text und sichtbare Marke weisen es als Symbolbild aus.
-    Die Marke steht im Bild selbst, damit die Kennzeichnung auch ohne Bildunterschrift erhalten bleibt."""
+    Die Marke steht im Bild selbst, damit die Kennzeichnung auch ohne Bildunterschrift erhalten bleibt.
+    Mit video="name" liegt darüber ein stummer Kurzclip, sobald src/assets/videos/name.webm/.mp4 existiert."""
     if not datei.startswith("symbol/"):
         raise SystemExit("Symbolbilder liegen in symbol/: " + datei)
     return (bild_html(von, datei, "Symbolbild: " + alt, laden=laden, groessen=groessen, prioritaet=prioritaet)
-            + '<span class="bild-marke" aria-hidden="true">Symbolbild</span>')
+            + '<span class="bild-marke" aria-hidden="true">Symbolbild</span>' + (bewegtbild_html(video) if video else ""))
+
+def bewegtbild_html(name):
+    """Stummer Kurzclip über dem Standbild. Das Bild bleibt Inhalt (Alt-Text, LCP, Rückfall); das Video ist
+    Dekoration: aria-hidden, ohne autoplay-Attribut – site.js startet es nur im Sichtbereich und nur, wenn
+    weder reduzierte Bewegung noch Datensparen eingestellt ist. Fehlt die Datei, zeigt die Vorschau einen Hinweis."""
+    formate = [(e, t) for e, t in (("webm", "video/webm"), ("mp4", "video/mp4"))
+               if os.path.exists(os.path.join(VIDEOS, "%s.%s" % (name, e)))]
+    if not formate:
+        return '<!--vorschau--><span class="video-geplant" aria-hidden="true">Video geplant · %s</span><!--/vorschau-->' % esc(name)
+    quellen = "".join('<source src="@/assets/videos/%s.%s" type="%s">' % (esc(name), e, t) for e, t in formate)
+    return '<video class="bewegtbild" muted loop playsinline preload="none" aria-hidden="true" data-bewegtbild>%s</video>' % quellen
 
 def vorlade_html(datei, groessen):
     varianten = bildvarianten(datei)
@@ -555,7 +568,8 @@ BAUSTEINE = {
     "kontakt-link": lambda von, a: kontakt_link(a.get("leistung"), a.get("anliegen")),
     "zeichnung": lambda von, a: ZEICHNUNGEN[a["art"]](),
     "symbolbild": lambda von, a: symbolbild_html(von, a["datei"], a["alt"], groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
-                                                 laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja"),
+                                                 laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja",
+                                                 video=a.get("video")),
     "bild": lambda von, a: bild_html(von, a["datei"], a.get("alt", ""), groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
                                      laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja"),
 }

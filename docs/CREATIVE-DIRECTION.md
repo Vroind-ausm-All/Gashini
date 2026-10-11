@@ -61,6 +61,9 @@ Drei Ebenen, die aufeinander aufbauen und sich nie vermischen:
   Fugen-Detail auf der Startseite. Sie tragen eine Marke „Symbolbild“ im Bild, „Symbolbild:“ im Alt-Text und
   „Kein Projektfoto.“ in der Unterschrift. Quelle und Lizenz sind noch offen (`SYMBOLBILD_QUELLE`); sind die Bilder
   KI-generiert, lautet die Kennzeichnung „Symbolbild (KI-generiert)“. Herkunft: `src/assets/bilder/symbol/HERKUNFT.md`.
+- **Kurzvideos:** stumme Schleifen von 5–8 Sekunden, aus einem Symbolbild animiert, liegen über diesem Standbild.
+  Sie bewegen sich langsam und nur in einer Sache (Licht, Schraube, Spachtel), laden erst im Sichtbereich, starten nicht
+  bei „Bewegung reduzieren“ oder Datensparen und haben einen Pause-Knopf. Plätze und Prompts: `docs/MEDIENLISTE.md`.
 - **Fotobriefings statt Leerstellen:** Wo ein echtes Foto hingehört, steht in der Vorschau ein Briefing
   (Motiv, Format, Licht). In Produktion erscheint stattdessen das passende Material- oder Planbild.
 - Prompts für Midjourney und ein Briefing für die Texterstellung stehen in `docs/ASSET-BRIEFS.md`.

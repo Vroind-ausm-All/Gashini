@@ -269,6 +269,61 @@ try {
     await p.close();
   }
 
+  // ---------------------------------------------------------------- Bewegtbild über einem Symbolbild
+  // Noch liegen keine Clips im Repository. Damit die ausgelieferte site.js/site.css trotzdem geprüft wird, erzeugt
+  // der Test einen kurzen WebM-Clip (Canvas + MediaRecorder) und fügt ihn beim Ausliefern der Startseite ein.
+  {
+    const werkstatt = await browser.newPage();
+    const clip = Buffer.from(await werkstatt.evaluate(async () => {
+      const c = document.createElement('canvas'); c.width = 320; c.height = 180;
+      const x = c.getContext('2d');
+      const rec = new MediaRecorder(c.captureStream(25), { mimeType: 'video/webm;codecs=vp8' });
+      const teile = []; rec.ondataavailable = e => teile.push(e.data); rec.start(100);
+      const t0 = performance.now();
+      await new Promise(fertig => (function bild() {
+        const t = (performance.now() - t0) / 1000;
+        x.fillStyle = '#e9e6e0'; x.fillRect(0, 0, 320, 180); x.fillStyle = '#b5391c'; x.fillRect(20 + t * 120, 70, 30, 30);
+        if (t < 1.5) requestAnimationFrame(bild); else fertig();
+      })());
+      rec.stop(); await new Promise(r => { rec.onstop = r; });
+      const u = new Uint8Array(await new Blob(teile).arrayBuffer());
+      let s = ''; for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]);
+      return btoa(s);
+    }), 'base64');
+    await werkstatt.close();
+    const ergebnis = {};
+    for (const art of ['normal', 'reduziert']) {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: art === 'reduziert' ? 'reduce' : 'no-preference' });
+      const p = await ctx.newPage();
+      await p.route('**/assets/videos/testclip.webm', r => r.fulfill({ status: 200, contentType: 'video/webm', body: clip }));
+      await p.route(u => u.pathname === '/', async r => {
+        const antwort = await r.fetch();
+        const html = (await antwort.text()).replace(/(<span class="bild-marke"[^>]*>Symbolbild<\/span>)/,
+          '$1<video class="bewegtbild" muted loop playsinline preload="none" aria-hidden="true" data-bewegtbild><source src="assets/videos/testclip.webm" type="video/webm"></video>');
+        await r.fulfill({ response: antwort, body: html });
+      });
+      await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+      const v = p.locator('video[data-bewegtbild]');
+      const r = { geladenVorher: await v.evaluate(el => el.readyState) };
+      await v.scrollIntoViewIfNeeded(); await p.waitForTimeout(1200);
+      Object.assign(r, await v.evaluate(el => ({ laeuft: !el.paused && el.classList.contains('laeuft'), sichtbar: getComputedStyle(el).opacity === '1' })));
+      r.knopf = await p.locator('.bewegtbild-knopf').count();
+      if (r.knopf) {
+        await p.locator('.bewegtbild-knopf').click(); await p.waitForTimeout(200);
+        r.angehalten = await v.evaluate(el => el.paused && el.nextElementSibling.getAttribute('aria-label') === 'Video abspielen');
+        await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(300);
+        await v.scrollIntoViewIfNeeded(); await p.waitForTimeout(700);
+        r.bleibtAngehalten = await v.evaluate(el => el.paused);
+      }
+      ergebnis[art] = r;
+      await ctx.close();
+    }
+    const n = ergebnis.normal, z = ergebnis.reduziert;
+    pruefe('Bewegtbild: lädt erst im Sichtbereich, läuft dann über dem Standbild, Pause-Knopf hält an und bleibt angehalten; bei reduzierter Bewegung kein Start und kein Knopf',
+      n.geladenVorher === 0 && n.laeuft && n.sichtbar && n.knopf === 1 && n.angehalten && n.bleibtAngehalten &&
+      z.geladenVorher === 0 && !z.laeuft && !z.sichtbar && z.knopf === 0, ergebnis);
+  }
+
   // ---------------------------------------------------------------- Formular: Validierung
   {
     const p = await browser.newPage({ viewport: { width: 1024, height: 900 } });

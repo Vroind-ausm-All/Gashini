@@ -337,6 +337,44 @@
     dialog.addEventListener('close', function () { if (zuletzt) zuletzt.focus(); });
   }
 
+  /* ---------- Bewegtbilder: stumme Kurzclips über einem Standbild ----------
+     Spielen nur im Sichtbereich, nie bei reduzierter Bewegung oder Datensparen. Das Standbild darunter bleibt
+     sichtbar, bis der Clip läuft. Ein Knopf hält an (WCAG 2.2.2); angehalten bleibt angehalten. */
+  var clips = document.querySelectorAll('video[data-bewegtbild]');
+  var netz = navigator.connection || {};
+  var sparen = netz.saveData === true || /2g$/.test(netz.effectiveType || '');
+  if (clips.length && !sparen && 'IntersectionObserver' in window) {
+    var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var abspielen = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+    var knopfFuer = function (v) {
+      if (v.nextElementSibling && v.nextElementSibling.classList.contains('bewegtbild-knopf')) return;
+      var k = document.createElement('button');
+      k.type = 'button';
+      k.className = 'bewegtbild-knopf';
+      k.setAttribute('aria-label', 'Video anhalten');
+      k.addEventListener('click', function () {
+        var halt = !v.paused;
+        if (halt) { v.dataset.angehalten = 'ja'; v.pause(); } else { delete v.dataset.angehalten; abspielen(v); }
+        k.classList.toggle('pausiert', halt);
+        k.setAttribute('aria-label', halt ? 'Video abspielen' : 'Video anhalten');
+      });
+      v.insertAdjacentElement('afterend', k);
+    };
+    var sicht = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting && !ruhig.matches && !v.dataset.angehalten) abspielen(v); else v.pause();
+      });
+    }, { threshold: .25 });
+    clips.forEach(function (v) {
+      v.addEventListener('playing', function () { v.classList.add('laeuft'); knopfFuer(v); });
+      sicht.observe(v);
+    });
+    ruhig.addEventListener('change', function () {
+      if (ruhig.matches) clips.forEach(function (v) { v.pause(); v.classList.remove('laeuft'); });
+    });
+  }
+
   /* ---------- Vorher/Nachher ---------- */
   document.querySelectorAll('.vergleich').forEach(function (v) {
     var regler = v.querySelector('.vergleich-regler');

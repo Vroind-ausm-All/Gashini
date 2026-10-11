@@ -268,9 +268,26 @@ def t_bildherkunft():
         if rel.startswith("ueber-uns"):
             assert "assets/bilder/symbol/" not in html, "Symbolbild auf „Über uns“"
 
+@pruefung("Bewegtbilder: stumm, ohne Autoplay-Attribut, über einem gekennzeichneten Standbild; Hinweis „Video geplant“ nur in der Vorschau")
+def t_bewegtbilder():
+    web = os.path.join(WURZEL, "web")
+    for rel, pfad, _ in seiten(web):
+        html = io.open(pfad, encoding="utf-8").read()
+        for m in re.finditer(r"<video\b[^>]*>(.*?)</video>", html, re.S):
+            tag = m.group(0)[:m.group(0).index(">") + 1]
+            for pflicht in ("muted", "loop", "playsinline", 'preload="none"', 'aria-hidden="true"', "data-bewegtbild"):
+                assert pflicht in tag, "Video ohne %s: %s" % (pflicht, rel)
+            assert "autoplay" not in tag and "controls" not in tag, "Video startet selbst oder zeigt Bedienelemente: " + rel
+            assert html[:m.start()].rstrip().endswith('<span class="bild-marke" aria-hidden="true">Symbolbild</span>'), \
+                "Video ohne Standbild mit Marke davor: " + rel
+            for src in re.findall(r'<source src="([^"]+)"', m.group(1)):
+                assert os.path.isfile(os.path.normpath(os.path.join(os.path.dirname(pfad), src))), "Videodatei fehlt: " + src
+        ohne = re.sub(r"<!--vorschau-->.*?<!--/vorschau-->", "", html, flags=re.S)
+        assert "video-geplant" not in ohne, "Hinweis „Video geplant“ außerhalb eines Vorschau-Blocks: " + rel
+
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)

@@ -392,17 +392,27 @@ html.kopf-weg{--kopf-sichtbar:0px}
 
 /* ---------- Symbolbilder (fremde Fotos, im Bild gekennzeichnet) ---------- */
 .bild-marke{position:absolute;left:12px;bottom:12px;z-index:1;padding:5px 9px;background:rgba(250,250,248,.94);color:var(--c-text);font:500 var(--t-xs)/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
-@media (max-width:599px){.bild-marke{left:8px;bottom:8px;padding:4px 7px;font-size:.625rem}}
+@media (max-width:599px){.bild-marke{left:8px;bottom:8px;padding:4px 7px;font-size:.625rem}.video-geplant{top:8px;right:8px;padding:4px 7px;font-size:.625rem}}
 .bildband{grid-column:1 / -1;margin:clamp(28px,4vw,56px) 0 0}
 .bildband-flaeche,.bildfolge-flaeche{position:relative;overflow:hidden;background:var(--c-papier-2);aspect-ratio:3 / 2}
 .bildband-flaeche img,.bildfolge-flaeche img{width:100%;height:100%;object-fit:cover}
 @media (min-width:760px){.bildband-flaeche{aspect-ratio:16 / 9}}
 @media (min-width:1000px){.bildband-flaeche{aspect-ratio:21 / 9}.bildfolge-flaeche{aspect-ratio:16 / 9}}
-.bildband--mitte img{object-position:50% 55%}
-.bildband--oben img{object-position:50% 22%}
+.bildband--mitte :is(img,video){object-position:50% 55%}
+.bildband--oben :is(img,video){object-position:50% 22%}
 .bildband figcaption{margin-top:10px;font:400 var(--t-xs)/1.5 var(--f-mono);color:var(--c-text-2)}
 .bildfolge{margin:0}
 .bildfolge-flaeche img{object-position:50% 35%}
+/* Kurzclip über dem Standbild: unsichtbar, bis er wirklich läuft */
+.bewegtbild{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s var(--kurve);pointer-events:none}
+.bewegtbild.laeuft{opacity:1}
+.bewegtbild-knopf{position:absolute;right:12px;bottom:12px;z-index:2;display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:rgba(17,17,17,.72);color:#fff;cursor:pointer}
+.bewegtbild-knopf::before{content:"";box-sizing:border-box;width:12px;height:14px;border-left:4px solid currentColor;border-right:4px solid currentColor}
+.bewegtbild-knopf.pausiert::before{width:0;height:0;margin-left:3px;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent currentColor}
+.bewegtbild-knopf:hover{background:rgba(17,17,17,.88)}
+.bewegtbild:not(.laeuft) + .bewegtbild-knopf{display:none}
+.video-geplant{position:absolute;top:12px;right:12px;z-index:1;padding:5px 9px;background:var(--c-ziegel);color:#fff;font:500 var(--t-xs)/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;pointer-events:none}
+.kundenansicht .video-geplant{display:none!important}
 .bildfolge-schritte{list-style:none;display:grid;gap:14px;margin:20px 0 14px;padding:0}
 @media (min-width:760px){.bildfolge-schritte{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--spalte)}}
 .bildfolge-schritte li{padding-top:12px;border-top:1px solid var(--c-linie);color:var(--c-text-2)}
@@ -835,7 +845,7 @@ html:not(.js) .vorschau-streifen button{display:none}
 
 /* ---------- Druck ---------- */
 @media print{
-  .kopf,.fuss,.kontaktleiste,.menue-knopf,.sprunglink,.vorschau-streifen,.wandaufbau-werkzeuge,.redaktion{display:none!important}
+  .kopf,.fuss,.kontaktleiste,.menue-knopf,.sprunglink,.vorschau-streifen,.wandaufbau-werkzeuge,.redaktion,.bewegtbild,.bewegtbild-knopf,.video-geplant{display:none!important}
   body{background:#fff;padding:0;font-size:11pt}
   a{text-decoration:underline}
   .dunkel{background:#fff;color:#000}

@@ -58,28 +58,9 @@ formuliert, dass weitere Ergebnisse zur Bildsprache passen.
 alles in der Nähe von Ortsangaben oder Kundenaussagen. **Kennzeichnung:** Bildunterschrift „Symbolbild (KI-generiert)“.
 **Herkunft:** Werkzeug, Datum, Prompt und Lizenzbedingungen in `src/assets/bilder/symbol/HERKUNFT.md` eintragen.
 
-Gemeinsamer Stil-Zusatz für alle Motive (Midjourney v7, an jeden Prompt anhängen):
-
-```
-quiet industrial interior photography, soft north window light, muted off-white and concrete grey palette,
-single small brick-red accent, precise straight lines, calm, generous negative space, no people, no text,
-no logos, natural materials, shot on 50mm, f/5.6, high detail --style raw --stylize 80
-```
-
-| # | Motiv | Prompt (vor den Stil-Zusatz) | Format | Datei |
-|---|---|---|---|---|
-| 1 | Hero-Atmosphäre | `interior fit-out in progress, galvanized steel stud frame on the left, finished smooth plastered wall with a doorway on the right, polished concrete floor` | `--ar 6:5` | `ki-hero.webp` |
-| 2 | Ständerwerk | `close view of galvanized steel CW studs and UW track at floor level, chalk line on concrete floor, raking light` | `--ar 3:2` | `ki-profile.webp` |
-| 3 | Fuge im Streiflicht | `macro of a freshly filled and sanded drywall joint, raking side light revealing subtle texture, off-white` | `--ar 3:2` | `ki-fuge.webp` |
-| 4 | Werkzeug | `still life of drywall tools on a clean board: broad knife, spirit level, chalk line, neatly arranged, top-down` | `--ar 4:5` | `ki-werkzeug.webp` |
-| 5 | Mineralwolle | `mineral wool batts between steel studs, partially boarded wall, soft daylight` | `--ar 3:2` | `ki-daemmung.webp` |
-| 6 | Kleine Reparatur | `patched area on a white wall, filler knife resting on a step ladder, empty bright room` | `--ar 3:2` | `ki-reparatur.webp` |
-| 7 | Treppenhaus | `clean stairwell of a well-kept apartment building, mailboxes, daylight, no people, no house numbers` | `--ar 3:2` | `ki-treppenhaus.webp` |
-| 8 | Material-Textur | `smooth fair-faced concrete wall surface with faint formwork pattern, diffuse light` | `--ar 16:9` | `ki-beton.webp` |
-| 9 | Open-Graph-Bild | `minimal composition of a finished white wall with a single brick-red line on the floor` | `--ar 1.91:1` | `og-bild.webp` |
-
-Nach der Erzeugung: auf erkennbare Marken, Hausnummern, Gesichter und physikalisch Unmögliches prüfen (falsche
-Profilformen, schwebende Platten). Ein Bild, das wie ein echter Auftrag aussieht, nur mit Unterschrift „Symbolbild“.
+**Prompts:** Die vollständige, nach Priorität geordnete Liste fehlender Motive – mit Platz auf der Website, Dateiname,
+Prompt, Stil- und Ausschluss-Zusatz, Prüfliste und Kurzvideos („Bild zu Video“) – steht in
+[`docs/MEDIENLISTE.md`](MEDIENLISTE.md). Sie ersetzt die frühere Prompt-Tabelle an dieser Stelle.
 
 ## C2 · Content-Briefing für ChatGPT (Texte für neue Projekte und Seiten)
 

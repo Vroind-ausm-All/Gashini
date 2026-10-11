@@ -15,6 +15,7 @@ Für alles hier reichen ein Texteditor und drei Befehle. Programmierkenntnisse s
 | ein Projekt veröffentlichen | `data/projekte.json` + Bilder in `src/assets/bilder/projekte/<slug>/` |
 | ein eigenes Foto statt eines Fotobriefings einsetzen | `src/assets/bilder/fotos/<name>-640/-1280/-1920.webp` |
 | ein Symbolbild austauschen | `src/assets/bilder/symbol/<name>-640/-1280/-1536.webp` + `HERKUNFT.md` |
+| ein Kurzvideo einsetzen | `src/assets/videos/<name>.webm` und `<name>.mp4` (Namen und Vorgaben: `docs/MEDIENLISTE.md`) |
 | Farben, Abstände, Schriftgrößen | `src/assets/css/site.css` (Abschnitt „Tokens“ am Anfang) |
 | Animationen anpassen | `src/assets/js/bewegung.js` |
 | Zeichnungen ändern | `scripts/zeichnungen.py` |
@@ -56,6 +57,7 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[wandaufbau]]` | interaktiver Wandaufbau (3D mit Zeichnung als Rückfall) |
 | `[[visual-schnitt]]`, `[[bild datei="…" alt="…"]]` | Visualisierung der Startseite bzw. ein Bild mit `srcset` |
 | `[[symbolbild datei="symbol/…" alt="…"]]` | fremdes Foto mit Marke „Symbolbild“ und Alt-Präfix (Herkunft in `src/assets/bilder/symbol/HERKUNFT.md` eintragen) |
+| `[[symbolbild … video="name"]]` | dazu ein stummer Kurzclip, sobald `src/assets/videos/name.webm` oder `.mp4` existiert; vorher in der Vorschau der Hinweis „Video geplant“ |
 | `[[anwendungen]]`, `[[faelle]]`, `[[flicken]]`, `[[rundgang]]`, `[[netzwerk]]`, `[[zeichnung art="…"]]` | Zeichnungen und Tafeln der Leistungsseiten |
 | `[[foto id="…" motiv="…" format="…" licht="…"]]` | eigenes Foto, sonst Ersatzbild plus Fotobriefing (nur Vorschau) |
 | `[[faq-gruppen]]` | alle Fragen nach Thema (Seite „Fragen & Ablauf“) |

@@ -52,6 +52,12 @@ ErrorDocument 404 /404.html
   AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml application/xml text/plain
 </IfModule>
 
+# Kurzclips (src/assets/videos): richtige Medientypen, auch wenn der Server .webm noch nicht kennt
+<IfModule mod_mime.c>
+  AddType video/webm .webm
+  AddType video/mp4 .mp4
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 1 hour"
@@ -64,6 +70,8 @@ ErrorDocument 404 /404.html
   ExpiresByType image/webp "access plus 30 days"
   ExpiresByType image/avif "access plus 30 days"
   ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType video/webm "access plus 30 days"
+  ExpiresByType video/mp4 "access plus 30 days"
 </IfModule>
 <IfModule mod_headers.c>
   <FilesMatch "\.woff2$">

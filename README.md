@@ -43,7 +43,8 @@ strategie/         Strategiepapiere aus der ersten Projektphase
 | [`docs/CONTENT-PLAN.md`](docs/CONTENT-PLAN.md) | Headlines, Positionierung, Texte, CTAs, offene Freigaben |
 | [`docs/SEO-PLAN.md`](docs/SEO-PLAN.md) | Suchintentionen, Seitenzuordnung, Titel und Beschreibungen |
 | [`docs/LEGAL-CHECKLIST.md`](docs/LEGAL-CHECKLIST.md) | Datenschutz, Impressum, Gewerberecht, Bildrechte, Barrierefreiheit |
-| [`docs/ASSET-BRIEFS.md`](docs/ASSET-BRIEFS.md) | Bildsystem, Motivlisten, Midjourney-Prompts, Content-Briefing, Rechte |
+| [`docs/ASSET-BRIEFS.md`](docs/ASSET-BRIEFS.md) | Bildsystem, Motivlisten, Content-Briefing, Rechte |
+| [`docs/MEDIENLISTE.md`](docs/MEDIENLISTE.md) | fehlende Bilder und Kurzvideos: Platz, Priorität, Dateiname, KI-Prompts, Fotobriefings |
 | [`docs/TESTREPORT.md`](docs/TESTREPORT.md) | was geprüft wurde – und was nicht |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Hosting, Formular einrichten, Weiterleitungen, nginx |
 | [`docs/PFLEGE.md`](docs/PFLEGE.md) | Texte ändern, Projekte veröffentlichen, Fragen ergänzen |
