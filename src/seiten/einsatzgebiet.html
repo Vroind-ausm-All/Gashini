@@ -1,0 +1,64 @@
+<!--
+titel: Einsatzgebiet: Stuttgart und 30 km Umkreis | Gashini
+beschreibung: Trockenbau, Reparaturen und Hausmeisterservice in Stuttgart und im Umkreis von 30 km – von Ludwigsburg bis Nürtingen, von Leonberg bis Schorndorf.
+pfad: einsatzgebiet/
+prioritaet: 0.7
+brotkrumen: Einsatzgebiet
+jsonld: firma
+faq_jsonld: einsatzgebiet
+-->
+<header class="seitenkopf">
+  <div class="rahmen">
+    [[brotkrumen]]
+    <p class="label">Einsatzgebiet</p>
+    <h1 data-zeilen>Im Einsatz in Stuttgart und Umgebung.</h1>
+    <p class="einleitung">Trockenbau, Reparaturen und Hausmeisterservice übernehmen wir in allen Stuttgarter Stadtbezirken und in den Städten und Gemeinden ringsum – von Ludwigsburg bis Nürtingen, von Leonberg bis Schorndorf.</p>
+    <div class="knopf-reihe"><a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a><a class="knopf knopf--sekundaer" href="#orte-titel">Alle Orte ansehen</a></div>
+  </div>
+</header>
+
+<section class="abschnitt" aria-labelledby="karte-titel">
+  <div class="rahmen raster einsatz-karte-raster">
+    <div class="sp-kopf">
+      <p class="label">Karte</p>
+      <h2 id="karte-titel">Rund 30 Kilometer um Stuttgart</h2>
+      <p class="gedaempft">Gemessen als Luftlinie ab Stuttgart-Mitte; die Ringe zeigen 10, 20 und 30 Kilometer. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p>
+    </div>
+    <div class="sp-inhalt">[[einsatzkarte]]</div>
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--flaeche" aria-labelledby="orte-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Orte</p>
+        <h2 id="orte-titel" data-zeilen>Städte und Gemeinden im Einsatzgebiet</h2>
+        <p class="einleitung">Ihr Ort fehlt in der Liste? Sie nennt die größeren Städte und Gemeinden – kleinere Orte dazwischen gehören genauso dazu. Im Zweifel nennen Sie uns einfach Ihre Postleitzahl.</p>
+      </div>
+    </div>
+    [[einsatzorte]]
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Liste prüfen – werden alle genannten Orte tatsächlich angefahren? Orte am Rand (Metzingen, Ebersbach an der Fils) bei Bedarf in data/einsatzgebiet.json streichen.]</p>
+  </div>
+</section>
+
+<section class="abschnitt" aria-labelledby="vorort-titel">
+  <div class="rahmen">
+    <div class="kopfzeile">
+      <div>
+        <p class="label">Leistungen</p>
+        <h2 id="vorort-titel" data-zeilen>Was wir im Raum Stuttgart übernehmen</h2>
+      </div>
+    </div>
+    [[leistungskarten]]
+  </div>
+</section>
+
+<section class="abschnitt abschnitt--linie" aria-labelledby="fragen-titel">
+  <div class="rahmen raster">
+    <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
+    <div class="sp-inhalt">[[faq seite="einsatzgebiet"]]</div>
+  </div>
+</section>
+
+[[abschluss titel="Ihr Objekt liegt im Einsatzgebiet?" text="Beschreiben Sie kurz, was ansteht, und nennen Sie Ort oder Postleitzahl – wir melden uns mit einer ersten Einschätzung." knopf="Anfrage stellen" label="Anfrage"]]

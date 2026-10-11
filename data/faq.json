@@ -13,7 +13,8 @@
   {
    "id": "kosten",
    "seiten": [
-    "kontakt"
+    "kontakt",
+    "einsatzgebiet"
    ],
    "frage": "Wie entsteht der Preis?",
    "antwort": "Nachdem wir den Umfang geklärt haben – am Telefon, anhand von Fotos oder vor Ort – erhalten Sie ein schriftliches Angebot mit den vereinbarten Arbeiten. Ob für eine Besichtigung Kosten anfallen, sagen wir Ihnen vorher. Pauschale Preislisten veröffentlichen wir nicht, weil sich Arbeiten im Bestand selten gleichen.",
@@ -42,11 +43,21 @@
   {
    "id": "einsatzgebiet",
    "seiten": [
-    "kontakt"
+    "kontakt",
+    "einsatzgebiet"
    ],
    "frage": "In welchem Gebiet arbeiten Sie?",
-   "antwort": "Wir sind in {{EINSATZGEBIET}} tätig. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.",
+   "antwort": "Wir sind in {{EINSATZGEBIET}} tätig – in allen Stuttgarter Stadtbezirken und in den Landkreisen Ludwigsburg, Esslingen und Böblingen sowie im Rems-Murr-Kreis. Die Orte im Einzelnen stehen auf der Seite <a href=\"@/einsatzgebiet/\">Einsatzgebiet</a>. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.",
    "thema": "anfrage"
+  },
+  {
+   "id": "einsatzgebiet-klein",
+   "seiten": [
+    "einsatzgebiet"
+   ],
+   "thema": "anfrage",
+   "frage": "Kommen Sie auch für eine kleine Arbeit nach Ludwigsburg, Esslingen oder Böblingen?",
+   "antwort": "Ja. Auch einzelne kleine Arbeiten übernehmen wir im ganzen Einsatzgebiet, nicht nur in Stuttgart selbst. Was die Arbeit insgesamt kostet, steht vorher im schriftlichen Angebot."
   },
   {
    "id": "beginn",

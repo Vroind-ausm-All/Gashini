@@ -10,6 +10,7 @@ Für alles hier reichen ein Texteditor und drei Befehle. Programmierkenntnisse s
 | Ich möchte … | Datei |
 |---|---|
 | Telefon, Adresse, E-Mail, Einsatzgebiet ändern | `data/firmendaten.env` |
+| Orte im Einsatzgebiet, Radius, Karte | `data/einsatzgebiet.json` (siehe unten) |
 | einen Text auf einer Seite ändern | `src/seiten/<seite>.html` |
 | eine häufige Frage ergänzen oder ändern | `data/faq.json` |
 | ein Projekt veröffentlichen | `data/projekte.json` + Bilder in `src/assets/bilder/projekte/<slug>/` |
@@ -57,12 +58,18 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[wandaufbau]]` | interaktiver Wandaufbau (3D mit Zeichnung als Rückfall) |
 | `[[visual-schnitt]]`, `[[bild datei="…" alt="…"]]` | Visualisierung der Startseite bzw. ein Bild mit `srcset` |
 | `[[netzwerk-geschichte]]` | Netzwerk-Schema, das sich beim Scrollen in fünf Schritten aufbaut (Texte in `NETZ_SCHRITTE`, `scripts/build-site.py`) |
-| `[[symbolbild datei="symbol/…" alt="…"]]` | fremdes Foto mit Marke „Symbolbild“ und Alt-Präfix (Herkunft in `src/assets/bilder/symbol/HERKUNFT.md` eintragen) |
+| `[[symbolbild datei="symbol/…" alt="…"]]` | fremdes Foto mit Marke „Symbolbild“ und Alt-Präfix (Herkunft in `src/assets/bilder/symbol/HERKUNFT.md` eintragen); mit `ki="ja"` als „Symbolbild · KI“ / „Symbolbild (KI-generiert): …“, mit `fokus="rechts"` oder `"links"` für den Bildausschnitt |
 | `[[symbolbild … video="name"]]` | dazu ein stummer Kurzclip, sobald `src/assets/videos/name.webm` oder `.mp4` existiert; vorher in der Vorschau der Hinweis „Video geplant“ |
 | `[[anwendungen]]`, `[[faelle]]`, `[[flicken]]`, `[[rundgang]]`, `[[netzwerk]]`, `[[zeichnung art="…"]]` | Zeichnungen und Tafeln der Leistungsseiten |
 | `[[foto id="…" motiv="…" format="…" licht="…"]]` | eigenes Foto, sonst Ersatzbild plus Fotobriefing (nur Vorschau) |
 | `[[faq-gruppen]]` | alle Fragen nach Thema (Seite „Fragen & Ablauf“) |
 | `[[kontaktformular]]`, `[[kontaktwege]]`, `[[ablauf]]` | wie auf den bestehenden Seiten |
+| `[[einsatzkarte]]`, `[[einsatzorte]]` | Karte und Ortslisten der Seite „Einsatzgebiet“ (aus `data/einsatzgebiet.json`) |
+| `[[einsatzgebiet-band titel="…" text="…"]]` | Abschnitt „Einsatzgebiet“ mit größeren Orten und Link – je Seite mit eigener Überschrift und eigenem Satz |
+
+Kopfdaten für Suchmaschinen: `dienst: Name | Leistungsart` erzeugt auf Leistungsseiten die strukturierten Daten
+(`Service` mit Einsatzgebiet), `jsonld: firma` die Unternehmensdaten, `faq_jsonld: seite` die Fragen. Was wo steht und
+warum, erklärt `docs/SEO-PLAN.md`.
 
 Kopfdaten für Skripte: `bewegung: nein` lädt keine Animationsbibliothek (Rechtstexte, Danke, 404),
 `skripte: flip` lädt zusätzlich den Flip-Filter (Projektübersicht), `vorladen: visualisierung/wand-schnitt`
@@ -128,7 +135,19 @@ In `data/faq.json` einen Eintrag kopieren:
 {"id": "kurzer-name", "seiten": ["kontakt"], "thema": "anfrage", "frage": "…?", "antwort": "…"}
 ```
 `thema` ordnet die Frage auf der Seite „Fragen & Ablauf“ ein (`anfrage`, `kosten`, `leistungen`, `daten`).
-`seiten` bestimmt, wo sie zusätzlich erscheint (`trockenbau`, `hausmeisterservice`, `reparatur`, `netzwerk`, `kontakt`).
+`seiten` bestimmt, wo sie zusätzlich erscheint (`trockenbau`, `hausmeisterservice`, `reparatur`, `netzwerk`, `kontakt`,
+`einsatzgebiet`).
+
+## Einsatzgebiet ändern
+
+`data/einsatzgebiet.json` enthält Mittelpunkt, Radius, die Stuttgarter Stadtbezirke und die Orte je Landkreis mit
+Koordinaten (Ortsmitte, z. B. aus Wikipedia). Daraus entstehen die Seite `/einsatzgebiet/`, die Karte und die
+strukturierten Daten (`areaServed`). Ein Ort entfernen: Eintrag löschen. Ein Ort ergänzen: Eintrag kopieren, Name und
+Koordinaten anpassen; `"karte": "r"` (bzw. `l`, `o`, `u`) beschriftet ihn auf der Karte, sonst erscheint nur ein Punkt.
+Liegt ein Ort weiter als der Radius vom Mittelpunkt entfernt, bricht der Build mit einer Meldung ab.
+
+Der Kurztext „Stuttgart und Umgebung (etwa 30 km Umkreis)“ für Menü, Kontaktseite und FAQ steht als `EINSATZGEBIET` in
+`data/firmendaten.env`. „Stuttgart“ in Titeln und Überschriften steht direkt in den Seiten unter `src/seiten/`.
 
 ## 3D-Modell, Visualisierungen und GSAP aktualisieren
 

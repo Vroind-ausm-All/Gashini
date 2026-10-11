@@ -1,6 +1,7 @@
 # Testbericht
 
-Stand: 12.10.2026, Premium-Relaunch in der neuen CI (Logo-Paket, Anthrazit/Signalgelb/Kalkweiß, Archivo) auf `claude/relaunch-premium`. Geprüft in der Entwicklungsumgebung mit
+Stand: 12.10.2026, Premium-Relaunch in der neuen CI (Logo-Paket, Anthrazit/Signalgelb/Kalkweiß, Archivo) auf `claude/relaunch-premium`,
+mit den KI-Symbolbildern der zweiten Lieferung, lokaler SEO für den Raum Stuttgart und Seitenstart oben. Geprüft in der Entwicklungsumgebung mit
 Python 3.11, PHP 8.4, Node 22, Chromium über Playwright 1.56 und axe-core 4.11.
 
 Vier Kategorien, streng getrennt: **automatisch getestet** · **manuell geprüft** · **nicht prüfbar** · **noch offen**.
@@ -14,11 +15,13 @@ Auf einem GitHub-Runner liefen alle Suiten grün: Workflow-Lauf
 [38180180625](https://github.com/Vroind-ausm-All/Gashini/actions/runs/38180180625) für Commit 2e1136b – Jobs `pruefen`
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
-Lokal liefen statische Prüfungen und Formular-Backend grün. Im letzten lokalen Browser-Lauf schlug einmal die
-Überlaufprüfung der Kontaktseite bei 375 px fehl (+179 px); in 42 gezielten Wiederholungen unter denselben Bedingungen
-trat das nicht wieder auf, und auf dem Runner bestand die Prüfung. Ursache nicht gefunden – beim nächsten Lauf beobachten.
+Lokal (12.10.2026, nach Bildern, Stuttgart-SEO und Scroll-Fix): statische Prüfungen 17/17, Formular-Backend 30/30,
+Browser-Tests 39/39. Der erste Browser-Lauf brach beim Video-Test ab: Der Test setzte seinen Testclip hinter die erste
+Marke „Symbolbild“ der Startseite – das ist jetzt die erste Leistungskarte, deren Kartenlink den Pause-Knopf überdeckte.
+Der Test zielt jetzt ausdrücklich auf das Bildband; zusätzlich liegt ein Pause-Knopf in Karten über dem Kartenlink.
+Der frühere einmalige Überlauf der Kontaktseite bei 375 px trat in beiden Läufen nicht auf.
 
-### `tests/pruefen.py` – 16 von 16 bestanden
+### `tests/pruefen.py` – 17 von 17 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -33,7 +36,8 @@ trat das nicht wieder auf, und auf dem Runner bestand die Prüfung. Ursache nich
 | **neu:** GSAP-Dateien, Bewegungsskript und 3D-Bündel vorhanden, ohne `eval`/`new Function` (CSP); Wandaufbau hat eine Zeichnung als Rückfall; Rechtstexte laden keine Bewegungsskripte | ✓ |
 | **neu:** Marke: Web-Logos entsprechen dem Logo-Paket (viewBox, Farben, Pfadanzahl), `favicon.ico` vorhanden, keine Ziegelrot- oder Altschrift-Reste, Hausfarben gesetzt, Archivo einzige Schriftdatei, Kopf und Fuß mit den richtigen Varianten | ✓ |
 | **neu:** Kurzvideos: stumm, ohne `autoplay`-Attribut und ohne Bedienleiste, immer über einem gekennzeichneten Standbild, Videodateien vorhanden; Hinweis „Video geplant“ nur in Vorschau-Blöcken | ✓ |
-| **neu:** Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ und sichtbarer Marke, nie auf „Über uns“ | ✓ |
+| Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ bzw. „Symbolbild (KI-generiert): …“ und passender sichtbarer Marke; **neu:** Kennzeichnung „KI-generiert“ stimmt mit `HERKUNFT.md` überein; nie auf „Über uns“ oder bei den Projekten | ✓ |
+| **neu:** Lokale SEO: „Stuttgart“ in Titel und H1 der drei Leistungsseiten und im Titel der Startseite; jedes JSON-LD gültig; genau ein `Service` je Leistungsseite mit 30-km-Gebiet und Verweis auf das Unternehmen; Seite „Einsatzgebiet“ vorhanden und von jeder indexierbaren Seite verlinkt; keine Ortsnamen in Alt-Texten von Symbolbildern. Der Generator bricht zusätzlich ab, wenn ein Ort außerhalb von 30 km eingetragen ist | ✓ |
 
 ### `tests/formular_test.py` – 30 von 30 bestanden
 
@@ -53,13 +57,14 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 38 von 38 bestanden
+### `tests/e2e.mjs` – 39 von 39 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
-| Kein waagerechter Überlauf auf 14 Seiten bei 320, 375, 768, 1024, 1440 px | ✓ (5) |
+| Kein waagerechter Überlauf auf 15 Seiten (neu: Einsatzgebiet) bei 320, 375, 768, 1024, 1440 px | ✓ (5) |
+| **neu:** Seiten öffnen oben – nach einem Link, nach „Zurück“ und nach „Neu laden“ jeweils Scrollposition 0; Sprungmarken wie `kontakt/#anfrage` landen weiterhin am Ziel | ✓ |
 | Textvergrößerung 200 % bei 375 px ohne Überlauf (Start, Kontakt, Trockenbau) | ✓ |
-| axe-core (WCAG 2.0/2.1/2.2 A+AA, Best Practices) auf 14 Seiten bei 1440 und 375 px, gemessen nach Ende der Einstiegsanimationen | ✓ **0 Funde** jeder Schwere |
+| axe-core (WCAG 2.0/2.1/2.2 A+AA, Best Practices) auf 15 Seiten bei 1440 und 375 px, gemessen nach Ende der Einstiegsanimationen | ✓ **0 Funde** jeder Schwere |
 | Sprunglink, sichtbarer Fokus, Mobilmenü per Tastatur | ✓ (3) |
 | **neu:** Vollbild-Menü bei 390, 768 und 360 × 600 px direkt unter dem Kopf, alle Hauptpunkte sichtbar bzw. im Menü scrollbar, Kontaktknöpfe erreichbar | ✓ (3) |
 | **neu:** Desktop (1280 px) ohne Menü-Knopf; Untermenü „Leistungen“ per Hover und Tastatur, Escape schließt mit Fokus zurück, Bereich als aktuell markiert | ✓ |
@@ -70,14 +75,14 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Formular: Feldfehler mit `aria-invalid`/`aria-describedby`, Erfolg, Doppelklick, Serverfehler | ✓ (5) |
 | Ohne JavaScript: Inhalt, Navigation, **Wandaufbau-Zeichnung** sichtbar; Formular serverseitig angenommen | ✓ (2) |
 | **neu:** Bewegung reduzieren: keine Bewegungsklasse, alle animierten Inhalte sofort sichtbar, kein Scroll-Pinning | ✓ |
-| **neu:** GSAP: nach dem Scrollen sind auf acht Seiten alle animierten Inhalte vollständig sichtbar | ✓ |
+| **neu:** GSAP: nach dem Scrollen sind auf neun Seiten alle animierten Inhalte vollständig sichtbar | ✓ |
 | **neu:** Three.js lädt erst bei Annäherung, Canvas vorhanden, auf großen Bildschirmen an den Scroll gekoppelt, Schritte per Knopf | ✓ |
 | **neu:** Ohne WebGL: Zeichnung bleibt, Schritte steuern deren Ebenen | ✓ |
 | **neu:** Alltagsfall-Link füllt Leistung und Anliegen vor; Rückruf-Zeitfenster und Pflicht-Telefonnummer; Anfrage mit Rückruf **und Foto** kommt mit Bildanhang an | ✓ (3) |
 | **neu:** Vorschau-Schalter „Kundenansicht“ blendet Redaktionshinweise aus und bleibt beim Seitenwechsel erhalten | ✓ |
 | Entwurfs-Build: gekennzeichnete Projektkarten, **Flip-Filter** mit Ansage, Vorher/Nachher-Regler, Bildansicht per Tastatur | ✓ (4) |
 
-Bildschirmfotos aller 14 Seiten bei 390 und 1440 px sowie die axe-Berichte legt die Suite im Bericht-Ordner ab;
+Bildschirmfotos aller 15 Seiten bei 390 und 1440 px sowie die axe-Berichte legt die Suite im Bericht-Ordner ab;
 in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 
 ## 2. Manuell geprüft
@@ -92,6 +97,8 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | **Neue CI** (12.10.2026) – alle Seiten bei 390 und 1440 px, Menü, Fuß, Druckvorlagen | Logo-Varianten nach Markenblatt eingesetzt; Archivo läuft breiter als die frühere Schrift – die Startseiten-Überschrift brach in sechs Zeilen, Größenskala neu berechnet (längste Zeile ≈ 9 × Schriftgröße). Web-Logos zunächst samt viewBox gerundet – der neue Markentest fand das, jetzt werden nur Pfadkoordinaten gerundet. Der erste Browser-Lauf (lokal und CI 38179413341) fand drei Fehler: Überlauf bei 200 % Text (lange Wörter in Überschriften und FAQ, automatische Rasterspalten) und zu geringer Kontrast offener Angaben im dunklen Abschluss – behoben. Druckvorlagen: Ziegelrot als Text auf Weiß, nachgesetzter Schriftzug beim Rückendruck und alte CMYK-Angaben ersetzt |
 | **Netzwerk-Geschichte** (12.10.2026) bei 1440 × 900, 390 × 844, 360 × 600 sowie mit reduzierter Bewegung und ohne JavaScript | Aufbau je Schritt, Fortschrittsband und Hervorhebung geprüft. Zunächst war das Bild in der Mitte eines Schritts erst halb aufgebaut – Aufbau in die erste Hälfte verlegt. Gedimmte Schritte (anfangs 30 %) und der Leitsatz (anfangs 16 % Deckkraft) unterschritten im Ruhezustand die Kontrastgrenzen – jetzt 62 % bzw. Farbwechsel ab #84888D (3,2 : 1, große Schrift) |
 | **Kurzvideos** (11.10.2026) mit einem Testclip auf der Startseite | Abspielen, Einblenden, Pause per Maus und Tastatur, Pausieren außerhalb des Sichtbereichs und kein Start bei reduzierter Bewegung geprüft. Der erste automatische Test scheiterte an einer zu kurzen Wartezeit, weil die 3D-Szene den Software-Renderer auslastete; der Test läuft jetzt ohne WebGL und wartet auf den Start statt eine feste Zeit. Echte Clips gibt es noch nicht (Prompts: `docs/MEDIENLISTE.md`) |
+| **KI-Symbolbilder** (12.10.2026) – Startseite, Leistungen, Reparatur, Hausmeister, Trockenbau, Netzwerk, 404 bei 1280 und 390 px | Sechs Bilder eingebunden; Herkunft aus dem C2PA-Nachweis der Originale gelesen (ChatGPT/OpenAI, KI-generiert). Hochformat-Karten der Startseite zeigen mit `fokus="rechts"` den Bildteil mit der Handlung. Eine geplante Formulierung „Protokoll – mit Foto“ wieder entfernt (nicht bestätigte Zusage) |
+| **Einsatzgebiet** (12.10.2026) bei 1280 und 390 px | Karte: Beschriftungen „Waiblingen“ und „Schorndorf“ berührten sich, Kilometerangaben kollidierten mit Ortsnamen – Ringbeschriftung nach Westen unter die Achse verlegt. Alte, unvollständige `Service`-Daten im Seitentext gefunden und durch die erzeugten ersetzt (sonst zwei `Service`-Einträge je Seite). Entfernungen aller 47 Orte nachgerechnet (Luftlinie, 7,6–27,6 km); Herrenberg (30,4 km) und Reutlingen (31,7 km) bewusst nicht aufgenommen |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)
@@ -124,18 +131,20 @@ kommt** – es beeinflusst LCP nicht.
 | Screenreader (NVDA, VoiceOver, TalkBack), Firefox, Safari | nicht verfügbar |
 | Kurzvideos als MP4 (H.264) und in Safari/iOS | geprüft nur mit einem WebM-Testclip in Chromium; MP4-Wiedergabe und iOS-Verhalten (Stromsparmodus unterdrückt Autoplay) erst mit echten Clips auf Geräten |
 | KI-Bilder aus Figma | generiert, aber nicht abrufbar: Netzwerkrichtlinie sperrt `www.figma.com` |
-| Herkunft der bereitgestellten Symbolbilder | aus den Dateien nicht ablesbar (keine Metadaten); muss der Betreiber bestätigen |
+| Herkunft der fünf Symbolbilder der ersten Lieferung | aus den Dateien nicht ablesbar (keine Metadaten); muss der Betreiber bestätigen. Die sechs Bilder der zweiten Lieferung sind per C2PA als KI-generiert belegt |
+| Platzierungen bei Google | keine Live-Domain; Wirkung der SEO-Maßnahmen erst nach dem Livegang in der Search Console messbar (`docs/SEO-PLAN.md`, Abschnitt 12) |
 
 ## 4. Noch offen
 
 | Punkt | Wer | Blockiert Livegang? |
 |---|---|---|
-| Firmendaten, Ort, Einsatzgebiet, Domain | Betreiber | **ja** – Produktions-Build bricht ab |
-| 7 offene Punkte auf 6 Seiten (Leistungsumfang, Abgrenzung, Alltagsfälle, Pflegeplan, Netzwerk-Gewerke, Erreichbarkeit) | Betreiber | **ja** |
+| Firmendaten, Anschrift, Domain (Einsatzgebiet Stuttgart + 30 km ist eingetragen) | Betreiber | **ja** – Produktions-Build bricht ab |
+| Google-Unternehmensprofil anlegen, Firmendaten überall gleich (`docs/SEO-PLAN.md`, Abschnitte 7–8) | Betreiber | nein – aber Voraussetzung für Kartenergebnisse |
+| 8 offene Punkte auf 7 Seiten (Leistungsumfang, Abgrenzung, Alltagsfälle, Pflegeplan, Netzwerk-Gewerke, Erreichbarkeit, Ortsliste Einsatzgebiet) | Betreiber | **ja** |
 | Hoster, Formular-Konfiguration, **Testanfrage mit Foto und Rückruf über das Live-Formular** | Betreiber | **ja** – bis dahin meldet das Formular „noch nicht eingerichtet“ |
 | Header, Kompression, Weiterleitungen und Upload-Grenzen auf dem Live-Server prüfen | Technik | ja |
 | Gewerberechtliche Klärung (`docs/LEGAL-CHECKLIST.md`, Abschnitt 3) | Betreiber + Kammer | ja |
-| Quelle und Lizenz der Symbolbilder (`SYMBOLBILD_QUELLE`); bei KI-Bildern Kennzeichnung „Symbolbild (KI-generiert)“ | Betreiber | **ja** – Produktions-Build bricht ab |
+| Quelle und Lizenz der Symbolbilder (`SYMBOLBILD_QUELLE`): erste Lieferung klären, für die KI-Bilder die Nutzungsbedingungen von OpenAI bestätigen | Betreiber | **ja** – Produktions-Build bricht ab |
 | Eigene Fotos (Inhaber, Einblicke) nach den Fotobriefings | Betreiber | nein – Ersatzmotive und Briefings vorhanden |
 | Echte Projekte mit Freigabe | Betreiber | nein – gestalteter Leerzustand |
 | Lighthouse auf dem Live-Server, Screenreader-Test, Safari/Firefox, 3D auf echten Geräten | Technik | nein, empfohlen |

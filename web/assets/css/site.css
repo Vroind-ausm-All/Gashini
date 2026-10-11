@@ -376,6 +376,7 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .leistungskarte h3{margin-bottom:.35em}
 .leistungskarte h3 a{text-decoration:none}
 .leistungskarte h3 a::after{content:"";position:absolute;inset:0;z-index:2}
+.leistungskarte .bewegtbild-knopf{z-index:3}
 .leistungskarte h3 a:hover{text-decoration:underline 3px var(--c-gelb);text-underline-offset:.2em}
 .leistungskarte p{color:var(--c-text-2);margin-bottom:1rem}
 .leistungskarte .mehr{margin-top:auto;font:500 var(--t-xs)/1.3 var(--f-text);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;gap:.6em;align-items:center}
@@ -464,6 +465,30 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .bildband--mitte :is(img,video){object-position:50% 55%}
 .bildband--oben :is(img,video){object-position:50% 22%}
 .bildband figcaption{margin-top:10px;font:400 var(--t-xs)/1.5 var(--f-text);color:var(--c-text-2)}
+/* Bildausschnitt, wenn ein Querformat in eine schmale Fläche geschnitten wird (Baustein-Attribut fokus) */
+.bild-fokus-rechts,.bild-fokus-rechts ~ .bewegtbild{object-position:75% 50%}
+.bild-fokus-links,.bild-fokus-links ~ .bewegtbild{object-position:25% 50%}
+.bildpaar{display:grid;gap:clamp(20px,3vw,36px);margin:clamp(28px,4vw,56px) 0 0}
+@media (min-width:760px){.bildpaar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bildpaar figure{margin:0;min-width:0}
+.bildpaar-flaeche{position:relative;overflow:hidden;background:var(--c-kalk-2);aspect-ratio:3 / 2}
+.bildpaar-flaeche img{width:100%;height:100%;object-fit:cover}
+.bildpaar figcaption{margin-top:10px;font:400 var(--t-xs)/1.5 var(--f-text);color:var(--c-text-2)}
+.rundgang-reihe{margin-top:clamp(40px,5vw,72px);align-items:start}
+.rundgang-reihe h3{margin-bottom:12px}
+.fehler-bild{margin:0;align-self:center}
+/* Einsatzgebiet: Ortslisten, Karte, Abschnitt auf den Leistungsseiten */
+.ortsgruppen{display:grid;gap:clamp(28px,3.5vw,44px) var(--spalte);grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.ortsgruppe h3{font-size:var(--t-l);margin-bottom:4px}
+.ortsgruppe .gedaempft{margin:0}
+.ortsliste{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ortsliste li{padding:6px 10px;border:1px solid var(--c-linie);background:var(--c-weiss);font:400 var(--t-s)/1.3 var(--f-text);color:var(--c-text)}
+.ortsliste--kurz{margin:20px 0 24px}
+.tafel--karte{max-width:760px}
+.einsatz-karte-raster{align-items:start}
+.fehler-bild-flaeche{position:relative;overflow:hidden;background:var(--c-kalk-2);aspect-ratio:3 / 2}
+.fehler-bild-flaeche img{width:100%;height:100%;object-fit:cover;object-position:67% 50%}
+@media (min-width:900px){.fehler-bild-flaeche{aspect-ratio:4 / 5}}
 .bildfolge{margin:0}
 .bildfolge-flaeche img{object-position:50% 35%}
 /* Kurzclip über dem Standbild: unsichtbar, bis er wirklich läuft */
@@ -513,8 +538,14 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .zg-route{fill:none;stroke:var(--c-gelb-dunkel);stroke-width:4;stroke-dasharray:8 7;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
 .zg-mass{fill:none;stroke:var(--c-text-2);stroke-width:.7;vector-effect:non-scaling-stroke}
 .zg-mass--akzent{stroke:var(--c-gelb-dunkel);stroke-width:2.5}
+.zg-flaeche--ohne{stroke:none}
+.zg-ring{fill:none;stroke:var(--c-gelb-dunkel);stroke-width:2.5;vector-effect:non-scaling-stroke}
 .zg-text{font-family:var(--f-text);font-size:11px;fill:var(--c-text-2);letter-spacing:.03em;paint-order:stroke;stroke:var(--c-weiss);stroke-width:4px;stroke-linejoin:round}
 .zg-text--akzent{fill:var(--c-anthrazit);font-weight:700}
+.zg--karte .zg-text--ort{stroke:var(--c-kalk-2)}
+.zg-text--klein{font-size:13px}
+.zg-text--ort{font-size:17px;fill:var(--c-text)}
+.zg-text--haupt{font-size:20px;font-weight:600}
 .zg-marke circle{fill:var(--c-weiss);stroke:var(--c-anthrazit);stroke-width:1;vector-effect:non-scaling-stroke}
 .zg-marke text{font:500 12px var(--f-text);fill:var(--c-anthrazit)}
 

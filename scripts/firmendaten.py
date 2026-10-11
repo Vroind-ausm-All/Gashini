@@ -44,6 +44,23 @@ def env_lesen(pfad):
 def unbestaetigt(wert):
     return wert.startswith("[") and wert.endswith("]")
 
+def gebiet_ld(voll=False):
+    """areaServed aus data/einsatzgebiet.json: Kreis um den Mittelpunkt (Radius in Metern), der Mittelpunkt als Stadt und
+    entweder alle Orte (voll=True, für das Unternehmen) oder die Landkreise (für einzelne Leistungen)."""
+    pfad = os.path.join(WURZEL, "data", "einsatzgebiet.json")
+    if not os.path.isfile(pfad):
+        return None
+    d = json.load(io.open(pfad, encoding="utf-8"))
+    m = d["mittelpunkt"]
+    gebiet = [{"@type": "GeoCircle", "geoMidpoint": {"@type": "GeoCoordinates", "latitude": m["breite"], "longitude": m["laenge"]},
+               "geoRadius": d["radius_km"] * 1000},
+              {"@type": "City", "name": m["name"]}]
+    if voll:
+        gebiet += [{"@type": "City", "name": re.sub(r"\s*\(.*\)$", "", o["name"])} for k in d["kreise"] for o in k["orte"]]
+    else:
+        gebiet += [{"@type": "AdministrativeArea", "name": k["name"]} for k in d["kreise"] if k["name"].endswith(("kreis", "Kreis")) or k["name"].startswith("Landkreis")]
+    return gebiet
+
 def jsonld_firma(w):
     ok = lambda k: w.get(k) and not unbestaetigt(w[k])
     if not ok("DOMAIN"):
@@ -58,7 +75,10 @@ def jsonld_firma(w):
     if ok("STRASSE") and ok("PLZ") and ok("ORT"):
         d["address"] = {"@type": "PostalAddress", "streetAddress": w["STRASSE"], "postalCode": w["PLZ"],
                         "addressLocality": w["ORT"], "addressCountry": "DE"}
-    if ok("EINSATZGEBIET"): d["areaServed"] = w["EINSATZGEBIET"]
+    gebiet = gebiet_ld(voll=True)
+    if gebiet: d["areaServed"] = gebiet
+    elif ok("EINSATZGEBIET"): d["areaServed"] = w["EINSATZGEBIET"]
+    d["knowsAbout"] = ["Trockenbau", "Innenausbau", "Reparatur und Instandhaltung", "Hausmeisterservice"]
     if ok("INHABER"): d["founder"] = {"@type": "Person", "name": w["INHABER"]}
     gleich = [w[k] for k in ("MYHAMMER_URL", "GOOGLE_PROFIL_URL") if ok(k)]
     if gleich: d["sameAs"] = gleich

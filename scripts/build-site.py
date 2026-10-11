@@ -29,6 +29,7 @@ import html, io, json, os, re, shutil, struct, sys, urllib.parse
 WURZEL = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import zeichnungen as zg  # noqa: E402
+import firmendaten as fd  # noqa: E402  (nur gebiet_ld: areaServed für die strukturierten Daten)
 
 SRC = os.path.join(WURZEL, "src")
 BILDER = os.path.join(SRC, "assets", "bilder")
@@ -156,14 +157,19 @@ def bild_html(von, datei, alt, klasse="", laden="lazy", groessen="(min-width: 90
             % (esc(src), srcset, w, h, esc(alt), laden, "sync" if prioritaet else "async",
                ' fetchpriority="high"' if prioritaet else "", ' class="%s"' % klasse if klasse else ""))
 
-def symbolbild_html(von, datei, alt, groessen="(min-width: 900px) 50vw, 100vw", laden="lazy", prioritaet=False, video=None):
+def symbolbild_html(von, datei, alt, groessen="(min-width: 900px) 50vw, 100vw", laden="lazy", prioritaet=False, video=None,
+                    ki=False, fokus=None):
     """Fremdes Foto (src/assets/bilder/symbol/): Alt-Text und sichtbare Marke weisen es als Symbolbild aus.
     Die Marke steht im Bild selbst, damit die Kennzeichnung auch ohne Bildunterschrift erhalten bleibt.
+    ki=True: nachweislich KI-generiert – Alt-Text „Symbolbild (KI-generiert): …“, Marke „Symbolbild · KI“.
+    fokus="rechts"/"links": Bildausschnitt bei engem Zuschnitt (z. B. Hochformat-Karten).
     Mit video="name" liegt darüber ein stummer Kurzclip, sobald src/assets/videos/name.webm/.mp4 existiert."""
     if not datei.startswith("symbol/"):
         raise SystemExit("Symbolbilder liegen in symbol/: " + datei)
-    return (bild_html(von, datei, "Symbolbild: " + alt, laden=laden, groessen=groessen, prioritaet=prioritaet)
-            + '<span class="bild-marke" aria-hidden="true">Symbolbild</span>' + (bewegtbild_html(video) if video else ""))
+    praefix, marke = ("Symbolbild (KI-generiert): ", "Symbolbild · KI") if ki else ("Symbolbild: ", "Symbolbild")
+    return (bild_html(von, datei, praefix + alt, laden=laden, groessen=groessen, prioritaet=prioritaet,
+                      klasse="bild-fokus-" + fokus if fokus else "")
+            + '<span class="bild-marke" aria-hidden="true">%s</span>' % marke + (bewegtbild_html(video) if video else ""))
 
 def bewegtbild_html(name):
     """Stummer Kurzclip über dem Standbild. Das Bild bleibt Inhalt (Alt-Text, LCP, Rückfall); das Video ist
@@ -202,6 +208,12 @@ def projekte_laden():
 PROJEKTE = projekte_laden()
 FAQ_DATEN = json.loads(lesen(os.path.join(WURZEL, "data", "faq.json")))
 FAQ = FAQ_DATEN["fragen"]
+EINSATZ = json.loads(lesen(os.path.join(WURZEL, "data", "einsatzgebiet.json")))
+for _k in EINSATZ["kreise"]:
+    for _o in _k["orte"]:
+        _m = EINSATZ["mittelpunkt"]
+        if zg.luftlinie_km((_m["breite"], _m["laenge"]), (_o["breite"], _o["laenge"])) > EINSATZ["radius_km"]:
+            raise SystemExit("data/einsatzgebiet.json: %s liegt außerhalb von %d km" % (_o["name"], EINSATZ["radius_km"]))
 ANKER = json.loads(lesen(os.path.join(BILDER, "visualisierung", "anker.json")))
 
 # ------------------------------------------------------------------ Bühne: Visualisierung mit Beschriftung
@@ -312,12 +324,14 @@ def faelle(von):
 def leistungskarten(von, ebene="h3"):
     karten = [
         ("leistungen/trockenbau/", "01", "Trockenbau & Innenausbau", "Trennwände, Vorsatzschalen, Decken und Anpassungen im Bestand.",
-         bild_html(von, "visualisierung/wand-staender.webp", "Visualisierung: Ständerwerk aus Metallprofilen, von unten gesehen.",
-                   groessen="(min-width: 760px) 33vw, 100vw"), False),
+         symbolbild_html(von, "symbol/trockenbau-beplankung.webp", "Gipsplatten werden mit dem Akkuschrauber auf das Ständerwerk einer Trockenbauwand geschraubt.",
+                         groessen="(min-width: 760px) 33vw, 100vw", fokus="rechts"), False),
         ("leistungen/reparatur-und-instandhaltung/", "02", "Reparatur & Instandhaltung", "Die Tür, die klemmt. Das Loch in der Wand. Die Fuge im Bad. Auch einzeln.",
-         zg.flicken_einzeln(), True),
+         symbolbild_html(von, "symbol/wand-ausbessern-spachteln.webp", "Ein Loch in der Innenwand wird mit Spachtel und Spachtelmasse ausgebessert.",
+                         groessen="(min-width: 760px) 33vw, 100vw", ki=True, fokus="rechts"), False),
         ("leistungen/hausmeisterservice/", "03", "Hausmeisterservice", "Regelmäßige Rundgänge, kleine Arbeiten sofort, Mieterwechsel vorbereitet.",
-         zg.rundgang(), True),
+         symbolbild_html(von, "symbol/treppenhaus-mehrfamilienhaus.webp", "Helles, gepflegtes Treppenhaus eines Mehrfamilienhauses mit Steintreppe und Geländer.",
+                         groessen="(min-width: 760px) 33vw, 100vw", ki=True, fokus="rechts"), False),
     ]
     return '<ul class="leistungskarten">%s</ul>' % "".join(
         '<li class="leistungskarte" data-zeigen><div class="leistungskarte-bild%s"><span class="leistungskarte-nr" aria-hidden="true">%s</span>%s</div>'
@@ -537,9 +551,46 @@ def kontaktwege():
             '<li><span class="art">E-Mail</span><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>'
             '<!--opt:WHATSAPP--><li><span class="art">WhatsApp</span><a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Nachricht schreiben</a>'
             '<br><span class="gedaempft mono">Ihre Nachricht wird über WhatsApp (Meta) übertragen.</span></li><!--/opt:WHATSAPP-->'
-            '<li><span class="art">Einsatzgebiet</span><span>{{EINSATZGEBIET}}</span></li>'
+            '<li><span class="art">Einsatzgebiet</span><span>{{EINSATZGEBIET}}<br><a class="textlink" href="@/einsatzgebiet/">Alle Orte ansehen</a></span></li>'
             '<li><span class="art">Anschrift</span><span>{{STRASSE}}<br>{{PLZ_ORT}}</span></li>'
             '</ul>')
+
+# ------------------------------------------------------------------ Einsatzgebiet (data/einsatzgebiet.json)
+def einsatz_orte_html():
+    """Alle Orte als Listen: Stuttgarter Stadtbezirke, dann je Landkreis. Reiner Text – lesbar, durchsuchbar, ohne Karte nutzbar."""
+    bloecke = ['<div class="ortsgruppe"><h3>Stuttgart</h3><p class="gedaempft">Alle %d Stadtbezirke</p><ul class="ortsliste">%s</ul></div>'
+               % (len(EINSATZ["stadtbezirke"]), "".join("<li>%s</li>" % esc(b) for b in EINSATZ["stadtbezirke"]))]
+    for k in EINSATZ["kreise"]:
+        bloecke.append('<div class="ortsgruppe"><h3>%s</h3><ul class="ortsliste">%s</ul></div>'
+                       % (esc(k["name"]), "".join("<li>%s</li>" % esc(o["name"]) for o in k["orte"])))
+    return '<div class="ortsgruppen">%s</div>' % "".join(bloecke)
+
+def einsatz_karte_html():
+    return tafel(zg.einsatzkarte(EINSATZ), [], "Schematische Karte: Luftlinie ab %s-Mitte, Lage der Orte vereinfacht. "
+                 "Beschriftet sind die größeren Städte; alle Orte stehen in der Liste." % EINSATZ["mittelpunkt"]["name"], "tafel--karte")
+
+# Kurzer Abschnitt für die Leistungsseiten: eigene Überschrift und eigener Satz je Seite (Attribute), dazu die
+# größeren Orte und der Link zur Seite Einsatzgebiet. Kein austauschbarer Textbaustein mit Ortsnamen-Liste.
+EINSATZ_KURZ = ["Esslingen", "Ludwigsburg", "Böblingen", "Sindelfingen", "Leonberg", "Fellbach", "Waiblingen", "Filderstadt"]
+
+def einsatz_band_html(titel, text):
+    return ('<section class="abschnitt abschnitt--linie einsatz-band" aria-labelledby="einsatz-titel"><div class="rahmen raster">'
+            '<div class="sp-kopf"><p class="label">Einsatzgebiet</p><h2 id="einsatz-titel">%s</h2></div>'
+            '<div class="sp-inhalt"><p class="einleitung">%s</p><ul class="ortsliste ortsliste--kurz" aria-label="Größere Orte im Einsatzgebiet">%s</ul>'
+            '<a class="textlink" href="@/einsatzgebiet/">Alle Orte im Einsatzgebiet <span class="pfeil" aria-hidden="true">→</span></a></div>'
+            '</div></section>' % (esc(titel), esc(text), "".join("<li>%s</li>" % o for o in ["Stuttgart"] + EINSATZ_KURZ)))
+
+def dienst_jsonld(meta):
+    """Service-Daten je Leistungsseite (Kopfdatum 'dienst: Name | Leistungsart'). Anbieter verweist auf das
+    Unternehmen (@id wie in firmendaten.jsonld_firma), Gebiet aus data/einsatzgebiet.json."""
+    name, _, art = meta["dienst"].partition("|")
+    pfad = meta["pfad"]
+    d = {"@context": "https://schema.org", "@type": "Service", "@id": "https://{{DOMAIN}}/%s#leistung" % pfad,
+         "name": name.strip(), "serviceType": (art or name).strip(), "url": "https://{{DOMAIN}}/" + pfad,
+         "description": meta["beschreibung"],
+         "provider": {"@type": "HomeAndConstructionBusiness", "@id": "https://{{DOMAIN}}/#firma", "name": "Gashini Dienstleistungen"},
+         "areaServed": fd.gebiet_ld()}
+    return '<script type="application/ld+json">%s</script>' % json.dumps(d, ensure_ascii=False)
 
 # ------------------------------------------------------------------ Netzwerk-Geschichte (Netzwerk-Seite)
 # Das Schema baut sich beim Scrollen in fünf Stufen auf (bewegung.js). Ohne JavaScript oder bei reduzierter
@@ -582,6 +633,9 @@ BAUSTEINE = {
                                 % (zg.netzwerk("breit"), zg.netzwerk("schmal"),
                                    "Schema. Gestrichelt: Beispiele für Gewerke, die bei einem Vorhaben dazukommen können. Welche davon wir koordinieren, klären wir im Einzelfall – eine feste Partnerliste ist damit nicht gemeint.")),
     "faelle": lambda von, a: faelle(von),
+    "einsatzkarte": lambda von, a: einsatz_karte_html(),
+    "einsatzorte": lambda von, a: einsatz_orte_html(),
+    "einsatzgebiet-band": lambda von, a: einsatz_band_html(a["titel"], a["text"]),
     "leistungskarten": lambda von, a: leistungskarten(von, **a),
     "projekte-vorschau": lambda von, a: projekte_vorschau(von),
     "projekte-galerie": lambda von, a: projekte_galerie(von),
@@ -597,7 +651,7 @@ BAUSTEINE = {
     "zeichnung": lambda von, a: ZEICHNUNGEN[a["art"]](),
     "symbolbild": lambda von, a: symbolbild_html(von, a["datei"], a["alt"], groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
                                                  laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja",
-                                                 video=a.get("video")),
+                                                 video=a.get("video"), ki=a.get("ki") == "ja", fokus=a.get("fokus")),
     "bild": lambda von, a: bild_html(von, a["datei"], a.get("alt", ""), groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
                                      laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja"),
 }
@@ -649,7 +703,7 @@ def kopfbereich(aktiv, pfad=""):
       <div class="hauptnav-fuss">
         <a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a>
         <a class="knopf knopf--sekundaer" href="tel:{{TELEFON_LINK}}">{{TELEFON}}</a>
-        <p class="einsatz">Einsatzgebiet: {{EINSATZGEBIET}}</p>
+        <p class="einsatz"><a href="@/einsatzgebiet/">Einsatzgebiet: {{EINSATZGEBIET}}</a></p>
       </div>
     </nav>
     <div class="kopf-aktion">
@@ -664,7 +718,7 @@ FUSS = '''<footer class="fuss">
     <div class="fuss-raster">
       <div class="fuss-marke">
         <img src="@/assets/marke/logo-hauptvariante-negativ.svg" width="329" height="100" alt="Gashini Dienstleistungen – Trockenbau, Innenausbau, Renovierung">
-        <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
+        <p>Trockenbau, Hausmeisterservice und Arbeiten rund um Ihre Immobilie in Stuttgart und Umgebung – persönlich betreut, bei Bedarf mit Partnerbetrieben abgestimmt.</p>
       </div>
       <div>
         <h2>Leistungen</h2>
@@ -681,6 +735,7 @@ FUSS = '''<footer class="fuss">
           <li><a href="@/projekte/">Projekte</a></li>
           <li><a href="@/ueber-uns/">Über uns</a></li>
           <li><a href="@/fragen/">Fragen &amp; Ablauf</a></li>
+          <li><a href="@/einsatzgebiet/">Einsatzgebiet Stuttgart &amp; Umgebung</a></li>
           <!--opt:MYHAMMER_URL--><li><a href="{{MYHAMMER_URL}}" rel="noopener">Profil auf MyHammer</a></li><!--/opt:MYHAMMER_URL-->
           <!--opt:GOOGLE_PROFIL_URL--><li><a href="{{GOOGLE_PROFIL_URL}}" rel="noopener">Google-Unternehmensprofil</a></li><!--/opt:GOOGLE_PROFIL_URL-->
         </ul>
@@ -757,6 +812,8 @@ def seite_rendern(meta, inhalt, quelle):
         zusatz_kopf += faq_jsonld(meta["faq_jsonld"] or None)
     if meta.get("jsonld") == "firma":
         zusatz_kopf += "<!--@jsonld-firma-->"
+    if meta.get("dienst"):
+        zusatz_kopf += dienst_jsonld(meta)
     vorladen = vorlade_html(meta["vorladen"] + ".webp", "(min-width: 1000px) 46vw, 100vw") if meta.get("vorladen") else ""
     kanonisch = "" if pfad == "404.html" else '<link rel="canonical" href="https://{{DOMAIN}}/%s">\n' % pfad
     robots = "" if indexieren else '<meta name="robots" content="noindex, follow">\n'

@@ -1,6 +1,6 @@
 # Medienliste: fehlende Bilder und Kurzvideos
 
-Stand: 11.10.2026. Diese Liste sagt für jedes fehlende Motiv, **wo** es auf der Website erscheint, **wie wichtig** es
+Stand: 12.10.2026, nach der zweiten Bildlieferung (S1, S3, S7–S10 eingebaut). Diese Liste sagt für jedes fehlende Motiv, **wo** es auf der Website erscheint, **wie wichtig** es
 ist, **wie die Datei heißen muss** und – wo zulässig – **welcher Prompt** eine passende KI-Version erzeugt.
 
 | Priorität | Bedeutung |
@@ -14,7 +14,7 @@ ist, **wie die Datei heißen muss** und – wo zulässig – **welcher Prompt** 
 | Art | Woher | Kennzeichnung | Wo |
 |---|---|---|---|
 | **F – echte Fotos und Videos** | selbst aufnehmen (Smartphone genügt) | keine; Bildnachweis im Impressum | Über uns, Projekte, Google-Profil |
-| **S – KI-Symbolbilder** | Bild-KI mit den Prompts unten | Marke „Symbolbild“ im Bild, Alt-Text „Symbolbild: …“, Unterschrift „Kein Projektfoto.“ | Leistungsseiten, Startseite, Netzwerk |
+| **S – KI-Symbolbilder** | Bild-KI mit den Prompts unten | Marke „Symbolbild · KI“ im Bild, Alt-Text „Symbolbild (KI-generiert): …“, Unterschrift „Kein Projektfoto.“ (Baustein-Attribut `ki="ja"`) | Leistungsseiten, Startseite, Netzwerk |
 | **V – Kurzvideos** | Video-KI, **aus einem Symbolbild animiert** („Bild zu Video“) | wie das Standbild darunter | über einem Symbolbild |
 
 **Regel:** Was für den echten Betrieb steht – Inhaber, Fahrzeug, Team, ausgeführte Aufträge – wird **nie** per KI
@@ -31,29 +31,35 @@ selbst fotografieren; das Briefing steht in Abschnitt 1.
 | F4 | Firmenfahrzeug vor einem Objekt | Über uns, Einblicke | Foto | B | `fotos/einblick-fahrzeug-*.webp` | Fotobriefing |
 | F5 | eigene Fuge im Streiflicht | Über uns, Einblicke | Foto | B | `fotos/einblick-detail-*.webp` | Fotobriefing |
 | F6 | Inhaber stellt sich vor (30–45 s) | Über uns | Video | C | `videos/vorstellung.mp4` | Abspieler mit Untertiteln nötig |
-| S1 | Loch in der Wand wird gespachtelt | Reparatur, Seitenkopf (statt Zeichnung) | KI-Bild | **A** | `symbol/reparatur-spachteln` | Platz wird beim Einbau angelegt |
-| S2 | Türband wird eingestellt | Startseite Karte 02, Leistungsübersicht Zeile 02 | KI-Bild | **A** | `symbol/reparatur-tuer` | Platz wird beim Einbau angelegt |
-| S3 | gepflegtes Treppenhaus | Hausmeister Seitenkopf, Startseite Karte 03, Leistungsübersicht Zeile 03 | KI-Bild | **A** | `symbol/hausmeister-treppenhaus` | Platz wird beim Einbau angelegt |
+| S1 | Loch in der Wand wird gespachtelt | Reparatur, Seitenkopf · Startseite Karte 02 | KI-Bild | **A** | `symbol/wand-ausbessern-spachteln` | **eingebaut** (Marke „Symbolbild · KI“) |
+| S2 | Türband wird eingestellt | Leistungsübersicht Zeile 02 (statt `loch-in-der-wand`) | KI-Bild | B | `symbol/reparatur-tuer` | offen – nicht mehr nötig, bringt aber Abwechslung |
+| S3 | gepflegtes Treppenhaus | Hausmeister Seitenkopf · Startseite Karte 03 | KI-Bild | **A** | `symbol/treppenhaus-mehrfamilienhaus` | **eingebaut** |
 | S4 | Teilen-Vorschau (Open Graph) | jede Seite, wenn sie geteilt wird | KI-Bild + Logo | **A** | `og/teilen.jpg` | fehlt ganz |
 | S5 | Schaden mit dem Smartphone fotografieren | Reparatur „Drei Schritte bis zur Antwort“ | KI-Bild | B | `symbol/schaden-fotografieren` | Platz wird beim Einbau angelegt |
 | S6 | Wohnung nach Auszug, bereit zur Übergabe | Hausmeister „Zwischen zwei Mietverhältnissen“ | KI-Bild | B | `symbol/mieterwechsel-wohnung` | Platz wird beim Einbau angelegt |
-| S7 | Abstimmung am Grundriss | Netzwerk „So läuft ein Vorhaben …“ | KI-Bild | B | `symbol/abstimmung-plan` | Platz wird beim Einbau angelegt |
-| S8 | abgehängte Decke im Bau | Trockenbau „Wofür“ (Alternative zum Dachgeschoss) | KI-Bild | B | `symbol/decke-abgehaengt` | Platz wird beim Einbau angelegt |
-| S9 | Kontrollgang im Keller | Hausmeister „Was regelmäßig dazugehört“ | KI-Bild | C | `symbol/hausmeister-rundgang` | Platz wird beim Einbau angelegt |
-| S10 | kleines Loch in heller Wand | 404-Seite | KI-Bild | C | `symbol/loch-404` | Platz wird beim Einbau angelegt |
+| S7 | Abstimmung am Grundriss | Netzwerk „So läuft ein Vorhaben …“ | KI-Bild | B | `symbol/abstimmung-grundriss` | **eingebaut** |
+| S8 | abgehängte Decke im Bau | Trockenbau „Wofür“ (neben dem Dachgeschoss) | KI-Bild | B | `symbol/abgehaengte-decke-montage` | **eingebaut** |
+| S9 | Kontrollgang im Keller | Hausmeister „Für wen“ · Leistungsübersicht Zeile 03 | KI-Bild | C | `symbol/kontrollgang-kellerflur` | **eingebaut** |
+| S10 | kleines Loch in heller Wand | 404-Seite · Leistungsübersicht Zeile 02 | KI-Bild | C | `symbol/loch-in-der-wand` | **eingebaut** |
 | V1 | Licht wandert über die Fuge | Startseite, Bildband „Auch kleine Aufträge“ | Video aus Bild | **A** | `videos/fuge-licht` | **Platz fertig** – Datei ablegen genügt |
 | V2 | Schraube wird eingedreht | Trockenbau, Seitenkopf | Video aus Bild | **A** | `videos/trockenbau-schrauben` | **Platz fertig** |
 | V3 | langsame Fahrt durch den Altbau | Leistungsübersicht, Zeile Trockenbau | Video aus Bild | B | `videos/altbau-durchgang` | **Platz fertig** |
 | V4 | Sonne wandert über die Dachschrägen | Trockenbau „Wofür“ | Video aus Bild | C | `videos/dachgeschoss-licht` | **Platz fertig** (Freigabe Dachschrägen offen) |
-| V5 | Spachtel zieht über die Ausbesserung | Reparatur, Seitenkopf | Video aus S1 | **A** | `videos/reparatur-spachteln` | nach S1 |
-| V6 | Licht im Treppenhaus | Hausmeister, Seitenkopf | Video aus S3 | B | `videos/treppenhaus-licht` | nach S3 |
+| V5 | Spachtel zieht über die Ausbesserung | Reparatur, Seitenkopf | Video aus S1 | **A** | `videos/reparatur-spachteln` | **Platz fertig** |
+| V6 | Licht im Treppenhaus | Hausmeister, Seitenkopf | Video aus S3 | B | `videos/treppenhaus-licht` | **Platz fertig** |
 | V7 | Tür schließt sauber | Leistungsübersicht, Zeile Reparatur | Video aus S2 | C | `videos/tuer-einstellen` | nach S2 |
 
-In der Vorschau markiert ein roter Hinweis **„Video geplant · Name“**, wo ein Clip vorgesehen ist (V1–V4). Die
+In der Vorschau markiert ein roter Hinweis **„Video geplant · Name“**, wo ein Clip vorgesehen ist (V1–V6). Die
 Kundenansicht blendet ihn aus; in Produktion erscheint er nie.
 
-**Empfohlene Reihenfolge:** F1 und F2 anstoßen (brauchen Termine) · S1, S2, S3, S4 erzeugen · V1, V2 aus den
-vorhandenen Bildern animieren · danach V5, V3, S5–S8.
+**Empfohlene Reihenfolge (aktualisiert):** F1 und F2 anstoßen (brauchen Termine) · S4 (Teilen-Vorschau) erzeugen ·
+V1, V2, V5 aus den vorhandenen Bildern animieren · danach S5, S6, V6, V3 · S2 nur bei Bedarf.
+
+**Zweite Lieferung (12.10.2026):** Die sechs Bilder aus „Gashini-Bilder.zip“ entsprechen S1, S3, S7, S8, S9 und S10.
+Sie sind KI-generiert (die Originaldateien tragen einen C2PA-Nachweis von ChatGPT/OpenAI) und deshalb mit „Symbolbild · KI“ im Bild und „Symbolbild (KI-generiert): …“ im Alt-Text
+gekennzeichnet. Die Dateinamen beschreiben das Motiv (statt `reparatur-spachteln` jetzt `wand-ausbessern-spachteln`
+usw.), weil Suchmaschinen sie mitlesen. Bei den **Projekten** erscheinen sie bewusst nicht: Dort stehen nur echte,
+freigegebene Aufträge – KI-Bilder würden dort einen Auftrag vortäuschen.
 
 ---
 
@@ -127,7 +133,7 @@ oversaturated colours, fisheye distortion
 
 ### Die Motive
 
-#### S1 · Reparatur – Loch in der Wand wird gespachtelt · **A** · 3:2 · `symbol/reparatur-spachteln`
+#### S1 · Reparatur – Loch in der Wand wird gespachtelt · **A** · 3:2 · `symbol/wand-ausbessern-spachteln` · ✓ eingebaut
 
 Platz: Seitenkopf der Reparatur-Seite (dort steht jetzt eine Zeichnung). Ausgangsbild für Video V5.
 
@@ -153,7 +159,7 @@ from the side, shallow depth of field on the hinge.
 ```
 Prüfen: Das Band sieht echt aus (zwei Teile, Bolzen), der Schlüssel steckt sinnvoll; keine Beschriftung am Werkzeug.
 
-#### S3 · Hausmeisterservice – gepflegtes Treppenhaus · **A** · 3:2 · `symbol/hausmeister-treppenhaus`
+#### S3 · Hausmeisterservice – gepflegtes Treppenhaus · **A** · 3:2 · `symbol/treppenhaus-mehrfamilienhaus` · ✓ eingebaut
 
 Platz: Seitenkopf der Hausmeister-Seite, Leistungskarte 03 der Startseite, Zeile 03 der Leistungsübersicht.
 Ausgangsbild für V6.
@@ -202,7 +208,7 @@ people.
 ```
 Prüfen: kein Klemmbrett mit Fantasie-Schrift (deshalb geschlossene Mappe), keine Möbel.
 
-#### S7 · Netzwerk – Abstimmung am Grundriss · B · 3:2 · `symbol/abstimmung-plan`
+#### S7 · Netzwerk – Abstimmung am Grundriss · B · 3:2 · `symbol/abstimmung-grundriss` · ✓ eingebaut
 
 Platz: Netzwerk-Seite, Abschnitt „So läuft ein Vorhaben mit mehreren Gewerken“.
 
@@ -214,7 +220,7 @@ one bare hand of a client with a plain shirt cuff. Soft even daylight.
 ```
 Prüfen: Plan ohne Schrift- und Zahlensalat; zwei verschiedene Personen erkennbar (Handschuh / ohne).
 
-#### S8 · Trockenbau – abgehängte Decke im Bau · B · 3:2 · `symbol/decke-abgehaengt`
+#### S8 · Trockenbau – abgehängte Decke im Bau · B · 3:2 · `symbol/abgehaengte-decke-montage` · ✓ eingebaut
 
 Platz: Trockenbau-Seite, „Wofür“. Ersetzt das Dachgeschoss-Bild, falls Dachschrägen nicht zum Angebot gehören –
 abgehängte Decken stehen dagegen ausdrücklich im Leistungsumfang.
@@ -227,7 +233,7 @@ walls, morning light from a window on the left. No cables hanging down, no light
 ```
 Prüfen: Profile parallel, Abhänger senkrecht, keine herabhängenden Kabel.
 
-#### S9 · Hausmeister – Kontrollgang im Keller · C · 3:2 · `symbol/hausmeister-rundgang`
+#### S9 · Hausmeister – Kontrollgang im Keller · C · 3:2 · `symbol/kontrollgang-kellerflur` · ✓ eingebaut
 
 Platz: Hausmeister-Seite, „Was regelmäßig dazugehört“ (Sichtkontrolle Technik- und Kellerräume).
 
@@ -238,7 +244,7 @@ folder. Cool daylight from a small basement window mixed with the warm flashligh
 open pipes, no people's faces.
 ```
 
-#### S10 · 404-Seite – kleines Loch in heller Wand · C · 16:9 · `symbol/loch-404`
+#### S10 · 404-Seite – kleines Loch in heller Wand · C · 16:9 · `symbol/loch-in-der-wand` · ✓ eingebaut
 
 Platz: Fehlerseite „Diese Seite gibt es nicht.“ – mit einem Augenzwinkern, passend zur Reparatur.
 
@@ -340,7 +346,7 @@ drift past outside the window. Camera completely static.
 
 #### V5 · Spachtel zieht über die Ausbesserung · **A** · aus S1 · `videos/reparatur-spachteln`
 
-Platz: Reparatur, Seitenkopf – wird zusammen mit S1 eingebaut.
+Platz: Reparatur, Seitenkopf – angelegt; Datei ablegen genügt.
 
 ```
 The gloved right hand pulls the filling knife once, smoothly and slowly across the patch, leaving an even, slightly
@@ -349,7 +355,7 @@ glossy surface; the left hand with the hawk stays still. Camera static.
 
 #### V6 · Licht im Treppenhaus · B · aus S3 · `videos/treppenhaus-licht`
 
-Platz: Hausmeister, Seitenkopf – wird zusammen mit S3 eingebaut.
+Platz: Hausmeister, Seitenkopf – angelegt; Datei ablegen genügt.
 
 ```
 Late-afternoon light slowly moves across the stair landing, the ceiling lamp of the stairwell softly switches on,

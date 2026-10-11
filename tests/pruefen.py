@@ -258,15 +258,24 @@ def t_bildherkunft():
     for p in json.load(io.open(os.path.join(WURZEL, "data", "projekte.json"), encoding="utf-8"))["projekte"]:
         for b in p.get("bilder", []):
             assert not b["datei"].startswith(("visualisierung/", "symbol/")), "Visualisierung oder Symbolbild als Projektbild: %s" % p["id"]
-    # Jedes Symbolbild im Build: Alt-Text beginnt mit „Symbolbild“, sichtbare Marke folgt; nie auf „Über uns“
+    # Jedes Symbolbild im Build: Alt-Text beginnt mit „Symbolbild“ bzw. „Symbolbild (KI-generiert)“, die passende
+    # sichtbare Marke folgt, die Kennzeichnung stimmt mit HERKUNFT.md überein; nie auf „Über uns“ oder bei den Projekten
+    herkunft_symbol = io.open(os.path.join(WURZEL, "src", "assets", "bilder", "symbol", "HERKUNFT.md"), encoding="utf-8").read()
     web = os.path.join(WURZEL, "web")
     for rel, pfad, _ in seiten(web):
         html = io.open(pfad, encoding="utf-8").read()
         for m in re.finditer(r'<img src="[^"]*assets/bilder/symbol/[^"]*"[^>]*>', html):
-            assert re.search(r'alt="Symbolbild: ', m.group(0)), "Symbolbild ohne Kennzeichnung im Alt-Text: " + rel
-            assert html[m.end():].startswith('<span class="bild-marke"'), "Symbolbild ohne sichtbare Marke: " + rel
-        if rel.startswith("ueber-uns"):
-            assert "assets/bilder/symbol/" not in html, "Symbolbild auf „Über uns“"
+            assert re.search(r'alt="Symbolbild( \(KI-generiert\))?: ', m.group(0)), "Symbolbild ohne Kennzeichnung im Alt-Text: " + rel
+            ist_ki = 'alt="Symbolbild (KI-generiert): ' in m.group(0)
+            marke = '<span class="bild-marke" aria-hidden="true">%s</span>' % ("Symbolbild · KI" if ist_ki else "Symbolbild")
+            assert html[m.end():].startswith(marke), "Symbolbild ohne passende sichtbare Marke: " + rel
+            # KI-Bilder müssen in HERKUNFT.md als KI-generiert eingetragen sein
+            name = re.search(r'assets/bilder/symbol/([a-z0-9-]+?)-\d+\.webp', m.group(0)).group(1)
+            zeile = [z for z in herkunft_symbol.splitlines() if z.startswith("| " + name + " ")]
+            assert zeile, "Symbolbild ohne Zeile in HERKUNFT.md: " + name
+            assert ("KI-generiert" in zeile[0]) == ist_ki, "Kennzeichnung „KI-generiert“ passt nicht zu HERKUNFT.md: %s (%s)" % (name, rel)
+        if rel.startswith(("ueber-uns", "projekte")):
+            assert "assets/bilder/symbol/" not in html, "Symbolbild auf „Über uns“ oder bei den Projekten: " + rel
 
 @pruefung("Bewegtbilder: stumm, ohne Autoplay-Attribut, über einem gekennzeichneten Standbild; Hinweis „Video geplant“ nur in der Vorschau")
 def t_bewegtbilder():
@@ -278,12 +287,47 @@ def t_bewegtbilder():
             for pflicht in ("muted", "loop", "playsinline", 'preload="none"', 'aria-hidden="true"', "data-bewegtbild"):
                 assert pflicht in tag, "Video ohne %s: %s" % (pflicht, rel)
             assert "autoplay" not in tag and "controls" not in tag, "Video startet selbst oder zeigt Bedienelemente: " + rel
-            assert html[:m.start()].rstrip().endswith('<span class="bild-marke" aria-hidden="true">Symbolbild</span>'), \
+            assert re.search(r'<span class="bild-marke" aria-hidden="true">Symbolbild( · KI)?</span>$', html[:m.start()].rstrip()), \
                 "Video ohne Standbild mit Marke davor: " + rel
             for src in re.findall(r'<source src="([^"]+)"', m.group(1)):
                 assert os.path.isfile(os.path.normpath(os.path.join(os.path.dirname(pfad), src))), "Videodatei fehlt: " + src
         ohne = re.sub(r"<!--vorschau-->.*?<!--/vorschau-->", "", html, flags=re.S)
         assert "video-geplant" not in ohne, "Hinweis „Video geplant“ außerhalb eines Vorschau-Blocks: " + rel
+
+@pruefung("Lokale SEO: Stuttgart in Titeln und H1 der Leistungsseiten, gültige strukturierte Daten mit Einsatzgebiet, Seite „Einsatzgebiet“ überall verlinkt, keine Ortsnamen in Alt-Texten von Symbolbildern")
+def t_lokal():
+    import json
+    web = os.path.join(WURZEL, "web")
+    gebiet = json.load(io.open(os.path.join(WURZEL, "data", "einsatzgebiet.json"), encoding="utf-8"))
+    orte = [gebiet["mittelpunkt"]["name"]] + [re.sub(r"\s*\(.*\)$", "", o["name"]) for k in gebiet["kreise"] for o in k["orte"]]
+    dienste = {"leistungen/trockenbau/index.html", "leistungen/hausmeisterservice/index.html",
+               "leistungen/reparatur-und-instandhaltung/index.html"}
+    for rel, pfad, s in seiten(web):
+        html = io.open(pfad, encoding="utf-8").read()
+        typen = []
+        for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+            try:
+                d = json.loads(m.group(1))
+            except ValueError as e:
+                raise AssertionError("JSON-LD ungültig in %s: %s" % (rel, e))
+            typen.append(d.get("@type"))
+            if d.get("@type") == "Service":
+                kreis = [g for g in d.get("areaServed", []) if g.get("@type") == "GeoCircle"]
+                assert kreis and kreis[0]["geoRadius"] == gebiet["radius_km"] * 1000, "Service ohne Einsatzgebiet: " + rel
+                assert d["provider"].get("@id", "").endswith("/#firma"), "Service ohne Verweis auf das Unternehmen: " + rel
+        if rel in dienste:
+            assert typen.count("Service") == 1, "%s: genau ein Service-Eintrag erwartet, gefunden %d" % (rel, typen.count("Service"))
+            assert "Stuttgart" in s.title, "Stuttgart fehlt im Titel: " + rel
+            h1 = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S).group(1)
+            assert "Stuttgart" in re.sub(r"<[^>]+>", "", h1), "Stuttgart fehlt in der H1: " + rel
+        if rel == "index.html":
+            assert "Stuttgart" in s.title, "Stuttgart fehlt im Titel der Startseite"
+        if s.meta.get("robots", "").find("noindex") < 0 and rel != "einsatzgebiet/index.html":
+            assert re.search(r'href="[^"]*einsatzgebiet/', html), "Seite „Einsatzgebiet“ nicht verlinkt: " + rel
+        for m in re.finditer(r'<img src="[^"]*assets/bilder/symbol/[^"]*"[^>]*alt="([^"]*)"', html):
+            for ort in orte:
+                assert not re.search(r"\b%s\b" % re.escape(ort), m.group(1)), "Ortsname „%s“ im Alt-Text eines Symbolbilds: %s" % (ort, rel)
+    assert os.path.isfile(os.path.join(web, "einsatzgebiet", "index.html")), "Seite „Einsatzgebiet“ fehlt"
 
 @pruefung("Marke: Logos aus dem Logo-Paket (gleiche Maße), Hausfarben statt Ziegelrot, Archivo als einzige Schrift")
 def t_marke():
@@ -313,7 +357,7 @@ def t_marke():
 
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_marke):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_lokal, t_marke):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)

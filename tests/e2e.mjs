@@ -79,7 +79,7 @@ async function durchscrollen(p) {
 }
 
 const SEITEN = ['', 'leistungen/', 'leistungen/trockenbau/', 'leistungen/hausmeisterservice/', 'leistungen/reparatur-und-instandhaltung/',
-  'projekte/', 'netzwerk/', 'ueber-uns/', 'fragen/', 'kontakt/', 'kontakt/danke/', 'impressum/', 'datenschutz/', '404.html'];
+  'projekte/', 'netzwerk/', 'einsatzgebiet/', 'ueber-uns/', 'fragen/', 'kontakt/', 'kontakt/danke/', 'impressum/', 'datenschutz/', '404.html'];
 const BREITEN = [320, 375, 768, 1024, 1440];
 
 try {
@@ -126,6 +126,35 @@ try {
       if (w > 1) ueberlauf.push(`${s || '/'} (+${w}px)`);
     }
     pruefe('Textvergrößerung auf 200 % bei 375px ohne waagerechten Überlauf', ueberlauf.length === 0, ueberlauf.join(', '));
+    await ctx.close();
+  }
+
+  // ---------------------------------------------------------------- Seiten öffnen oben
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const p = await ctx.newPage();
+    const y = () => p.evaluate(() => Math.round(window.scrollY));
+    await p.goto(haupt.basis + 'leistungen/trockenbau/', { waitUntil: 'networkidle' });
+    await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await p.waitForTimeout(300);
+    await p.click('.fuss a[href$="einsatzgebiet/"]');
+    await p.waitForLoadState('networkidle');
+    const link = await y();
+    await p.evaluate(() => window.scrollTo(0, 1500));
+    await p.waitForTimeout(300);
+    await p.goBack({ waitUntil: 'networkidle' });
+    await p.waitForTimeout(400);
+    const zurueck = await y();
+    await p.evaluate(() => window.scrollTo(0, 1800));
+    await p.waitForTimeout(300);
+    await p.reload({ waitUntil: 'networkidle' });
+    await p.waitForTimeout(400);
+    const neu = await y();
+    await p.goto(haupt.basis + 'kontakt/#anfrage', { waitUntil: 'networkidle' });
+    await p.waitForTimeout(600);
+    const anker = await p.evaluate(() => ({ y: Math.round(window.scrollY), oben: Math.round(document.getElementById('anfrage').getBoundingClientRect().top) }));
+    pruefe('Seiten öffnen oben (Link, Zurück, Neu laden); Sprungmarken wie #anfrage bleiben erhalten',
+      link === 0 && zurueck === 0 && neu === 0 && anker.y > 0 && anker.oben >= -5 && anker.oben < 250, { link, zurueck, neu, anker });
     await ctx.close();
   }
 
@@ -364,7 +393,8 @@ try {
       await p.route('**/assets/videos/testclip.webm', r => r.fulfill({ status: 200, contentType: 'video/webm', body: clip }));
       await p.route(u => u.pathname === '/', async r => {
         const antwort = await r.fetch();
-        const html = (await antwort.text()).replace(/(<span class="bild-marke"[^>]*>Symbolbild<\/span>)/,
+        // Testclip in das Bildband „Auch kleine Aufträge“ (erstes Bildband der Startseite) setzen
+        const html = (await antwort.text()).replace(/(<div class="bildband-flaeche"[^>]*><img [^>]*><span class="bild-marke"[^>]*>Symbolbild<\/span>)/,
           '$1<video class="bewegtbild" muted loop playsinline preload="none" aria-hidden="true" data-bewegtbild><source src="/assets/videos/testclip.webm" type="video/webm"></video>');
         await r.fulfill({ response: antwort, body: html });
       });
@@ -493,7 +523,7 @@ try {
     const b3 = await chromium.launch({ ...STARTOPTIONEN, args: ['--disable-webgl', '--disable-3d-apis'] });
     const p = await b3.newPage({ viewport: { width: 1440, height: 900 } });
     const unsichtbar = [];
-    for (const s of ['', 'leistungen/', 'leistungen/trockenbau/', 'leistungen/reparatur-und-instandhaltung/', 'leistungen/hausmeisterservice/', 'netzwerk/', 'ueber-uns/', 'fragen/']) {
+    for (const s of ['', 'leistungen/', 'leistungen/trockenbau/', 'leistungen/reparatur-und-instandhaltung/', 'leistungen/hausmeisterservice/', 'netzwerk/', 'einsatzgebiet/', 'ueber-uns/', 'fragen/']) {
       await p.goto(haupt.basis + s, { waitUntil: 'networkidle' });
       await durchscrollen(p);
       // Animationen dürfen unter Last länger brauchen – geprüft wird, dass am Ende alles sichtbar ist

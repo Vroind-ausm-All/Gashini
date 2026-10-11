@@ -290,3 +290,46 @@ IKONEN = {
 def ikon(name):
     return ('<svg class="ikon" viewBox="0 0 48 48" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">%s</svg>'
             % IKONEN[name])
+
+# --------------------------------------------------------------------------- Einsatzgebiet
+def luftlinie_km(a, b):
+    """Großkreisentfernung zweier Punkte (breite, laenge) in Kilometern."""
+    p1, p2 = math.radians(a[0]), math.radians(b[0])
+    h = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(b[1] - a[1]) / 2) ** 2
+    return 2 * 6371.0 * math.asin(math.sqrt(h))
+
+def einsatzkarte(daten):
+    """Schematische Karte: Ringe in 10-km-Schritten um den Mittelpunkt, Orte als Punkte (flächentreu genug für
+    30 km: Längengrade mit cos(Breite) gestaucht). Beschriftet sind nur die Orte mit 'karte' in data/einsatzgebiet.json."""
+    m = daten["mittelpunkt"]; radius = daten["radius_km"]
+    cx, cy, r_px = 320.0, 320.0, 260.0
+    s = r_px / radius
+    kx = 111.32 * math.cos(math.radians(m["breite"]))
+    pos = lambda o: (cx + (o["laenge"] - m["laenge"]) * kx * s, cy - (o["breite"] - m["breite"]) * 111.2 * s)
+    t = ['<circle class="zg-flaeche zg-flaeche--ohne" cx="%s" cy="%s" r="%s"/>' % (_f(cx), _f(cy), _f(r_px))]
+    for km in range(10, radius, 10):
+        t.append('<circle class="zg-flucht" cx="%s" cy="%s" r="%s"/>' % (_f(cx), _f(cy), _f(km * s)))
+    t.append('<circle class="zg-ring" data-linie cx="%s" cy="%s" r="%s"/>' % (_f(cx), _f(cy), _f(r_px)))
+    for km in range(10, radius + 1, 10):
+        t.append('<text class="zg-text zg-text--klein" x="%s" y="%s" text-anchor="end">%d km</text>' % (_f(cx - km * s - 5), _f(cy + 17), km))
+    # Nordpfeil
+    t.append('<path class="zg-linie" d="M40,92 V44 M32,58 L40,44 L48,58"/><text class="zg-text" x="40" y="112" text-anchor="middle">N</text>')
+    beschriftung = []
+    for kreis in daten["kreise"]:
+        for o in kreis["orte"]:
+            x, y = pos(o)
+            t.append('<circle class="zg-punkt" cx="%s" cy="%s" r="4"/>' % (_f(x), _f(y)))
+            if o.get("karte"):
+                name = o.get("kurz", o["name"])
+                lage = {"r": (x + 10, y + 5, "start"), "l": (x - 10, y + 5, "end"),
+                        "o": (x, y - 12, "middle"), "u": (x, y + 22, "middle")}[o["karte"]]
+                beschriftung.append('<text class="zg-text zg-text--ort" x="%s" y="%s" text-anchor="%s">%s</text>'
+                                    % (_f(lage[0]), _f(lage[1]), lage[2], name))
+    t += beschriftung
+    t.append('<circle class="zg-akzent" cx="%s" cy="%s" r="9"/>' % (_f(cx), _f(cy)))
+    t.append('<text class="zg-text zg-text--ort zg-text--haupt" x="%s" y="%s" text-anchor="middle">%s</text>' % (_f(cx), _f(cy + 30), m["name"]))
+    anzahl = sum(len(k["orte"]) for k in daten["kreise"])
+    return _svg("0 0 640 640", "Einsatzgebiet: %s und %d km Umkreis" % (m["name"], radius),
+                "Schematische Karte. Ringe markieren 10, 20 und %d Kilometer Luftlinie ab %s-Mitte. Punkte zeigen %d Städte und "
+                "Gemeinden im Umkreis, beschriftet sind die größeren. Die vollständige Liste steht unter der Karte."
+                % (radius, m["name"], anzahl), "".join(t), "zg--karte", "ek")

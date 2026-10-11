@@ -1,6 +1,7 @@
 <!--
-titel: Hausmeisterservice in {{ORT}} | Gashini
-beschreibung: Objektkontrollen mit Protokoll, kleinere Instandhaltung und Vorbereitung von Mieterwechseln in {{REGION}} – für Vermieter, Hausverwaltungen und Gewerbe.
+titel: Hausmeisterservice in Stuttgart und Umgebung | Gashini
+beschreibung: Hausmeisterservice in Stuttgart und Umgebung: Objektkontrollen mit Protokoll, kleinere Instandhaltung, Mieterwechsel – für Vermieter und Hausverwaltungen.
+dienst: Hausmeisterservice in Stuttgart und Umgebung | Hausmeisterservice
 pfad: leistungen/hausmeisterservice/
 nav: leistungen/
 prioritaet: 0.9
@@ -11,11 +12,14 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
     <div class="seitenkopf-text">
       [[brotkrumen]]
       <p class="label">Leistung 03</p>
-      <h1 data-zeilen>Hausmeisterservice in {{ORT}}</h1>
+      <h1 data-zeilen>Hausmeisterservice in Stuttgart</h1>
       <p class="einleitung">Jemand, der regelmäßig nach dem Objekt sieht, kleinere Arbeiten gleich erledigt und sich meldet, bevor aus einem kleinen Schaden ein großer wird.</p>
       <div class="knopf-reihe"><a class="knopf knopf--primaer" href="[[kontakt-link leistung="hausmeister"]]">Objekt beschreiben <span class="pfeil" aria-hidden="true">→</span></a></div>
     </div>
-    [[rundgang]]
+    <figure class="seitenkopf-bild">
+      <div class="flaeche" data-enthuellen>[[symbolbild datei="symbol/treppenhaus-mehrfamilienhaus.webp" ki="ja" video="treppenhaus-licht" alt="Gepflegtes, helles Treppenhaus in einem Mehrfamilienhaus mit Briefkastenanlage, Steintreppe und Geländer." groessen="(min-width: 1000px) 52vw, 100vw" laden="eager" prioritaet="ja"]]</div>
+      <figcaption>Symbolbild (KI-generiert) – Treppenhaus eines Mehrfamilienhauses. Kein Projektfoto.</figcaption>
+    </figure>
   </div>
 </header>
 
@@ -29,6 +33,10 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
       <p class="einleitung">Vermieter, Hausverwaltungen und Eigentümergemeinschaften haben selten jemanden im Haus, der sich kümmert. Wir übernehmen das – regelmäßig nach Plan oder bei Bedarf.</p>
       <p class="gedaempft">Sie bekommen einen festen Ansprechpartner, der das Objekt kennt. Was über kleinere Arbeiten hinausgeht, stimmen wir vorher mit Ihnen ab.</p>
     </div>
+    <figure class="bildband bildband--mitte">
+      <div class="bildband-flaeche" data-enthuellen>[[symbolbild datei="symbol/kontrollgang-kellerflur.webp" ki="ja" alt="Hausmeister beim Kontrollgang im Kellerflur eines Mehrfamilienhauses: Er leuchtet den Wandsockel mit der Taschenlampe ab." groessen="(min-width: 1240px) 1180px, 100vw"]]</div>
+      <figcaption>Symbolbild (KI-generiert) – Sichtkontrolle im Kellerflur. Kein Projektfoto.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -47,6 +55,13 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
       <li data-zeigen><span class="takt">Saisonal</span><h3>Außenanlagen</h3><ul><li>Pflege von Allgemein- und Außenflächen</li><li>Kontrolle nach Sturm oder Starkregen</li></ul></li>
       <li data-zeigen><span class="takt">Bei Bedarf</span><h3>Koordination</h3><ul><li>Erster Ansprechpartner bei Schäden</li><li>Fachbetriebe abstimmen und begleiten</li></ul></li>
     </ol>
+    <div class="raster rundgang-reihe">
+      <div class="sp-kopf" data-zeigen>
+        <h3>Ein Rundgang im Beispiel</h3>
+        <p class="gedaempft">Vom Eingang bis zu den Außenanlagen: Die Nummern zeigen eine mögliche Reihenfolge. Was auffällt, steht danach im Protokoll.</p>
+      </div>
+      <div class="sp-inhalt">[[rundgang]]</div>
+    </div>
     <p class="redaktion">[FREIGABE ERFORDERLICH: Umfang bestätigen – insbesondere Winterdienst, Grünpflege und Reinigung von Allgemeinflächen.]</p>
   </div>
 </section>
@@ -96,6 +111,8 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
   </div>
 </section>
 
+[[einsatzgebiet-band titel="Hausmeisterservice in Stuttgart und Umgebung" text="Wir betreuen Wohn- und Gewerbeobjekte in Stuttgart und im Umkreis von etwa 30 Kilometern – regelmäßig nach Plan oder bei Bedarf."]]
+
 <section class="abschnitt abschnitt--linie" aria-labelledby="fragen-titel">
   <div class="rahmen raster">
     <div class="sp-kopf"><p class="label">Fragen</p><h2 id="fragen-titel">Häufig gefragt</h2></div>
@@ -105,4 +122,3 @@ brotkrumen: Leistungen=leistungen/ | Hausmeisterservice
 
 [[abschluss titel="Beschreiben Sie Ihr Objekt." text="Art, Größe, gewünschter Takt – wir schlagen Ihnen einen passenden Betreuungsumfang vor." knopf="Objekt beschreiben" leistung="hausmeister" label="Hausmeisterservice"]]
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Hausmeisterservice","serviceType":"Hausmeisterservice","provider":{"@id":"https://{{DOMAIN}}/#firma"},"url":"https://{{DOMAIN}}/leistungen/hausmeisterservice/"}</script>

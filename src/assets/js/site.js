@@ -98,6 +98,15 @@
     }, { passive: true });
   }
 
+  // Seiten beginnen oben (frueh.js schaltet die Wiederherstellung durch den Browser ab). Auch eine aus dem
+  // Zurück-Cache wiederhergestellte Seite springt nach oben. Mit Sprungmarke bleibt das Ziel erhalten.
+  var nachOben = function () {
+    if (window.location.hash && window.location.hash.length > 1) return;
+    try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+  };
+  nachOben();
+  window.addEventListener('pageshow', function (e) { if (e.persisted) nachOben(); });
+
   var jahr = document.getElementById('jahr');
   if (jahr) jahr.textContent = String(new Date().getFullYear());
 
