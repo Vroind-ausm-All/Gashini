@@ -55,7 +55,12 @@ Drei Ebenen, die aufeinander aufbauen und sich nie vermischen:
 | **Wirklichkeit** | Eigene Fotos echter Arbeiten (später). Tageslicht, ruhige Ausschnitte, keine Menschen ohne Einwilligung. | Bildnachweis im Impressum, Freigabe in `projekte.json` | Projekte, Über uns |
 
 - **Kein Stockfoto, kein KI-Bild als Projekt.** KI-generierte Symbolbilder sind nur als „Symbolbild
-  (KI-generiert)“ zulässig und nie auf Projekt- oder Über-uns-Seiten. Derzeit wird keines verwendet.
+  (KI-generiert)“ zulässig und nie auf Projekt- oder Über-uns-Seiten.
+- **Symbolbilder (seit 11.10.2026):** Fünf vom Betreiber bereitgestellte Fotos typischer Trockenbau-Situationen
+  ergänzen die Material-Ebene: Titelbild und Bildfolge auf der Trockenbau-Seite, Altbau in der Leistungsübersicht,
+  Fugen-Detail auf der Startseite. Sie tragen eine Marke „Symbolbild“ im Bild, „Symbolbild:“ im Alt-Text und
+  „Kein Projektfoto.“ in der Unterschrift. Quelle und Lizenz sind noch offen (`SYMBOLBILD_QUELLE`); sind die Bilder
+  KI-generiert, lautet die Kennzeichnung „Symbolbild (KI-generiert)“. Herkunft: `src/assets/bilder/symbol/HERKUNFT.md`.
 - **Fotobriefings statt Leerstellen:** Wo ein echtes Foto hingehört, steht in der Vorschau ein Briefing
   (Motiv, Format, Licht). In Produktion erscheint stattdessen das passende Material- oder Planbild.
 - Prompts für Midjourney und ein Briefing für die Texterstellung stehen in `docs/ASSET-BRIEFS.md`.
@@ -166,4 +171,5 @@ wird eingecheckt, die Website selbst baut weiterhin ohne Node.
 **Bilder:** Die geplante KI-Bildgenerierung (Figma) war technisch nicht abrufbar, weil die Netzwerkrichtlinie
 der Entwicklungsumgebung `www.figma.com` sperrt. Deshalb besteht die Material-Ebene aus eigenen Renderings
 der 3D-Szene. Ihre Herkunft ist vollständig nachvollziehbar und rechtlich unbedenklich; sie stehen in
-`src/assets/bilder/visualisierung/HERKUNFT.md`.
+`src/assets/bilder/visualisierung/HERKUNFT.md`. Am 11.10.2026 hat der Betreiber fünf Fotos bereitgestellt, die als
+gekennzeichnete Symbolbilder eingebunden sind (siehe Abschnitt 4).

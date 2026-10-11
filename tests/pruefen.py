@@ -245,18 +245,28 @@ def t_bewegung():
     impressum = io.open(os.path.join(WURZEL, "web", "impressum", "index.html"), encoding="utf-8").read()
     assert "gsap.min.js" not in impressum and "wandaufbau.js" not in impressum, "Rechtstexte laden unnötig Bewegungsskripte"
 
-@pruefung("Bildherkunft dokumentiert, keine KI-Bilder als Projektfotos")
+@pruefung("Bildherkunft dokumentiert, keine KI-Bilder als Projektfotos, Symbolbilder gekennzeichnet")
 def t_bildherkunft():
-    herkunft = os.path.join(WURZEL, "src", "assets", "bilder", "visualisierung", "HERKUNFT.md")
-    assert os.path.isfile(herkunft), "HERKUNFT.md fehlt"
-    text = io.open(herkunft, encoding="utf-8").read()
-    for f in os.listdir(os.path.dirname(herkunft)):
-        if f.endswith(".webp"):
-            assert re.sub(r"-\d+\.webp$", "", f) in text, "Herkunft nicht dokumentiert: " + f
+    for ordner in ("visualisierung", "symbol"):
+        herkunft = os.path.join(WURZEL, "src", "assets", "bilder", ordner, "HERKUNFT.md")
+        assert os.path.isfile(herkunft), "HERKUNFT.md fehlt in " + ordner
+        text = io.open(herkunft, encoding="utf-8").read()
+        for f in os.listdir(os.path.dirname(herkunft)):
+            if f.endswith(".webp"):
+                assert re.sub(r"-\d+\.webp$", "", f) in text, "Herkunft nicht dokumentiert: " + f
     import json
     for p in json.load(io.open(os.path.join(WURZEL, "data", "projekte.json"), encoding="utf-8"))["projekte"]:
         for b in p.get("bilder", []):
-            assert not b["datei"].startswith("visualisierung/"), "Visualisierung als Projektbild: %s" % p["id"]
+            assert not b["datei"].startswith(("visualisierung/", "symbol/")), "Visualisierung oder Symbolbild als Projektbild: %s" % p["id"]
+    # Jedes Symbolbild im Build: Alt-Text beginnt mit „Symbolbild“, sichtbare Marke folgt; nie auf „Über uns“
+    web = os.path.join(WURZEL, "web")
+    for rel, pfad, _ in seiten(web):
+        html = io.open(pfad, encoding="utf-8").read()
+        for m in re.finditer(r'<img src="[^"]*assets/bilder/symbol/[^"]*"[^>]*>', html):
+            assert re.search(r'alt="Symbolbild: ', m.group(0)), "Symbolbild ohne Kennzeichnung im Alt-Text: " + rel
+            assert html[m.end():].startswith('<span class="bild-marke"'), "Symbolbild ohne sichtbare Marke: " + rel
+        if rel.startswith("ueber-uns"):
+            assert "assets/bilder/symbol/" not in html, "Symbolbild auf „Über uns“"
 
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,

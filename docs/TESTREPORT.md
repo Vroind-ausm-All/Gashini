@@ -29,7 +29,7 @@ erfolgreich.
 | Keine Beispielprojekte und Platzhalterbilder im Standard-Build; keine privaten Daten im Repository | ✓ (2) |
 | **neu:** Vorschau-Blöcke (Fotobriefings) entfallen in Produktion; offene Angaben erscheinen in der Vorschau als markierte Spanne, nie im Seitentitel | ✓ |
 | **neu:** GSAP-Dateien, Bewegungsskript und 3D-Bündel vorhanden, ohne `eval`/`new Function` (CSP); Wandaufbau hat eine Zeichnung als Rückfall; Rechtstexte laden keine Bewegungsskripte | ✓ |
-| **neu:** Herkunft jeder Visualisierung dokumentiert; keine Visualisierung als Projektbild eingetragen | ✓ |
+| **neu:** Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ und sichtbarer Marke, nie auf „Über uns“ | ✓ |
 
 ### `tests/formular_test.py` – 30 von 30 bestanden
 
@@ -81,6 +81,7 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | 3D-Szene fachlich | Achsmaß 625 mm, Platte 1250 mm über zwei Felder, UW oben/unten, CW 75, Mineralwolle 60 mm, GKB 12,5 mm, Schraubabstand 250 mm. Reihenfolge vereinfacht (Rückseite vor der Dämmung). Als „vereinfachter Beispielaufbau“ ohne Brand- oder Schallschutzaussage gekennzeichnet |
 | Nahaufnahmen aus der 3D-Szene | verworfen – prozedurale Texturen wirkten aus der Nähe künstlich. Verwendet werden nur drei Totalen; Reparatur und Hausmeister erhalten Zeichnungen |
 | **Navigation und Responsive** (11.10.2026) – alle 14 Seiten bei 320, 360, 390, 600, 768, 900, 1024 und 1280 px | Gefunden und behoben: Mobilmenü wurde durch den Unschärfe-Filter des Kopfes beschnitten und war nur teilweise sichtbar (Filter auf eine Hintergrundebene verlegt, Menü jetzt Vollbild unter dem Kopf); Klassenname für offene Angaben kollidierte mit dem Menüzustand (rote Unterstreichung im ganzen Menü); Knopftext im Menü schwarz auf schwarz; Vorschau-Streifen stand vor dem Sprunglink. Neu: Untermenü „Leistungen“ ab 960 px, Kopf weicht auf dem Handy beim Herunterscrollen, Tablet-Raster (600–899 px) für Leistungskarten, Schritte, Projekte und Fußbereich, Schnellkontakt-Leiste entfällt auf den Kontaktseiten |
+| **Symbolbilder** (11.10.2026) – Startseite, Leistungsübersicht, Trockenbau bei 1440 und 390 px | Fünf bereitgestellte Fotos eingebunden (640/1280/1536 px, WebP, ohne EXIF). Bildbänder am Desktop auf 21:9 begrenzt, damit sie die Seite nicht dominieren; Marke „Symbolbild“ auf dem Handy verkleinert; Bildunterschrift im Seitenkopf mit Abstand zur Trennlinie |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)
@@ -111,7 +112,8 @@ kommt** – es beeinflusst LCP nicht.
 | Tatsächliche Zustellung an ein echtes Postfach, SMTP mit TLS und Anmeldung | kein Mailserver, keine Zugangsdaten |
 | `.htaccess` (Header, CSP, Kompression, Weiterleitungen, Upload-Grenzen per `php_value`) | `php -S` wertet `.htaccess` und `.user.ini` nicht aus; die Upload-Grenzen wurden im Test per `-d` gesetzt |
 | Screenreader (NVDA, VoiceOver, TalkBack), Firefox, Safari | nicht verfügbar |
-| KI-Bilder aus Figma | generiert, aber nicht abrufbar: Netzwerkrichtlinie sperrt `www.figma.com`; es wird kein KI-Bild verwendet |
+| KI-Bilder aus Figma | generiert, aber nicht abrufbar: Netzwerkrichtlinie sperrt `www.figma.com` |
+| Herkunft der bereitgestellten Symbolbilder | aus den Dateien nicht ablesbar (keine Metadaten); muss der Betreiber bestätigen |
 
 ## 4. Noch offen
 
@@ -122,6 +124,7 @@ kommt** – es beeinflusst LCP nicht.
 | Hoster, Formular-Konfiguration, **Testanfrage mit Foto und Rückruf über das Live-Formular** | Betreiber | **ja** – bis dahin meldet das Formular „noch nicht eingerichtet“ |
 | Header, Kompression, Weiterleitungen und Upload-Grenzen auf dem Live-Server prüfen | Technik | ja |
 | Gewerberechtliche Klärung (`docs/LEGAL-CHECKLIST.md`, Abschnitt 3) | Betreiber + Kammer | ja |
+| Quelle und Lizenz der Symbolbilder (`SYMBOLBILD_QUELLE`); bei KI-Bildern Kennzeichnung „Symbolbild (KI-generiert)“ | Betreiber | **ja** – Produktions-Build bricht ab |
 | Eigene Fotos (Inhaber, Einblicke) nach den Fotobriefings | Betreiber | nein – Ersatzmotive und Briefings vorhanden |
 | Echte Projekte mit Freigabe | Betreiber | nein – gestalteter Leerzustand |
 | Lighthouse auf dem Live-Server, Screenreader-Test, Safari/Firefox, 3D auf echten Geräten | Technik | nein, empfohlen |

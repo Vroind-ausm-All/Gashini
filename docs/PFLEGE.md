@@ -14,6 +14,7 @@ Für alles hier reichen ein Texteditor und drei Befehle. Programmierkenntnisse s
 | eine häufige Frage ergänzen oder ändern | `data/faq.json` |
 | ein Projekt veröffentlichen | `data/projekte.json` + Bilder in `src/assets/bilder/projekte/<slug>/` |
 | ein eigenes Foto statt eines Fotobriefings einsetzen | `src/assets/bilder/fotos/<name>-640/-1280/-1920.webp` |
+| ein Symbolbild austauschen | `src/assets/bilder/symbol/<name>-640/-1280/-1536.webp` + `HERKUNFT.md` |
 | Farben, Abstände, Schriftgrößen | `src/assets/css/site.css` (Abschnitt „Tokens“ am Anfang) |
 | Animationen anpassen | `src/assets/js/bewegung.js` |
 | Zeichnungen ändern | `scripts/zeichnungen.py` |
@@ -54,6 +55,7 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[kontakt-link leistung="trockenbau" anliegen="…"]]` | Link ins Formular mit Vorauswahl (in `href="…"` verwendbar) |
 | `[[wandaufbau]]` | interaktiver Wandaufbau (3D mit Zeichnung als Rückfall) |
 | `[[visual-schnitt]]`, `[[bild datei="…" alt="…"]]` | Visualisierung der Startseite bzw. ein Bild mit `srcset` |
+| `[[symbolbild datei="symbol/…" alt="…"]]` | fremdes Foto mit Marke „Symbolbild“ und Alt-Präfix (Herkunft in `src/assets/bilder/symbol/HERKUNFT.md` eintragen) |
 | `[[anwendungen]]`, `[[faelle]]`, `[[flicken]]`, `[[rundgang]]`, `[[netzwerk]]`, `[[zeichnung art="…"]]` | Zeichnungen und Tafeln der Leistungsseiten |
 | `[[foto id="…" motiv="…" format="…" licht="…"]]` | eigenes Foto, sonst Ersatzbild plus Fotobriefing (nur Vorschau) |
 | `[[faq-gruppen]]` | alle Fragen nach Thema (Seite „Fragen & Ablauf“) |

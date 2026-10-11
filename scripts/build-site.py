@@ -130,9 +130,9 @@ def bildmasse(pfad):
     raise ValueError("Bildformat nicht erkannt: " + pfad)
 
 def bildvarianten(datei):
-    """Vorhandene Breitenvarianten name-640/-1280/-1920.webp zu einem Bildnamen."""
+    """Vorhandene Breitenvarianten name-640/-1280/-1536/-1920.webp zu einem Bildnamen."""
     basis, _ = os.path.splitext(datei)
-    return [(b, "%s-%d.webp" % (basis, b)) for b in (640, 1280, 1920)
+    return [(b, "%s-%d.webp" % (basis, b)) for b in (640, 1280, 1536, 1920)
             if os.path.exists(os.path.join(BILDER, "%s-%d.webp" % (basis, b)))]
 
 def bild_vorhanden(datei):
@@ -154,6 +154,14 @@ def bild_html(von, datei, alt, klasse="", laden="lazy", groessen="(min-width: 90
     return ('<img src="@/assets/bilder/%s"%s width="%d" height="%d" alt="%s" loading="%s" decoding="%s"%s%s>'
             % (esc(src), srcset, w, h, esc(alt), laden, "sync" if prioritaet else "async",
                ' fetchpriority="high"' if prioritaet else "", ' class="%s"' % klasse if klasse else ""))
+
+def symbolbild_html(von, datei, alt, groessen="(min-width: 900px) 50vw, 100vw", laden="lazy", prioritaet=False):
+    """Fremdes Foto (src/assets/bilder/symbol/): Alt-Text und sichtbare Marke weisen es als Symbolbild aus.
+    Die Marke steht im Bild selbst, damit die Kennzeichnung auch ohne Bildunterschrift erhalten bleibt."""
+    if not datei.startswith("symbol/"):
+        raise SystemExit("Symbolbilder liegen in symbol/: " + datei)
+    return (bild_html(von, datei, "Symbolbild: " + alt, laden=laden, groessen=groessen, prioritaet=prioritaet)
+            + '<span class="bild-marke" aria-hidden="true">Symbolbild</span>')
 
 def vorlade_html(datei, groessen):
     varianten = bildvarianten(datei)
@@ -546,6 +554,8 @@ BAUSTEINE = {
     "einblick": lambda von, a: einblick(von, **a),
     "kontakt-link": lambda von, a: kontakt_link(a.get("leistung"), a.get("anliegen")),
     "zeichnung": lambda von, a: ZEICHNUNGEN[a["art"]](),
+    "symbolbild": lambda von, a: symbolbild_html(von, a["datei"], a["alt"], groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
+                                                 laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja"),
     "bild": lambda von, a: bild_html(von, a["datei"], a.get("alt", ""), groessen=a.get("groessen", "(min-width: 900px) 50vw, 100vw"),
                                      laden=a.get("laden", "lazy"), prioritaet=a.get("prioritaet") == "ja"),
 }

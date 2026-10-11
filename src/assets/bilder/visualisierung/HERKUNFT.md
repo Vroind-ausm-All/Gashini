@@ -8,8 +8,8 @@ Es sind keine Fotos, keine Stockbilder und keine KI-generierten Bilder.
 | Datei | Inhalt | Kennzeichnung auf der Website |
 |---|---|---|
 | wand-schnitt | Metallständerwand im Schnitt: Ständerwerk, Mineralwolle, Gipsplatte, Spachtel, fertige Oberfläche | „Visualisierung – beispielhafter Wandaufbau, vereinfacht. Kein Projektfoto.“ |
-| wand-staender | Ständerwerk aus UW- und CW-Profilen, Untersicht | „Visualisierung – Ständerwerk eines Beispielaufbaus. Kein Projektfoto.“ |
-| wand-daemmung | Ständerwerk mit Mineralwolle, Rückseite beplankt | Bildbeschreibung „Visualisierung: …“ |
+| wand-staender | Ständerwerk aus UW- und CW-Profilen, Untersicht | Bildbeschreibung „Visualisierung: …“ (Leistungskarte Trockenbau auf der Startseite) |
+| wand-daemmung | Ständerwerk mit Mineralwolle, Rückseite beplankt | derzeit nicht eingebunden (Reserve); bei Verwendung Bildbeschreibung „Visualisierung: …“ |
 
 Nutzungsrechte: uneingeschränkt (eigene Erstellung). Die Bilder zeigen vereinfachte Beispielaufbauten,
 keine ausgeführten Aufträge, und dürfen nicht als Projektbilder in `data/projekte.json` verwendet werden

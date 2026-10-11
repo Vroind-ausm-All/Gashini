@@ -337,7 +337,7 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .seitenkopf-bild .flaeche--zeichnung{display:grid;place-items:center;padding:clamp(18px,3vw,40px);background:var(--c-weiss);border:1px solid var(--c-linie)}
 .seitenkopf-bild .flaeche--zeichnung::before{content:"";position:absolute;inset:0;background-image:var(--beton);background-size:480px 480px;opacity:.5;pointer-events:none}
 .seitenkopf-bild .flaeche--zeichnung svg{position:absolute;inset:7%;width:86%;height:86%}
-.seitenkopf-bild figcaption{margin-top:10px;font:400 var(--t-xs)/1.5 var(--f-mono);color:var(--c-text-2)}
+.seitenkopf-bild figcaption{margin-top:10px;padding-bottom:clamp(14px,2vw,22px);font:400 var(--t-xs)/1.5 var(--f-mono);color:var(--c-text-2)}
 .seitenkopf--bild + .abschnitt,.seitenkopf--bild + section{border-top:1px solid var(--c-linie)}
 .brotkrumen{margin-bottom:1.5rem;font:400 var(--t-xs)/1.4 var(--f-mono);letter-spacing:.04em;color:var(--c-text-2)}
 .brotkrumen ol{list-style:none;display:flex;flex-wrap:wrap;gap:.4em}
@@ -389,6 +389,25 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .leistungszeile h2{font-size:var(--t-2xl)}
 .leistungszeile ul{list-style:none;margin:0 0 1.5rem;border-top:1px solid var(--c-linie)}
 .leistungszeile li{padding:10px 0;border-bottom:1px solid var(--c-linie);color:var(--c-text-2)}
+
+/* ---------- Symbolbilder (fremde Fotos, im Bild gekennzeichnet) ---------- */
+.bild-marke{position:absolute;left:12px;bottom:12px;z-index:1;padding:5px 9px;background:rgba(250,250,248,.94);color:var(--c-text);font:500 var(--t-xs)/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+@media (max-width:599px){.bild-marke{left:8px;bottom:8px;padding:4px 7px;font-size:.625rem}}
+.bildband{grid-column:1 / -1;margin:clamp(28px,4vw,56px) 0 0}
+.bildband-flaeche,.bildfolge-flaeche{position:relative;overflow:hidden;background:var(--c-papier-2);aspect-ratio:3 / 2}
+.bildband-flaeche img,.bildfolge-flaeche img{width:100%;height:100%;object-fit:cover}
+@media (min-width:760px){.bildband-flaeche{aspect-ratio:16 / 9}}
+@media (min-width:1000px){.bildband-flaeche{aspect-ratio:21 / 9}.bildfolge-flaeche{aspect-ratio:16 / 9}}
+.bildband--mitte img{object-position:50% 55%}
+.bildband--oben img{object-position:50% 22%}
+.bildband figcaption{margin-top:10px;font:400 var(--t-xs)/1.5 var(--f-mono);color:var(--c-text-2)}
+.bildfolge{margin:0}
+.bildfolge-flaeche img{object-position:50% 35%}
+.bildfolge-schritte{list-style:none;display:grid;gap:14px;margin:20px 0 14px;padding:0}
+@media (min-width:760px){.bildfolge-schritte{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--spalte)}}
+.bildfolge-schritte li{padding-top:12px;border-top:1px solid var(--c-linie);color:var(--c-text-2)}
+.bildfolge-schritte .nr{display:block;margin-bottom:8px;font:500 var(--t-s)/1 var(--f-mono);color:var(--c-ziegel-dunkel)}
+.bildfolge-schritte strong{font-weight:600;color:var(--c-text)}
 
 /* ---------- Technische Zeichnungen ---------- */
 .zg{width:100%;height:auto;overflow:visible}

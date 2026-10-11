@@ -40,6 +40,7 @@ Die Website arbeitet mit drei Bildebenen (Begründung: `docs/CREATIVE-DIRECTION.
 | **Plan** – technische Zeichnungen | `scripts/zeichnungen.py` (SVG, im Build erzeugt) | Explosionsdarstellung, Anwendungen, Ausbesserung, Rundgang, Netzwerk, Symbole | „Schematische Darstellung“ |
 | **Material** – Visualisierungen | `scripts/werkzeuge/3d` → `src/assets/bilder/visualisierung/` | Startseite, Trockenbau, Leistungsübersicht | „Visualisierung – … Kein Projektfoto.“ |
 | **Wirklichkeit** – eigene Fotos | Betrieb (Abschnitte A und C) | Projekte, Über uns | Bildnachweis, Freigabe in `projekte.json` |
+| **Symbolbilder** – fremde Fotos | vom Betreiber bereitgestellt → `src/assets/bilder/symbol/` | Startseite, Leistungsübersicht, Trockenbau | Marke „Symbolbild“ im Bild, Alt-Text „Symbolbild: …“, Unterschrift „… Kein Projektfoto.“ |
 
 Fehlt ein Foto, zeigt die Vorschau ein **Fotobriefing** (Motiv, Format, Licht, Dateiname); in Produktion erscheint das
 Ersatzmotiv. Neue Fotos werden mit dem passenden Namen unter `src/assets/bilder/fotos/` abgelegt
@@ -49,11 +50,13 @@ Ersatzmotiv. Neue Fotos werden mit dem passenden Namen unter `src/assets/bilder/
 
 **Stand:** Für den Relaunch waren bis zu 10 KI-Bilder über Figma freigegeben. Ein Bild wurde erzeugt, konnte aber nicht
 heruntergeladen werden, weil die Netzwerkrichtlinie der Entwicklungsumgebung `www.figma.com` sperrt. Deshalb verwendet
-die Website **kein** KI-Bild. Die Prompts unten sind so formuliert, dass die Ergebnisse zur Bildsprache passen.
+die Website **kein** selbst erzeugtes KI-Bild. Am 11.10.2026 hat der Betreiber fünf Fotos bereitgestellt; sie sind als
+Symbolbilder eingebunden, ihre Quelle (KI-generiert oder Bildagentur) ist noch zu bestätigen. Die Prompts unten sind so
+formuliert, dass weitere Ergebnisse zur Bildsprache passen.
 
 **Erlaubt für:** Atmosphäre, Materialdetails, Open-Graph-Bild. **Nie für:** Projekte, Projektvorschau, Über uns,
 alles in der Nähe von Ortsangaben oder Kundenaussagen. **Kennzeichnung:** Bildunterschrift „Symbolbild (KI-generiert)“.
-**Herkunft:** Werkzeug, Datum, Prompt und Lizenzbedingungen in `src/assets/bilder/visualisierung/HERKUNFT.md` eintragen.
+**Herkunft:** Werkzeug, Datum, Prompt und Lizenzbedingungen in `src/assets/bilder/symbol/HERKUNFT.md` eintragen.
 
 Gemeinsamer Stil-Zusatz für alle Motive (Midjourney v7, an jeden Prompt anhängen):
 
@@ -128,5 +131,6 @@ Stichpunkte: …
 | `src/assets/bilder/platzhalter/*.svg` | eigene, neutrale Platzhalter | eigen | nur im Entwurfs-Build |
 | Betonstruktur in `site.css` | im Code erzeugtes Rauschen (SVG-Filter) | eigen | Hintergrund der Zeichnungen |
 | `src/assets/bilder/visualisierung/*.webp` | eigene Renderings (three.js), siehe `HERKUNFT.md` | eigen | Startseite, Leistungen, Trockenbau |
+| `src/assets/bilder/symbol/*.webp` (5 Motive) | vom Betreiber bereitgestellt, siehe `HERKUNFT.md` | **zu bestätigen** – Produktions-Build gesperrt, bis `SYMBOLBILD_QUELLE` gesetzt ist | Startseite, Leistungsübersicht, Trockenbau – als Symbolbild gekennzeichnet |
 | Zeichnungen (SVG im HTML) | `scripts/zeichnungen.py` | eigen | alle Leistungsseiten, Netzwerk |
 | `src/assets/js/vendor/*` | GSAP 3.15 (Standard „No Charge“ License), three.js 0.186 (MIT) | siehe `LIZENZEN.txt` | Bewegung, 3D |
