@@ -341,7 +341,7 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .seitenkopf h1{max-width:20ch}
 .seitenkopf .einleitung{margin-top:.5rem}
 .seitenkopf--bild{border-bottom:0;padding-bottom:0}
-.seitenkopf--bild .seitenkopf-raster{display:grid;gap:clamp(28px,4vw,56px);align-items:end}
+.seitenkopf--bild .seitenkopf-raster{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:end}
 @media (min-width:1000px){.seitenkopf--bild .seitenkopf-raster{grid-template-columns:minmax(0,6fr) minmax(0,6fr)}}
 .seitenkopf--bild .seitenkopf-text{padding-bottom:clamp(36px,4.5vw,72px)}
 .seitenkopf-bild{margin:0;position:relative}
@@ -363,7 +363,7 @@ html.kopf-weg{--kopf-sichtbar:0px}
 .seitenkopf--dunkel .brotkrumen li+li::before{color:#464B50}
 
 /* ---------- Leistungskarten (bildgeführt) ---------- */
-.leistungskarten{list-style:none;display:grid;gap:clamp(36px,4vw,48px) var(--spalte)}
+.leistungskarten{list-style:none;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(36px,4vw,48px) var(--spalte)}
 @media (min-width:760px){.leistungskarten{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .leistungskarte{position:relative;display:flex;flex-direction:column}
 .leistungskarte-bild{position:relative;overflow:hidden;aspect-ratio:4 / 5;background:var(--c-kalk-2);margin-bottom:20px}
@@ -895,7 +895,7 @@ html:not(.js) .vergleich-linie,html:not(.js) .vergleich-regler{display:none}
 .vorschau-streifen button{min-height:32px;padding:0 12px;border:1px solid #565B60;border-radius:999px;background:transparent;color:var(--c-weiss);font:500 var(--t-xs)/1 var(--f-text);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .vorschau-streifen button[aria-pressed="true"]{background:var(--c-weiss);color:var(--c-anthrazit)}
 .vorschau-streifen .vs-kurz{display:none}
-@media (max-width:899px){.vorschau-streifen{flex-wrap:nowrap;justify-content:space-between;text-align:left;padding-block:6px}.vorschau-streifen .vs-lang{display:none}.vorschau-streifen .vs-kurz{display:inline}.vorschau-streifen button{flex:0 0 auto}}
+@media (max-width:899px){.vorschau-streifen{justify-content:space-between;text-align:left;padding-block:6px}.vorschau-streifen .vs-lang{display:none}.vorschau-streifen .vs-kurz{display:inline}.vorschau-streifen button{flex:0 1 auto;max-width:100%}}
 html:not(.js) .vorschau-streifen button{display:none}
 
 /* ---------- Bewegung ---------- */
@@ -942,9 +942,11 @@ html:not(.js) .vorschau-streifen button{display:none}
 .buehne-raster > *{min-width:0}
 @media (max-width:600px){.buehne-titel{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}}
 .dunkel .label,.abschluss--dunkel .label{color:var(--c-dunkel-text)}
-@media (max-width:600px){h1,h2,h3{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}}
+/* Schmal und bei großer Textvergrößerung: lange Wörter (Archivo läuft breit) dürfen notfalls im Wort umbrechen */
+@media (max-width:600px){h1,h2,h3,.leitsatz,.fragen summary{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}}
+.wort{max-width:100%}
 .leerzustand > *,.bericht-schema li > div,.kopfzeile > *{min-width:0}
-.abschluss--dunkel .angabe-offen,.seitenkopf--dunkel .angabe-offen{color:var(--c-dunkel-text-2)}
+.abschluss--dunkel .angabe-offen,.seitenkopf--dunkel .angabe-offen{color:var(--c-dunkel-text-2);background:transparent;text-decoration-color:var(--c-gelb)}
 
 /* ---------- Tablet (600–899 px): Zwischenlayouts statt Handy-Stapel oder gequetschter Desktop-Spalten ---------- */
 @media (min-width:600px) and (max-width:899px){

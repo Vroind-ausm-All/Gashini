@@ -1,6 +1,6 @@
 # Testbericht
 
-Stand: 11.10.2026, Premium-Relaunch mit überarbeiteter Navigation auf `claude/relaunch-premium`. Geprüft in der Entwicklungsumgebung mit
+Stand: 12.10.2026, Premium-Relaunch in der neuen CI (Logo-Paket, Anthrazit/Signalgelb/Kalkweiß, Archivo) auf `claude/relaunch-premium`. Geprüft in der Entwicklungsumgebung mit
 Python 3.11, PHP 8.4, Node 22, Chromium über Playwright 1.56 und axe-core 4.11.
 
 Vier Kategorien, streng getrennt: **automatisch getestet** · **manuell geprüft** · **nicht prüfbar** · **noch offen**.
@@ -16,7 +16,7 @@ grün, ebenso auf einem GitHub-Runner: Workflow-Lauf
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
 
-### `tests/pruefen.py` – 15 von 15 bestanden
+### `tests/pruefen.py` – 16 von 16 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -29,6 +29,7 @@ erfolgreich.
 | Keine Beispielprojekte und Platzhalterbilder im Standard-Build; keine privaten Daten im Repository | ✓ (2) |
 | **neu:** Vorschau-Blöcke (Fotobriefings) entfallen in Produktion; offene Angaben erscheinen in der Vorschau als markierte Spanne, nie im Seitentitel | ✓ |
 | **neu:** GSAP-Dateien, Bewegungsskript und 3D-Bündel vorhanden, ohne `eval`/`new Function` (CSP); Wandaufbau hat eine Zeichnung als Rückfall; Rechtstexte laden keine Bewegungsskripte | ✓ |
+| **neu:** Marke: Web-Logos entsprechen dem Logo-Paket (viewBox, Farben, Pfadanzahl), `favicon.ico` vorhanden, keine Ziegelrot- oder Altschrift-Reste, Hausfarben gesetzt, Archivo einzige Schriftdatei, Kopf und Fuß mit den richtigen Varianten | ✓ |
 | **neu:** Kurzvideos: stumm, ohne `autoplay`-Attribut und ohne Bedienleiste, immer über einem gekennzeichneten Standbild, Videodateien vorhanden; Hinweis „Video geplant“ nur in Vorschau-Blöcken | ✓ |
 | **neu:** Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ und sichtbarer Marke, nie auf „Über uns“ | ✓ |
 
@@ -50,7 +51,7 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 36 von 36 bestanden
+### `tests/e2e.mjs` – 38 von 38 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -61,6 +62,8 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | **neu:** Vollbild-Menü bei 390, 768 und 360 × 600 px direkt unter dem Kopf, alle Hauptpunkte sichtbar bzw. im Menü scrollbar, Kontaktknöpfe erreichbar | ✓ (3) |
 | **neu:** Desktop (1280 px) ohne Menü-Knopf; Untermenü „Leistungen“ per Hover und Tastatur, Escape schließt mit Fokus zurück, Bereich als aktuell markiert | ✓ |
 | **neu:** Kopf weicht auf dem Handy beim Herunterscrollen und kehrt zurück; keine Schnellkontakt-Leiste auf der Kontaktseite | ✓ |
+| **neu:** Marke im Kopf: ab 960 px Hauptvariante ≥ 220 px, beim Scrollen Kompakt ≥ 180 px ohne Verschiebung des Inhalts; bei 390 und 320 px Kompakt ≥ 180 px | ✓ |
+| **neu:** Netzwerk-Geschichte: Schritt 1 nur „Sie“, Schritt 3 mit eigener Leistung, Schritt 5 vollständig mit Legende, aktiver Schritt hervorgehoben; bei reduzierter Bewegung sofort vollständig | ✓ |
 | **neu:** Kurzvideo mit einem im Test erzeugten Clip: lädt erst im Sichtbereich, läuft dann über dem Standbild, Pause-Knopf hält an und es bleibt angehalten; bei „Bewegung reduzieren“ weder Start noch Knopf | ✓ |
 | Formular: Feldfehler mit `aria-invalid`/`aria-describedby`, Erfolg, Doppelklick, Serverfehler | ✓ (5) |
 | Ohne JavaScript: Inhalt, Navigation, **Wandaufbau-Zeichnung** sichtbar; Formular serverseitig angenommen | ✓ (2) |
@@ -84,6 +87,8 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | Nahaufnahmen aus der 3D-Szene | verworfen – prozedurale Texturen wirkten aus der Nähe künstlich. Verwendet werden nur drei Totalen; Reparatur und Hausmeister erhalten Zeichnungen |
 | **Navigation und Responsive** (11.10.2026) – alle 14 Seiten bei 320, 360, 390, 600, 768, 900, 1024 und 1280 px | Gefunden und behoben: Mobilmenü wurde durch den Unschärfe-Filter des Kopfes beschnitten und war nur teilweise sichtbar (Filter auf eine Hintergrundebene verlegt, Menü jetzt Vollbild unter dem Kopf); Klassenname für offene Angaben kollidierte mit dem Menüzustand (rote Unterstreichung im ganzen Menü); Knopftext im Menü schwarz auf schwarz; Vorschau-Streifen stand vor dem Sprunglink. Neu: Untermenü „Leistungen“ ab 960 px, Kopf weicht auf dem Handy beim Herunterscrollen, Tablet-Raster (600–899 px) für Leistungskarten, Schritte, Projekte und Fußbereich, Schnellkontakt-Leiste entfällt auf den Kontaktseiten |
 | **Symbolbilder** (11.10.2026) – Startseite, Leistungsübersicht, Trockenbau bei 1440 und 390 px | Fünf bereitgestellte Fotos eingebunden (640/1280/1536 px, WebP, ohne EXIF). Bildbänder am Desktop auf 21:9 begrenzt, damit sie die Seite nicht dominieren; Marke „Symbolbild“ auf dem Handy verkleinert; Bildunterschrift im Seitenkopf mit Abstand zur Trennlinie |
+| **Neue CI** (12.10.2026) – alle Seiten bei 390 und 1440 px, Menü, Fuß, Druckvorlagen | Logo-Varianten nach Markenblatt eingesetzt; Archivo läuft breiter als die frühere Schrift – die Startseiten-Überschrift brach in sechs Zeilen, Größenskala neu berechnet (längste Zeile ≈ 9 × Schriftgröße). Web-Logos zunächst samt viewBox gerundet – der neue Markentest fand das, jetzt werden nur Pfadkoordinaten gerundet. Der erste Browser-Lauf (lokal und CI 38179413341) fand drei Fehler: Überlauf bei 200 % Text (lange Wörter in Überschriften und FAQ, automatische Rasterspalten) und zu geringer Kontrast offener Angaben im dunklen Abschluss – behoben. Druckvorlagen: Ziegelrot als Text auf Weiß, nachgesetzter Schriftzug beim Rückendruck und alte CMYK-Angaben ersetzt |
+| **Netzwerk-Geschichte** (12.10.2026) bei 1440 × 900, 390 × 844, 360 × 600 sowie mit reduzierter Bewegung und ohne JavaScript | Aufbau je Schritt, Fortschrittsband und Hervorhebung geprüft. Zunächst war das Bild in der Mitte eines Schritts erst halb aufgebaut – Aufbau in die erste Hälfte verlegt. Gedimmte Schritte (anfangs 30 %) und der Leitsatz (anfangs 16 % Deckkraft) unterschritten im Ruhezustand die Kontrastgrenzen – jetzt 62 % bzw. Farbwechsel ab #84888D (3,2 : 1, große Schrift) |
 | **Kurzvideos** (11.10.2026) mit einem Testclip auf der Startseite | Abspielen, Einblenden, Pause per Maus und Tastatur, Pausieren außerhalb des Sichtbereichs und kein Start bei reduzierter Bewegung geprüft. Der erste automatische Test scheiterte an einer zu kurzen Wartezeit, weil die 3D-Szene den Software-Renderer auslastete; der Test läuft jetzt ohne WebGL und wartet auf den Start statt eine feste Zeit. Echte Clips gibt es noch nicht (Prompts: `docs/MEDIENLISTE.md`) |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
@@ -133,6 +138,8 @@ kommt** – es beeinflusst LCP nicht.
 | Echte Projekte mit Freigabe | Betreiber | nein – gestalteter Leerzustand |
 | Lighthouse auf dem Live-Server, Screenreader-Test, Safari/Firefox, 3D auf echten Geräten | Technik | nein, empfohlen |
 | Bilder und Kurzvideos laut `docs/MEDIENLISTE.md` erzeugen bzw. fotografieren | Betreiber | nein – Plätze vorbereitet, Standbilder vorhanden |
+| Druckvorlagen inhaltlich abgleichen: Flyer, Visitenkarte und Fahrzeug nennen noch das frühere Angebot (Gebäudereinigung, Umzug, Entrümpelung) und Zusagen wie „Festpreis“, „24 Stunden“, „Termintreu“, die auf der Website bewusst fehlen | Betreiber | nein – betrifft nur den Druck |
+| Markenrecherche beim DPMA vor einer Markenanmeldung (Hinweis aus dem Logo-Paket) | Betreiber | nein |
 
 ## 5. Tests selbst ausführen
 
