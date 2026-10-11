@@ -16,7 +16,7 @@ einem GitHub-Runner: Workflow-Lauf
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
 
-### `tests/pruefen.py` – 14 von 14 bestanden
+### `tests/pruefen.py` – 15 von 15 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -29,6 +29,7 @@ erfolgreich.
 | Keine Beispielprojekte und Platzhalterbilder im Standard-Build; keine privaten Daten im Repository | ✓ (2) |
 | **neu:** Vorschau-Blöcke (Fotobriefings) entfallen in Produktion; offene Angaben erscheinen in der Vorschau als markierte Spanne, nie im Seitentitel | ✓ |
 | **neu:** GSAP-Dateien, Bewegungsskript und 3D-Bündel vorhanden, ohne `eval`/`new Function` (CSP); Wandaufbau hat eine Zeichnung als Rückfall; Rechtstexte laden keine Bewegungsskripte | ✓ |
+| **neu:** Kurzvideos: stumm, ohne `autoplay`-Attribut und ohne Bedienleiste, immer über einem gekennzeichneten Standbild, Videodateien vorhanden; Hinweis „Video geplant“ nur in Vorschau-Blöcken | ✓ |
 | **neu:** Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ und sichtbarer Marke, nie auf „Über uns“ | ✓ |
 
 ### `tests/formular_test.py` – 30 von 30 bestanden
@@ -49,7 +50,7 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 35 von 35 bestanden
+### `tests/e2e.mjs` – 36 von 36 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -60,6 +61,7 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | **neu:** Vollbild-Menü bei 390, 768 und 360 × 600 px direkt unter dem Kopf, alle Hauptpunkte sichtbar bzw. im Menü scrollbar, Kontaktknöpfe erreichbar | ✓ (3) |
 | **neu:** Desktop (1280 px) ohne Menü-Knopf; Untermenü „Leistungen“ per Hover und Tastatur, Escape schließt mit Fokus zurück, Bereich als aktuell markiert | ✓ |
 | **neu:** Kopf weicht auf dem Handy beim Herunterscrollen und kehrt zurück; keine Schnellkontakt-Leiste auf der Kontaktseite | ✓ |
+| **neu:** Kurzvideo mit einem im Test erzeugten Clip: lädt erst im Sichtbereich, läuft dann über dem Standbild, Pause-Knopf hält an und es bleibt angehalten; bei „Bewegung reduzieren“ weder Start noch Knopf | ✓ |
 | Formular: Feldfehler mit `aria-invalid`/`aria-describedby`, Erfolg, Doppelklick, Serverfehler | ✓ (5) |
 | Ohne JavaScript: Inhalt, Navigation, **Wandaufbau-Zeichnung** sichtbar; Formular serverseitig angenommen | ✓ (2) |
 | **neu:** Bewegung reduzieren: keine Bewegungsklasse, alle animierten Inhalte sofort sichtbar, kein Scroll-Pinning | ✓ |
@@ -82,6 +84,7 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | Nahaufnahmen aus der 3D-Szene | verworfen – prozedurale Texturen wirkten aus der Nähe künstlich. Verwendet werden nur drei Totalen; Reparatur und Hausmeister erhalten Zeichnungen |
 | **Navigation und Responsive** (11.10.2026) – alle 14 Seiten bei 320, 360, 390, 600, 768, 900, 1024 und 1280 px | Gefunden und behoben: Mobilmenü wurde durch den Unschärfe-Filter des Kopfes beschnitten und war nur teilweise sichtbar (Filter auf eine Hintergrundebene verlegt, Menü jetzt Vollbild unter dem Kopf); Klassenname für offene Angaben kollidierte mit dem Menüzustand (rote Unterstreichung im ganzen Menü); Knopftext im Menü schwarz auf schwarz; Vorschau-Streifen stand vor dem Sprunglink. Neu: Untermenü „Leistungen“ ab 960 px, Kopf weicht auf dem Handy beim Herunterscrollen, Tablet-Raster (600–899 px) für Leistungskarten, Schritte, Projekte und Fußbereich, Schnellkontakt-Leiste entfällt auf den Kontaktseiten |
 | **Symbolbilder** (11.10.2026) – Startseite, Leistungsübersicht, Trockenbau bei 1440 und 390 px | Fünf bereitgestellte Fotos eingebunden (640/1280/1536 px, WebP, ohne EXIF). Bildbänder am Desktop auf 21:9 begrenzt, damit sie die Seite nicht dominieren; Marke „Symbolbild“ auf dem Handy verkleinert; Bildunterschrift im Seitenkopf mit Abstand zur Trennlinie |
+| **Kurzvideos** (11.10.2026) mit einem Testclip auf der Startseite | Abspielen, Einblenden, Pause per Maus und Tastatur, Pausieren außerhalb des Sichtbereichs und kein Start bei reduzierter Bewegung geprüft. Der erste automatische Test scheiterte an einer zu kurzen Wartezeit, weil die 3D-Szene den Software-Renderer auslastete; der Test läuft jetzt ohne WebGL und wartet auf den Start statt eine feste Zeit. Echte Clips gibt es noch nicht (Prompts: `docs/MEDIENLISTE.md`) |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)
@@ -112,6 +115,7 @@ kommt** – es beeinflusst LCP nicht.
 | Tatsächliche Zustellung an ein echtes Postfach, SMTP mit TLS und Anmeldung | kein Mailserver, keine Zugangsdaten |
 | `.htaccess` (Header, CSP, Kompression, Weiterleitungen, Upload-Grenzen per `php_value`) | `php -S` wertet `.htaccess` und `.user.ini` nicht aus; die Upload-Grenzen wurden im Test per `-d` gesetzt |
 | Screenreader (NVDA, VoiceOver, TalkBack), Firefox, Safari | nicht verfügbar |
+| Kurzvideos als MP4 (H.264) und in Safari/iOS | geprüft nur mit einem WebM-Testclip in Chromium; MP4-Wiedergabe und iOS-Verhalten (Stromsparmodus unterdrückt Autoplay) erst mit echten Clips auf Geräten |
 | KI-Bilder aus Figma | generiert, aber nicht abrufbar: Netzwerkrichtlinie sperrt `www.figma.com` |
 | Herkunft der bereitgestellten Symbolbilder | aus den Dateien nicht ablesbar (keine Metadaten); muss der Betreiber bestätigen |
 
@@ -128,6 +132,7 @@ kommt** – es beeinflusst LCP nicht.
 | Eigene Fotos (Inhaber, Einblicke) nach den Fotobriefings | Betreiber | nein – Ersatzmotive und Briefings vorhanden |
 | Echte Projekte mit Freigabe | Betreiber | nein – gestalteter Leerzustand |
 | Lighthouse auf dem Live-Server, Screenreader-Test, Safari/Firefox, 3D auf echten Geräten | Technik | nein, empfohlen |
+| Bilder und Kurzvideos laut `docs/MEDIENLISTE.md` erzeugen bzw. fotografieren | Betreiber | nein – Plätze vorbereitet, Standbilder vorhanden |
 
 ## 5. Tests selbst ausführen
 

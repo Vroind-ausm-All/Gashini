@@ -271,7 +271,8 @@ try {
 
   // ---------------------------------------------------------------- Bewegtbild über einem Symbolbild
   // Noch liegen keine Clips im Repository. Damit die ausgelieferte site.js/site.css trotzdem geprüft wird, erzeugt
-  // der Test einen kurzen WebM-Clip (Canvas + MediaRecorder) und fügt ihn beim Ausliefern der Startseite ein.
+  // der Test einen kurzen WebM-Clip (Canvas + MediaRecorder) und fügt ihn beim Ausliefern der Startseite ein. Der
+  // Browser läuft ohne WebGL, damit die 3D-Szene den Software-Renderer der Testumgebung nicht auslastet.
   {
     const werkstatt = await browser.newPage();
     const clip = Buffer.from(await werkstatt.evaluate(async () => {
@@ -292,32 +293,38 @@ try {
     }), 'base64');
     await werkstatt.close();
     const ergebnis = {};
+    const bv = await chromium.launch({ ...STARTOPTIONEN, args: ['--disable-webgl', '--disable-3d-apis'] });
     for (const art of ['normal', 'reduziert']) {
-      const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: art === 'reduziert' ? 'reduce' : 'no-preference' });
+      const ctx = await bv.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: art === 'reduziert' ? 'reduce' : 'no-preference' });
       const p = await ctx.newPage();
       await p.route('**/assets/videos/testclip.webm', r => r.fulfill({ status: 200, contentType: 'video/webm', body: clip }));
       await p.route(u => u.pathname === '/', async r => {
         const antwort = await r.fetch();
         const html = (await antwort.text()).replace(/(<span class="bild-marke"[^>]*>Symbolbild<\/span>)/,
-          '$1<video class="bewegtbild" muted loop playsinline preload="none" aria-hidden="true" data-bewegtbild><source src="assets/videos/testclip.webm" type="video/webm"></video>');
+          '$1<video class="bewegtbild" muted loop playsinline preload="none" aria-hidden="true" data-bewegtbild><source src="/assets/videos/testclip.webm" type="video/webm"></video>');
         await r.fulfill({ response: antwort, body: html });
       });
       await p.goto(haupt.basis, { waitUntil: 'networkidle' });
       const v = p.locator('video[data-bewegtbild]');
       const r = { geladenVorher: await v.evaluate(el => el.readyState) };
-      await v.scrollIntoViewIfNeeded(); await p.waitForTimeout(1200);
-      Object.assign(r, await v.evaluate(el => ({ laeuft: !el.paused && el.classList.contains('laeuft'), sichtbar: getComputedStyle(el).opacity === '1' })));
+      await v.scrollIntoViewIfNeeded();
+      // auf den Start warten (höchstens 10 s); bei reduzierter Bewegung darf er nicht kommen
+      await p.waitForFunction(() => document.querySelector('video[data-bewegtbild]').classList.contains('laeuft'), null,
+        { timeout: art === 'reduziert' ? 2500 : 10000 }).catch(() => {});
+      await p.waitForTimeout(1000); // Einblendung (0,7 s) abwarten
+      Object.assign(r, await v.evaluate(el => ({ laeuft: !el.paused && el.classList.contains('laeuft'), sichtbar: parseFloat(getComputedStyle(el).opacity) > .95 })));
       r.knopf = await p.locator('.bewegtbild-knopf').count();
       if (r.knopf) {
         await p.locator('.bewegtbild-knopf').click(); await p.waitForTimeout(200);
         r.angehalten = await v.evaluate(el => el.paused && el.nextElementSibling.getAttribute('aria-label') === 'Video abspielen');
         await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(300);
-        await v.scrollIntoViewIfNeeded(); await p.waitForTimeout(700);
+        await v.scrollIntoViewIfNeeded(); await p.waitForTimeout(1500);
         r.bleibtAngehalten = await v.evaluate(el => el.paused);
       }
       ergebnis[art] = r;
       await ctx.close();
     }
+    await bv.close();
     const n = ergebnis.normal, z = ergebnis.reduziert;
     pruefe('Bewegtbild: lädt erst im Sichtbereich, läuft dann über dem Standbild, Pause-Knopf hält an und bleibt angehalten; bei reduzierter Bewegung kein Start und kein Knopf',
       n.geladenVorher === 0 && n.laeuft && n.sichtbar && n.knopf === 1 && n.angehalten && n.bleibtAngehalten &&
