@@ -328,12 +328,32 @@ def t_lokal():
             for ort in orte:
                 assert not re.search(r"\b%s\b" % re.escape(ort), m.group(1)), "Ortsname „%s“ im Alt-Text eines Symbolbilds: %s" % (ort, rel)
     assert os.path.isfile(os.path.join(web, "einsatzgebiet", "index.html")), "Seite „Einsatzgebiet“ fehlt"
+    # Jeder Ort führt ins Formular: eine PLZ → Link mit ?ort=PLZ Ort, mehrere → Auswahl mit je einem Link pro PLZ
+    seite = io.open(os.path.join(web, "einsatzgebiet", "index.html"), encoding="utf-8").read()
+    for k in gebiet["kreise"]:
+        for o in k["orte"]:
+            for z in o["plz"]:
+                assert "kontakt/?ort=" + z + "%20" in seite, "Kein Formular-Link mit PLZ %s (%s)" % (z, o["name"])
+    assert "data-plz-pruefer" in seite and "data-kreis-filter" in seite, "PLZ-Prüfung oder Landkreis-Filter fehlt"
 
-@pruefung("Marke: Logos aus dem Logo-Paket (gleiche Maße), Hausfarben statt Ziegelrot, Archivo als einzige Schrift")
+@pruefung("Tiefe (Maus-Parallax): nur dekorativ (aria-hidden), nie auf Kontakt- und Rechtsseiten, im Skript an Maus und erlaubte Bewegung gebunden")
+def t_tiefe():
+    web = os.path.join(WURZEL, "web")
+    for rel, pfad, _ in seiten(web):
+        html = io.open(pfad, encoding="utf-8").read()
+        if rel.startswith(("kontakt", "impressum", "datenschutz")) or rel == "404.html":
+            assert "data-tiefe" not in html, "Tiefen-Ebene auf " + rel
+        for m in re.finditer(r'<div class="tiefe"[^>]*>', html):
+            assert 'aria-hidden="true"' in m.group(0), "Tiefen-Ebene nicht aria-hidden: " + rel
+    js = io.open(os.path.join(web, "assets", "js", "bewegung.js"), encoding="utf-8").read()
+    assert "(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)" in js, "Parallax nicht an Maus und erlaubte Bewegung gebunden"
+    assert "requestAnimationFrame" not in js.split("// ---------- Tiefe")[1].split("// ---------- Wandaufbau")[0], "Parallax mit Dauerschleife"
+
+@pruefung("Marke: Logos aus dem Logo-Paket (gleiche Maße), Website-Icon nur aus dem G, Hausfarben statt Ziegelrot, Archivo als einzige Schrift")
 def t_marke():
     web = os.path.join(WURZEL, "web")
     paket = {"logo-hauptvariante-klein.svg": "svg/logo-hauptvariante-klein.svg", "logo-hauptvariante-negativ.svg": "svg/logo-hauptvariante-negativ.svg",
-             "logo-kompakt.svg": "svg/logo-kompakt.svg", "signet.svg": "svg/signet.svg", "favicon.svg": "svg/favicon.svg"}
+             "logo-kompakt.svg": "svg/logo-kompakt.svg", "signet.svg": "svg/signet.svg"}
     for ziel, quelle in paket.items():
         a = io.open(os.path.join(WURZEL, "brand", quelle), encoding="utf-8").read()
         b = io.open(os.path.join(web, "assets", "marke", ziel), encoding="utf-8").read()
@@ -341,6 +361,16 @@ def t_marke():
         assert re.findall(r'fill="(#[0-9A-Fa-f]{6})"', a) == re.findall(r'fill="(#[0-9A-Fa-f]{6})"', b), "Logo-Farben verändert: " + ziel
         assert len(re.findall(r"<path", a)) == len(re.findall(r"<path", b)), "Logo-Pfade verändert: " + ziel
     assert os.path.isfile(os.path.join(web, "favicon.ico")), "favicon.ico fehlt im Wurzelverzeichnis"
+    # Website-Icon: nur das G des Signets – dieselbe Glyphe, nur Hausfarben, auf jeder Seite eingebunden
+    signet = io.open(os.path.join(WURZEL, "brand", "svg", "signet.svg"), encoding="utf-8").read()
+    g_signet = re.search(r'<g fill="#F4F2ED"><path transform="[^"]+" d="([^"]+)"', signet).group(1)
+    icon = io.open(os.path.join(web, "assets", "icon", "icon-g.svg"), encoding="utf-8").read()
+    assert re.findall(r' d="([^"]+)"', icon) == [g_signet], "Icon enthält nicht genau die G-Glyphe des Signets"
+    assert set(c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}", icon)) <= {"#1E2124", "#F4F2ED"}, "Icon mit fremden Farben"
+    assert io.open(os.path.join(web, "favicon.ico"), "rb").read() == io.open(os.path.join(WURZEL, "src", "assets", "icon", "favicon.ico"), "rb").read(), \
+        "favicon.ico ist nicht das G-Icon"
+    htaccess = io.open(os.path.join(web, ".htaccess"), encoding="utf-8").read()
+    assert 'FilesMatch "^icon-g\\.svg$"' in htaccess, "CSP-Ausnahme für das Tab-Icon fehlt in .htaccess"
     css = io.open(os.path.join(web, "assets", "css", "site.css"), encoding="utf-8").read()
     for alt in ("#B5391C", "#8E2A12", "Instrument Sans", "IBM Plex"):
         assert alt.lower() not in css.lower(), "Alte CI im Stylesheet: " + alt
@@ -350,6 +380,7 @@ def t_marke():
     assert schriften == ["archivo-var.woff2"], "Unerwartete Schriftdateien: %s" % schriften
     for rel, pfad, _ in seiten(web):
         html = io.open(pfad, encoding="utf-8").read()
+        assert "assets/icon/icon-g.svg" in html and "assets/icon/icon-g-180.png" in html, "Seite ohne G-Icon: " + rel
         if 'class="kopf"' in html:
             assert "marke/logo-hauptvariante-klein.svg" in html and "marke/logo-kompakt.svg" in html, "Kopf ohne Logo-Varianten: " + rel
         if 'class="fuss"' in html:
@@ -357,7 +388,7 @@ def t_marke():
 
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_lokal, t_marke):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_lokal, t_tiefe, t_marke):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)

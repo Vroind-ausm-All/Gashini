@@ -158,6 +158,67 @@ try {
     await ctx.close();
   }
 
+  // ---------------------------------------------------------------- Einsatzgebiet: Landkreis, PLZ, Klick → Formular mit PLZ
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    await p.goto(haupt.basis + 'einsatzgebiet/', { waitUntil: 'networkidle' });
+    await p.locator('[data-kreis-filter]').scrollIntoViewIfNeeded();
+    await p.click('[data-kreis-filter] button[data-kreis="boeblingen"]');
+    const kreis = await p.evaluate(() => ({ im: document.querySelectorAll('.ek-ort.im-kreis').length, soll: document.querySelectorAll('.ek-ort[data-kreis="boeblingen"]').length }));
+    await p.fill('#plz-eingabe', '71229'); await p.click('.plz-pruefer button[type=submit]');
+    const plz = await p.evaluate(() => ({ text: document.querySelector('[data-plz-ergebnis]').textContent, link: (document.querySelector('[data-plz-ergebnis] a') || {}).href || '',
+      markiert: [...document.querySelectorAll('.ek-ort.ist-markiert')].map(e => e.getAttribute('data-ort')) }));
+    await p.fill('#plz-eingabe', '12'); await p.click('.plz-pruefer button[type=submit]');
+    const falsch = await p.evaluate(() => document.querySelector('[data-plz-ergebnis]').textContent);
+    await p.click('[data-kreis-filter] button[data-kreis=""]');
+    await p.locator('.ek-ort[data-ort="Waiblingen"] .ek-treffer').click({ force: true });
+    const wahl = await p.evaluate(() => [...document.querySelectorAll('.karte-wahl a')].map(a => a.textContent));
+    await p.keyboard.press('Escape');
+    const zu = await p.evaluate(() => !document.querySelector('.karte-wahl'));
+    await p.locator('.ek-ort[data-ort="Leonberg"] .ek-treffer').click({ force: true });
+    await p.waitForLoadState('networkidle');
+    const formular = await p.evaluate(() => ({ pfad: location.pathname, ort: document.getElementById('f-ort').value }));
+    pruefe('Einsatzgebiet bedienbar: Landkreis hebt seine Orte hervor, PLZ-Prüfung mit Ort und Link, Auswahl bei mehreren PLZ, Klick auf Ort öffnet das Formular mit eingetragener PLZ',
+      kreis.im === kreis.soll && kreis.im > 5 && /71229 Leonberg/.test(plz.text) && /ort=71229/.test(plz.link) && plz.markiert.includes('Leonberg')
+      && /fünfstellige/.test(falsch) && wahl.join(',') === '71332,71334,71336' && zu && formular.pfad.endsWith('/kontakt/') && formular.ort === '71229 Leonberg',
+      { kreis, plz, falsch, wahl, zu, formular });
+    await ctx.close();
+  }
+
+  // ---------------------------------------------------------------- Tiefe: Maus-Parallax nur mit Maus und erlaubter Bewegung
+  {
+    const messung = async (reducedMotion) => {
+      const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion });
+      const p = await ctx.newPage();
+      await p.goto(haupt.basis + 'leistungen/hausmeisterservice/', { waitUntil: 'networkidle' });
+      await p.waitForTimeout(1500);
+      const tf = () => p.evaluate(() => [...document.querySelectorAll('[data-tiefe-ebene]')].map(e => getComputedStyle(e).transform).join('|'));
+      const h1 = () => p.evaluate(() => getComputedStyle(document.querySelector('.seitenkopf h1')).transform);
+      const vorher = await tf(), h1vorher = await h1();
+      for (let i = 0; i <= 8; i++) { await p.mouse.move(150 + i * 140, 100 + i * 60); await p.waitForTimeout(30); }
+      await p.waitForTimeout(2000);
+      const nachher = await tf();
+      await p.waitForTimeout(1200);
+      const r = { bewegt: nachher !== vorher, ruht: (await tf()) === nachher, textRuhig: (await h1()) === h1vorher };
+      await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+      const karte = p.locator('.leistungskarte').first();
+      await karte.scrollIntoViewIfNeeded(); await p.waitForTimeout(1200);
+      const kb = await karte.boundingBox();
+      await p.mouse.move(kb.x + 10, kb.y + 10); await p.mouse.move(kb.x + kb.width - 10, kb.y + 20); await p.waitForTimeout(900);
+      r.karteGeneigt = await p.evaluate(() => getComputedStyle(document.querySelector('.leistungskarte .leistungskarte-bild')).transform !== 'none');
+      r.titelRuhig = await p.evaluate(() => getComputedStyle(document.querySelector('.leistungskarte h3')).transform === 'none');
+      await p.goto(haupt.basis + 'kontakt/', { waitUntil: 'networkidle' });
+      r.kontaktOhne = await p.evaluate(() => !document.querySelector('[data-tiefe]'));
+      await ctx.close();
+      return r;
+    };
+    const normal = await messung('no-preference'), ruhig = await messung('reduce');
+    pruefe('Tiefe: Lichtflächen und Linien folgen der Maus und kommen dann zur Ruhe, Überschriften und Kartentitel bewegen sich nicht, keine Ebene auf der Kontaktseite; bei „Bewegung reduzieren“ bewegt sich nichts',
+      normal.bewegt && normal.ruht && normal.textRuhig && normal.karteGeneigt && normal.titelRuhig && normal.kontaktOhne
+      && !ruhig.bewegt && !ruhig.karteGeneigt && ruhig.textRuhig, { normal, ruhig });
+  }
+
   // ---------------------------------------------------------------- Eingebettete Vorschau (z. B. claude.ai)
   // Nachgestellt: Die einbettende Seite stellt nach jedem Laden die Scroll-Position der vorigen Seite wieder her.
   {

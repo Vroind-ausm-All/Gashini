@@ -13,7 +13,7 @@ faq_jsonld: einsatzgebiet
     <p class="label">Einsatzgebiet</p>
     <h1 data-zeilen>Im Einsatz in Stuttgart und Umgebung.</h1>
     <p class="einleitung">Trockenbau, Reparaturen und Hausmeisterservice übernehmen wir in allen Stuttgarter Stadtbezirken und in den Städten und Gemeinden ringsum – von Ludwigsburg bis Nürtingen, von Leonberg bis Schorndorf.</p>
-    <div class="knopf-reihe"><a class="knopf knopf--primaer" href="@/kontakt/#anfrage">Anfrage stellen <span class="pfeil" aria-hidden="true">→</span></a><a class="knopf knopf--sekundaer" href="#orte-titel">Alle Orte ansehen</a></div>
+    <div class="knopf-reihe"><a class="knopf knopf--primaer" href="#karte-titel">Ort oder PLZ wählen <span class="pfeil" aria-hidden="true">→</span></a><a class="knopf knopf--sekundaer" href="#orte-titel">Alle Orte ansehen</a></div>
   </div>
 </header>
 
@@ -22,7 +22,9 @@ faq_jsonld: einsatzgebiet
     <div class="sp-kopf">
       <p class="label">Karte</p>
       <h2 id="karte-titel">Rund 30 Kilometer um Stuttgart</h2>
-      <p class="gedaempft">Gemessen als Luftlinie ab Stuttgart-Mitte; die Ringe zeigen 10, 20 und 30 Kilometer. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p>
+      <p class="gedaempft">Gemessen als Luftlinie ab Stuttgart-Mitte; die Ringe zeigen 10, 20 und 30 Kilometer. Klicken Sie auf Ihren Ort – das Anfrageformular öffnet sich mit der passenden Postleitzahl. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p>
+      [[kreis-filter]]
+      [[plz-pruefer]]
     </div>
     <div class="sp-inhalt">[[einsatzkarte]]</div>
   </div>
@@ -34,11 +36,11 @@ faq_jsonld: einsatzgebiet
       <div>
         <p class="label">Orte</p>
         <h2 id="orte-titel" data-zeilen>Städte und Gemeinden im Einsatzgebiet</h2>
-        <p class="einleitung">Ihr Ort fehlt in der Liste? Sie nennt die größeren Städte und Gemeinden – kleinere Orte dazwischen gehören genauso dazu. Im Zweifel nennen Sie uns einfach Ihre Postleitzahl.</p>
+        <p class="einleitung">Ein Klick auf den Ort öffnet das Anfrageformular mit eingetragener Postleitzahl; bei Städten mit mehreren Postleitzahlen wählen Sie Ihre aus. Ihr Ort fehlt? Die Liste nennt die größeren Städte und Gemeinden – kleinere Orte dazwischen gehören genauso dazu.</p>
       </div>
     </div>
     [[einsatzorte]]
-    <p class="redaktion">[FREIGABE ERFORDERLICH: Liste prüfen – werden alle genannten Orte tatsächlich angefahren? Orte am Rand (Metzingen, Ebersbach an der Fils) bei Bedarf in data/einsatzgebiet.json streichen.]</p>
+    <p class="redaktion">[FREIGABE ERFORDERLICH: Liste prüfen – werden alle genannten Orte tatsächlich angefahren? Orte am Rand (Metzingen, Ebersbach an der Fils) bei Bedarf in data/einsatzgebiet.json streichen. Postleitzahlen dort einmal mit dem amtlichen Verzeichnis abgleichen.]</p>
   </div>
 </section>
 

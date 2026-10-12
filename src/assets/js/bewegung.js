@@ -6,7 +6,8 @@
    1 Architectural Hero      – Zeilen und Wand per CSS (kritischer Pfad), Beschriftung per DrawSVG
    2 Wall Construction       – Three.js-Modell, auf großen Bildschirmen an den Scrollfortschritt gekoppelt
    3 Project Reveal          – Bildmasken entlang der Kante, Filter mit Flip
-   4 Netzwerk-Geschichte     – das Schema der Netzwerk-Seite wächst mit dem Scrollen in fünf Stufen */
+   4 Netzwerk-Geschichte     – das Schema der Netzwerk-Seite wächst mit dem Scrollen in fünf Stufen
+   5 Tiefe                   – Lichtflächen und Linien im Seitenkopf und die Leistungskarten folgen der Maus um wenige Pixel */
 (function () {
   'use strict';
   var html = document.documentElement;
@@ -179,6 +180,78 @@
         };
       });
     });
+  });
+
+  // ---------- Tiefe: Maus-Parallax im Seitenkopf und auf Leistungskarten
+  // Nur mit Maus (hover + feiner Zeiger) und erlaubter Bewegung. Es läuft nichts dauerhaft: Jede Bewegung der Maus
+  // setzt ein kurzes Nachgleiten (quickTo) in Gang, ruht die Maus, ruht alles. Verschoben werden nur transform-Werte
+  // weniger Elemente hinter dem Inhalt; Texte und Formularfelder bewegen sich nie.
+  mm.add('(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)', function () {
+    var aufraeumen = [];
+    var folgen = function (el, eigenschaft, dauer) { return gsap.quickTo(el, eigenschaft, { duration: dauer, ease: 'power3.out' }); };
+
+    document.querySelectorAll('[data-tiefe]').forEach(function (tiefe) {
+      var kopf = tiefe.parentElement;
+      var ebenen = Array.prototype.map.call(tiefe.querySelectorAll('[data-tiefe-ebene]'), function (el) {
+        return { f: parseFloat(el.getAttribute('data-tiefe-ebene')) || 0, x: folgen(el, 'x', 1.6), y: folgen(el, 'y', 1.6) };
+      });
+      var sichtbar = true;
+      var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (e) { sichtbar = e[0].isIntersecting; }) : null;
+      if (io) io.observe(kopf);
+      var bewegen = function (e) {
+        if (!sichtbar || e.pointerType !== 'mouse') return;
+        var nx = e.clientX / window.innerWidth - .5, ny = e.clientY / window.innerHeight - .5;
+        ebenen.forEach(function (l) { l.x(nx * 44 * l.f); l.y(ny * 28 * l.f); });
+      };
+      var zurueck = function () { ebenen.forEach(function (l) { l.x(0); l.y(0); }); };
+      window.addEventListener('pointermove', bewegen, { passive: true });
+      document.documentElement.addEventListener('pointerleave', zurueck);
+      aufraeumen.push(function () {
+        window.removeEventListener('pointermove', bewegen);
+        document.documentElement.removeEventListener('pointerleave', zurueck);
+        if (io) io.disconnect();
+        gsap.set(tiefe.querySelectorAll('[data-tiefe-ebene]'), { clearProps: 'transform' });
+      });
+    });
+
+    // Leistungskarten: Nur die Bildfläche neigt sich (höchstens 3,5°), das Bild gleitet leicht dagegen – Titel,
+    // Text und Link bleiben ruhig. Der Kartenlink liegt weiter über allem und bleibt klickbar.
+    document.querySelectorAll('.leistungskarte').forEach(function (karte) {
+      var flaeche = karte.querySelector('.leistungskarte-bild');
+      var bild = flaeche && flaeche.querySelector('img');
+      if (!bild) return;
+      gsap.set(flaeche, { transformPerspective: 900 });
+      var rx = folgen(flaeche, 'rotationX', .7), ry = folgen(flaeche, 'rotationY', .7), bx = folgen(bild, 'x', .9), by = folgen(bild, 'y', .9);
+      var drin = function (e) {
+        if (e.pointerType !== 'mouse') return;
+        var r = karte.getBoundingClientRect();
+        var nx = Math.max(-.5, Math.min(.5, (e.clientX - r.left) / r.width - .5));
+        var ny = Math.max(-.5, Math.min(.5, (e.clientY - r.top) / r.height - .5));
+        ry(nx * 7); rx(-ny * 7); bx(-nx * 16); by(-ny * 16);
+      };
+      var rein = function (e) {
+        if (e.pointerType !== 'mouse') return;
+        karte.classList.add('in-tiefe');
+        gsap.to(bild, { scale: 1.07, duration: .8, overwrite: 'auto' });
+      };
+      var raus = function () {
+        karte.classList.remove('in-tiefe');
+        rx(0); ry(0); bx(0); by(0);
+        gsap.to(bild, { scale: 1, duration: .8, overwrite: 'auto' });
+      };
+      karte.addEventListener('pointerenter', rein);
+      karte.addEventListener('pointermove', drin, { passive: true });
+      karte.addEventListener('pointerleave', raus);
+      aufraeumen.push(function () {
+        karte.removeEventListener('pointerenter', rein);
+        karte.removeEventListener('pointermove', drin);
+        karte.removeEventListener('pointerleave', raus);
+        karte.classList.remove('in-tiefe');
+        gsap.set([flaeche, bild], { clearProps: 'transform' });
+      });
+    });
+
+    return function () { aufraeumen.forEach(function (f) { f(); }); };
   });
 
   // ---------- Wandaufbau: Scroll-Kopplung nur auf großen Bildschirmen mit erlaubter Bewegung

@@ -298,9 +298,12 @@ def luftlinie_km(a, b):
     h = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(b[1] - a[1]) / 2) ** 2
     return 2 * 6371.0 * math.asin(math.sqrt(h))
 
-def einsatzkarte(daten):
-    """Schematische Karte: Ringe in 10-km-Schritten um den Mittelpunkt, Orte als Punkte (flächentreu genug für
-    30 km: Längengrade mit cos(Breite) gestaucht). Beschriftet sind nur die Orte mit 'karte' in data/einsatzgebiet.json."""
+def einsatzkarte(daten, ziel=None):
+    """Schematische Karte: Ringe in 10-km-Schritten um den Mittelpunkt, Orte als Punkte (für 30 km genau genug:
+    Längengrade mit cos(Breite) gestaucht). Dauerhaft beschriftet sind die Orte mit 'karte' in data/einsatzgebiet.json.
+    Mit ziel(ort, kreis) wird jeder Ort ein Link (Kontaktformular mit PLZ bzw. Auswahl bei mehreren PLZ); die übrigen
+    Namen erscheinen dann beim Überfahren. Die interaktive Karte ist aria-hidden – dieselben Ziele stehen als Liste
+    unter der Karte und sind dort per Tastatur und Screenreader erreichbar."""
     m = daten["mittelpunkt"]; radius = daten["radius_km"]
     cx, cy, r_px = 320.0, 320.0, 260.0
     s = r_px / radius
@@ -318,17 +321,34 @@ def einsatzkarte(daten):
     for kreis in daten["kreise"]:
         for o in kreis["orte"]:
             x, y = pos(o)
-            t.append('<circle class="zg-punkt" cx="%s" cy="%s" r="4"/>' % (_f(x), _f(y)))
+            name = o.get("kurz", o["name"])
             if o.get("karte"):
-                name = o.get("kurz", o["name"])
                 lage = {"r": (x + 10, y + 5, "start"), "l": (x - 10, y + 5, "end"),
                         "o": (x, y - 12, "middle"), "u": (x, y + 22, "middle")}[o["karte"]]
-                beschriftung.append('<text class="zg-text zg-text--ort" x="%s" y="%s" text-anchor="%s">%s</text>'
-                                    % (_f(lage[0]), _f(lage[1]), lage[2], name))
+                schild = ('<text class="zg-text zg-text--ort" x="%s" y="%s" text-anchor="%s">%s</text>'
+                          % (_f(lage[0]), _f(lage[1]), lage[2], name))
+            elif ziel:
+                rechts = x < 470
+                schild = ('<text class="zg-text zg-text--ort ek-schild" x="%s" y="%s" text-anchor="%s">%s</text>'
+                          % (_f(x + 10 if rechts else x - 10), _f(y + 5), "start" if rechts else "end", name))
+            else:
+                schild = ""
+            punkt = '<circle class="zg-punkt" cx="%s" cy="%s" r="4"/>' % (_f(x), _f(y))
+            if ziel:
+                t.append('<a class="ek-ort" href="%s" tabindex="-1" data-kreis="%s" data-ort="%s" data-plz="%s">'
+                         '<circle class="ek-treffer" cx="%s" cy="%s" r="15"/>%s%s</a>'
+                         % (ziel(o, kreis), kreis["id"], o["name"], " ".join(o.get("plz", [])), _f(x), _f(y), punkt, schild))
+            else:
+                t.append(punkt)
+                if schild: beschriftung.append(schild)
     t += beschriftung
-    t.append('<circle class="zg-akzent" cx="%s" cy="%s" r="9"/>' % (_f(cx), _f(cy)))
-    t.append('<text class="zg-text zg-text--ort zg-text--haupt" x="%s" y="%s" text-anchor="middle">%s</text>' % (_f(cx), _f(cy + 30), m["name"]))
+    t.append('<g class="ek-mitte" data-plz="%s"><circle class="zg-akzent" cx="%s" cy="%s" r="9"/>'
+             '<text class="zg-text zg-text--ort zg-text--haupt" x="%s" y="%s" text-anchor="middle">%s</text></g>'
+             % (" ".join(m.get("plz", [])), _f(cx), _f(cy), _f(cx), _f(cy + 30), m["name"]))
     anzahl = sum(len(k["orte"]) for k in daten["kreise"])
+    if ziel:
+        return ('<svg class="zg zg--karte" viewBox="0 0 640 640" aria-hidden="true" focusable="false" '
+                'xmlns="http://www.w3.org/2000/svg">%s</svg>' % "".join(t))
     return _svg("0 0 640 640", "Einsatzgebiet: %s und %d km Umkreis" % (m["name"], radius),
                 "Schematische Karte. Ringe markieren 10, 20 und %d Kilometer Luftlinie ab %s-Mitte. Punkte zeigen %d Städte und "
                 "Gemeinden im Umkreis, beschriftet sind die größeren. Die vollständige Liste steht unter der Karte."

@@ -1,11 +1,12 @@
 {
   "name": "gashini-3d",
   "private": true,
-  "description": "Entwicklungswerkzeug: bündelt die Wandaufbau-Szene (Three.js) und GSAP nach src/assets/js/. Nicht Teil der Website-Auslieferung.",
+  "description": "Entwicklungswerkzeug: bündelt die Wandaufbau-Szene (Three.js) und GSAP nach src/assets/js/ und erzeugt das G-Icon (npm run icon). Nicht Teil der Website-Auslieferung.",
   "type": "module",
   "scripts": {
     "bauen": "node bauen.mjs",
-    "renderings": "node renderings.mjs"
+    "renderings": "node renderings.mjs",
+    "icon": "node icon-g.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2",

@@ -556,18 +556,82 @@ def kontaktwege():
             '</ul>')
 
 # ------------------------------------------------------------------ Einsatzgebiet (data/einsatzgebiet.json)
+def ort_slug(name):
+    s = name.lower()
+    for a, b in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
+        s = s.replace(a, b)
+    return re.sub(r"[^a-z0-9]+", "-", re.sub(r"\s*\(.*\)$", "", s)).strip("-")
+
+def ort_name(o):
+    """Ortsname ohne Klammerzusatz („Metzingen (Landkreis Reutlingen)“ → „Metzingen“, „Wernau (Neckar)“ bleibt)."""
+    return re.sub(r"\s*\(Landkreis [^)]*\)$", "", o["name"])
+
+def anfrage_link(ort):
+    """Link ins Anfrageformular, Feld „PLZ oder Ort“ vorbelegt (site.js liest ?ort=)."""
+    return "@/kontakt/?ort=%s#anfrage" % urllib.parse.quote(ort)
+
+def ort_ziel(o, kreis=None):
+    """Ein Ort mit einer PLZ führt direkt ins Formular, einer mit mehreren zur Auswahl in der Liste."""
+    plz = o.get("plz", [])
+    if len(plz) == 1:
+        return anfrage_link("%s %s" % (plz[0], ort_name(o)))
+    return "#ort-" + ort_slug(o["name"])
+
 def einsatz_orte_html():
-    """Alle Orte als Listen: Stuttgarter Stadtbezirke, dann je Landkreis. Reiner Text – lesbar, durchsuchbar, ohne Karte nutzbar."""
-    bloecke = ['<div class="ortsgruppe"><h3>Stuttgart</h3><p class="gedaempft">Alle %d Stadtbezirke</p><ul class="ortsliste">%s</ul></div>'
-               % (len(EINSATZ["stadtbezirke"]), "".join("<li>%s</li>" % esc(b) for b in EINSATZ["stadtbezirke"]))]
+    """Alle Orte als Listen: Stuttgarter Stadtbezirke, dann je Landkreis. Jeder Ort ist ein Link ins Anfrageformular
+    mit vorbelegter PLZ; Orte mit mehreren PLZ klappen eine Auswahl auf. Ohne JavaScript und Karte voll nutzbar."""
+    bezirke = "".join('<li><a class="ort-link" href="%s">%s</a></li>' % (anfrage_link("Stuttgart-" + b if not b.startswith("Stuttgart") else b), esc(b))
+                      for b in EINSATZ["stadtbezirke"])
+    bloecke = ['<div class="ortsgruppe" id="kreis-stuttgart"><h3>Stuttgart</h3><p class="gedaempft">Alle %d Stadtbezirke – '
+               'die Postleitzahl ergänzen Sie im Formular.</p><ul class="ortsliste">%s</ul></div>' % (len(EINSATZ["stadtbezirke"]), bezirke)]
     for k in EINSATZ["kreise"]:
-        bloecke.append('<div class="ortsgruppe"><h3>%s</h3><ul class="ortsliste">%s</ul></div>'
-                       % (esc(k["name"]), "".join("<li>%s</li>" % esc(o["name"]) for o in k["orte"])))
+        punkte = []
+        for o in k["orte"]:
+            plz = o.get("plz", [])
+            if len(plz) == 1:
+                punkte.append('<li><a class="ort-link" href="%s">%s <span class="plz">%s</span></a></li>'
+                              % (ort_ziel(o), esc(o["name"]), plz[0]))
+            else:
+                wahl = "".join('<li><a href="%s">%s</a></li>' % (anfrage_link("%s %s" % (z, ort_name(o))), z) for z in plz)
+                punkte.append('<li><details class="ort-wahl" id="ort-%s"><summary>%s <span class="plz">%d PLZ</span></summary>'
+                              '<ul class="plz-liste" aria-label="Postleitzahlen von %s">%s</ul></details></li>'
+                              % (ort_slug(o["name"]), esc(o["name"]), len(plz), esc(ort_name(o)), wahl))
+        bloecke.append('<div class="ortsgruppe" id="kreis-%s"><h3>%s</h3><ul class="ortsliste">%s</ul></div>'
+                       % (k["id"], esc(k["name"]), "".join(punkte)))
     return '<div class="ortsgruppen">%s</div>' % "".join(bloecke)
 
 def einsatz_karte_html():
-    return tafel(zg.einsatzkarte(EINSATZ), [], "Schematische Karte: Luftlinie ab %s-Mitte, Lage der Orte vereinfacht. "
-                 "Beschriftet sind die größeren Städte; alle Orte stehen in der Liste." % EINSATZ["mittelpunkt"]["name"], "tafel--karte")
+    return ('<figure class="tafel tafel--karte" data-einsatzkarte><div class="tafel-flaeche">%s</div><figcaption>%s</figcaption></figure>'
+            % (zg.einsatzkarte(EINSATZ, ort_ziel),
+               esc("Schematische Karte: Luftlinie ab %s-Mitte, Lage der Orte vereinfacht. Ein Klick auf einen Ort öffnet das "
+                   "Anfrageformular mit dessen Postleitzahl. Alle Orte stehen auch in der Liste darunter." % EINSATZ["mittelpunkt"]["name"])))
+
+def kreis_filter_html():
+    knoepfe = ['<button type="button" aria-pressed="true" data-kreis="">Alle</button>']
+    knoepfe += ['<button type="button" aria-pressed="false" data-kreis="%s">%s</button>' % (k["id"], esc(k["name"].replace("Landkreis ", "Kreis ")))
+                for k in EINSATZ["kreise"]]
+    return ('<div class="kreis-filter" role="group" aria-label="Landkreis auf der Karte hervorheben" data-kreis-filter>%s</div>'
+            % "".join(knoepfe))
+
+def plz_pruefer_html():
+    """Postleitzahl prüfen: bekannte PLZ → Ort und Entfernung, dann weiter ins Formular (PLZ vorbelegt). Ohne
+    JavaScript schickt das Formular die Eingabe direkt an die Kontaktseite."""
+    m = EINSATZ["mittelpunkt"]
+    orte = {z: [m["name"], 0, ""] for z in m.get("plz", [])}
+    for k in EINSATZ["kreise"]:
+        for o in k["orte"]:
+            km = int(round(zg.luftlinie_km((m["breite"], m["laenge"]), (o["breite"], o["laenge"]))))
+            for z in o.get("plz", []):
+                orte[z] = [ort_name(o), km, o["name"]]
+    return ('<form class="plz-pruefer" action="@/kontakt/#anfrage" method="get" data-plz-pruefer data-orte="%s">'
+            '<label for="plz-eingabe">Liegt Ihr Objekt im Einsatzgebiet?</label>'
+            '<p class="hilfe" id="plz-hilfe">Postleitzahl eingeben – wir zeigen sofort, ob sie dazugehört, und tragen sie ins '
+            'Anfrageformular ein.</p>'
+            '<div class="plz-zeile"><input id="plz-eingabe" name="ort" type="text" inputmode="numeric" autocomplete="postal-code" '
+            'maxlength="5" pattern="[0-9]{5}" placeholder="z. B. 70563" required aria-describedby="plz-hilfe plz-ergebnis">'
+            '<button class="knopf knopf--primaer" type="submit">Prüfen</button></div>'
+            '<div class="plz-ergebnis" id="plz-ergebnis" aria-live="polite" data-plz-ergebnis></div></form>'
+            % esc(json.dumps(orte, ensure_ascii=False, separators=(",", ":"), sort_keys=True)))
 
 # Kurzer Abschnitt für die Leistungsseiten: eigene Überschrift und eigener Satz je Seite (Attribute), dazu die
 # größeren Orte und der Link zur Seite Einsatzgebiet. Kein austauschbarer Textbaustein mit Ortsnamen-Liste.
@@ -635,6 +699,8 @@ BAUSTEINE = {
     "faelle": lambda von, a: faelle(von),
     "einsatzkarte": lambda von, a: einsatz_karte_html(),
     "einsatzorte": lambda von, a: einsatz_orte_html(),
+    "kreis-filter": lambda von, a: kreis_filter_html(),
+    "plz-pruefer": lambda von, a: plz_pruefer_html(),
     "einsatzgebiet-band": lambda von, a: einsatz_band_html(a["titel"], a["text"]),
     "leistungskarten": lambda von, a: leistungskarten(von, **a),
     "projekte-vorschau": lambda von, a: projekte_vorschau(von),
@@ -784,6 +850,26 @@ def brotkrumen_html(kette):
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": ld}, ensure_ascii=False)
     return nav, jsonld
 
+# Tiefe im Seitenkopf: weiche Lichtflächen, Konstruktionslinien im Achsmaß und ein kurzes Band. Die Ebene liegt hinter
+# dem Inhalt, ist für Hilfstechnik unsichtbar und rechts von der Textspalte; bewegung.js verschiebt die Ebenen nur bei
+# Mausbewegung leicht gegeneinander (nie dauerhaft, nie bei reduzierter Bewegung, nie auf Touch-Geräten).
+TIEFE = ('<div class="tiefe" aria-hidden="true" data-tiefe>'
+         '<span class="tiefe-licht tiefe-licht--a" data-tiefe-ebene="1"></span>'
+         '<span class="tiefe-licht tiefe-licht--b" data-tiefe-ebene="-0.6"></span>'
+         '<svg class="tiefe-linien" data-tiefe-ebene="0.35" viewBox="0 0 600 400" preserveAspectRatio="none" focusable="false">'
+         '<path d="M40 0V400M140 0V400M240 0V400M340 0V400M440 0V400M540 0V400M0 318H600"/>'
+         '<path class="tiefe-schraeg" d="M-20 400L620 40"/></svg>'
+         '<svg class="tiefe-linien tiefe-linien--band" data-tiefe-ebene="0.8" viewBox="0 0 600 400" preserveAspectRatio="none" focusable="false">'
+         '<path d="M340 118V170"/></svg>'
+         '</div>')
+
+def tiefe_einsetzen(inhalt, meta):
+    """Setzt die Tiefen-Ebene in den Seitenkopf (Startseite: Bühne). Nicht auf Seiten ohne Bewegung und nicht auf den
+    Kontaktseiten – dort steht das Formular im Mittelpunkt."""
+    if meta.get("bewegung", "ja") == "nein" or meta["pfad"].startswith("kontakt/"):
+        return inhalt
+    return re.sub(r'(<(?:header|section) class="(?:seitenkopf|buehne)\b[^"]*"[^>]*>)', lambda m: m.group(1) + TIEFE, inhalt, count=1)
+
 def skripte(meta):
     """Skripte je Seite. GSAP nur dort, wo Bewegung vorgesehen ist; Flip nur für die Projektübersicht."""
     teile = ['<script src="@/assets/js/frueh.js"></script>', '<script src="@/assets/js/site.js" defer></script>']
@@ -807,6 +893,7 @@ def seite_rendern(meta, inhalt, quelle):
     inhalt = inhalt.replace("[[brotkrumen]]", krumen_nav)
     inhalt = bausteine_einsetzen(inhalt, pfad)
     inhalt = redaktion_umformen(inhalt)
+    inhalt = tiefe_einsetzen(inhalt, meta)
     zusatz_kopf = krumen_ld
     if "faq_jsonld" in meta:
         zusatz_kopf += faq_jsonld(meta["faq_jsonld"] or None)
@@ -833,9 +920,9 @@ def seite_rendern(meta, inhalt, quelle):
 <meta property="og:description" content="%s">
 <meta property="og:url" content="https://{{DOMAIN}}/%s">
 <meta name="theme-color" content="#F4F2ED">
-<link rel="icon" href="@/favicon.ico" sizes="32x32">
-<link rel="icon" href="@/assets/marke/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="@/assets/marke/apple-touch-icon.png">
+<link rel="icon" href="@/favicon.ico" sizes="48x48">
+<link rel="icon" href="@/assets/icon/icon-g.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="@/assets/icon/icon-g-180.png">
 <link rel="preload" href="@/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 %s<link rel="stylesheet" href="@/assets/css/site.css">
 %s
@@ -946,8 +1033,6 @@ MARKE_WEB = {
     "logo-hauptvariante-negativ.svg": "svg/logo-hauptvariante-negativ.svg",
     "logo-kompakt.svg": "svg/logo-kompakt.svg",
     "signet.svg": "svg/signet.svg",
-    "favicon.svg": "svg/favicon.svg",
-    "apple-touch-icon.png": "png/favicon-180.png",
     "signet-512.png": "png/signet-512.png",
     "logo-email.png": "png/logo-hauptvariante-1000.png",
 }
@@ -973,7 +1058,8 @@ def main():
             schreiben(os.path.join(OUT, "assets", "marke", ziel), svg_verschlanken(lesen(von)))
         else:
             shutil.copy(von, os.path.join(OUT, "assets", "marke", ziel))
-    shutil.copy(os.path.join(WURZEL, "brand", "favicon.ico"), os.path.join(OUT, "favicon.ico"))
+    # Website-Icon nur aus dem G (scripts/werkzeuge/3d/icon-g.mjs); das Signet-Favicon des Logo-Pakets bleibt für Druck & Co.
+    shutil.copy(os.path.join(SRC, "assets", "icon", "favicon.ico"), os.path.join(OUT, "favicon.ico"))
     shutil.copytree(os.path.join(SRC, "api"), os.path.join(OUT, "api"),
                     ignore=shutil.ignore_patterns("konfiguration*.php", "*.log"))
     shutil.copy(os.path.join(SRC, "server", "htaccess"), os.path.join(OUT, ".htaccess"))

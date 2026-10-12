@@ -64,7 +64,8 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[foto id="…" motiv="…" format="…" licht="…"]]` | eigenes Foto, sonst Ersatzbild plus Fotobriefing (nur Vorschau) |
 | `[[faq-gruppen]]` | alle Fragen nach Thema (Seite „Fragen & Ablauf“) |
 | `[[kontaktformular]]`, `[[kontaktwege]]`, `[[ablauf]]` | wie auf den bestehenden Seiten |
-| `[[einsatzkarte]]`, `[[einsatzorte]]` | Karte und Ortslisten der Seite „Einsatzgebiet“ (aus `data/einsatzgebiet.json`) |
+| `[[einsatzkarte]]`, `[[einsatzorte]]` | Karte und Ortslisten der Seite „Einsatzgebiet“ (aus `data/einsatzgebiet.json`); jeder Ort führt ins Anfrageformular mit eingetragener PLZ |
+| `[[kreis-filter]]`, `[[plz-pruefer]]` | Landkreis-Knöpfe (heben die Orte auf der Karte hervor) und PLZ-Prüfung mit Weiterleitung ins Formular |
 | `[[einsatzgebiet-band titel="…" text="…"]]` | Abschnitt „Einsatzgebiet“ mit größeren Orten und Link – je Seite mit eigener Überschrift und eigenem Satz |
 
 Kopfdaten für Suchmaschinen: `dienst: Name | Leistungsart` erzeugt auf Leistungsseiten die strukturierten Daten
@@ -83,13 +84,17 @@ und Fotobriefings aus.
 Blöcke zwischen `<!--vorschau-->` und `<!--/vorschau-->` (z. B. Fotobriefings) erscheinen nur in der Vorschau und
 entfallen im Produktions-Build automatisch.
 
-## Logo und Hausfarben
+## Logo, Website-Icon und Hausfarben
 
 Das Logo-Paket liegt in `brand/` (Regeln im Markenblatt `brand/markenblatt.pdf`, Übersicht in `brand/styleguide.md`).
 Die Website nutzt schlanke Kopien unter `assets/marke/`, die der Generator bei jedem Lauf aus `brand/svg/` und
 `brand/png/` erzeugt (Liste `MARKE_WEB` in `scripts/build-site.py`). Ein neues Logo-Paket also nur in `brand/`
 austauschen – Dateinamen beibehalten – und neu bauen. Die Hausfarben stehen als Tokens am Anfang von `site.css`;
 Signalgelb nie als Textfarbe auf hellem Grund verwenden.
+
+Das **Website-Icon** (Browser-Tab, Home-Bildschirm) besteht nur aus dem G des Signets. Es liegt in
+`src/assets/icon/` und wird mit `npm run icon` in `scripts/werkzeuge/3d/` aus `brand/svg/signet.svg` neu erzeugt –
+etwa nach einem neuen Logo-Paket.
 
 ## Navigation ändern
 
@@ -141,8 +146,10 @@ In `data/faq.json` einen Eintrag kopieren:
 ## Einsatzgebiet ändern
 
 `data/einsatzgebiet.json` enthält Mittelpunkt, Radius, die Stuttgarter Stadtbezirke und die Orte je Landkreis mit
-Koordinaten (Ortsmitte, z. B. aus Wikipedia). Daraus entstehen die Seite `/einsatzgebiet/`, die Karte und die
-strukturierten Daten (`areaServed`). Ein Ort entfernen: Eintrag löschen. Ein Ort ergänzen: Eintrag kopieren, Name und
+Koordinaten (Ortsmitte, z. B. aus Wikipedia) und Postleitzahlen (`"plz"`). Daraus entstehen die Seite
+`/einsatzgebiet/`, die Karte, die PLZ-Prüfung und die strukturierten Daten (`areaServed`). Ein Klick auf einen Ort
+öffnet `kontakt/?ort=PLZ Ort#anfrage`; das Feld „PLZ oder Ort“ ist dann ausgefüllt. Hat ein Ort mehrere
+Postleitzahlen, wählt der Besucher seine aus. Ein Ort entfernen: Eintrag löschen. Ein Ort ergänzen: Eintrag kopieren, Name und
 Koordinaten anpassen; `"karte": "r"` (bzw. `l`, `o`, `u`) beschriftet ihn auf der Karte, sonst erscheint nur ein Punkt.
 Liegt ein Ort weiter als der Radius vom Mittelpunkt entfernt, bricht der Build mit einer Meldung ab.
 

@@ -1,9 +1,46 @@
 {
- "_anleitung": "Einsatzgebiet für Seite /einsatzgebiet/, Karte und strukturierte Daten (areaServed). Orte nur eintragen, wenn sie tatsächlich angefahren werden. Koordinaten: Ortsmitte, Dezimalgrad. Der Generator rechnet die Luftlinie zum Mittelpunkt nach und bricht ab, wenn ein Ort außerhalb des Radius liegt. 'karte': Beschriftung auf der Karte (r, l, o, u = rechts, links, oben, unten), weglassen = nur Punkt.",
+ "_anleitung": "Einsatzgebiet für Seite /einsatzgebiet/, Karte und strukturierte Daten (areaServed). Orte nur eintragen, wenn sie tatsächlich angefahren werden. Koordinaten: Ortsmitte, Dezimalgrad. Der Generator rechnet die Luftlinie zum Mittelpunkt nach und bricht ab, wenn ein Ort außerhalb des Radius liegt. 'karte': Beschriftung auf der Karte (r, l, o, u = rechts, links, oben, unten), weglassen = nur Punkt. 'plz': Postleitzahlen des Orts (mehrere = Auswahl beim Klick); der Mittelpunkt führt alle Stuttgarter Postleitzahlen. 'id' des Kreises steuert den Filter auf der Karte.",
  "mittelpunkt": {
   "name": "Stuttgart",
   "breite": 48.7758,
-  "laenge": 9.1829
+  "laenge": 9.1829,
+  "plz": [
+   "70173",
+   "70174",
+   "70176",
+   "70178",
+   "70180",
+   "70182",
+   "70184",
+   "70186",
+   "70188",
+   "70190",
+   "70191",
+   "70192",
+   "70193",
+   "70195",
+   "70197",
+   "70199",
+   "70327",
+   "70329",
+   "70372",
+   "70374",
+   "70376",
+   "70378",
+   "70435",
+   "70437",
+   "70439",
+   "70469",
+   "70499",
+   "70563",
+   "70565",
+   "70567",
+   "70569",
+   "70597",
+   "70599",
+   "70619",
+   "70629"
+  ]
  },
  "radius_km": 30,
  "stadtbezirke": [
@@ -39,77 +76,124 @@
      "name": "Ludwigsburg",
      "breite": 48.8975,
      "laenge": 9.1919,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "71634",
+      "71636",
+      "71638",
+      "71640",
+      "71642"
+     ]
     },
     {
      "name": "Kornwestheim",
      "breite": 48.8611,
-     "laenge": 9.185
+     "laenge": 9.185,
+     "plz": [
+      "70806"
+     ]
     },
     {
      "name": "Korntal-Münchingen",
      "breite": 48.8306,
-     "laenge": 9.1214
+     "laenge": 9.1214,
+     "plz": [
+      "70825"
+     ]
     },
     {
      "name": "Ditzingen",
      "breite": 48.8264,
-     "laenge": 9.0669
+     "laenge": 9.0669,
+     "plz": [
+      "71254"
+     ]
     },
     {
      "name": "Gerlingen",
      "breite": 48.7997,
-     "laenge": 9.0631
+     "laenge": 9.0631,
+     "plz": [
+      "70839"
+     ]
     },
     {
      "name": "Remseck am Neckar",
      "breite": 48.8742,
-     "laenge": 9.2756
+     "laenge": 9.2756,
+     "plz": [
+      "71686"
+     ]
     },
     {
      "name": "Möglingen",
      "breite": 48.8875,
-     "laenge": 9.1286
+     "laenge": 9.1286,
+     "plz": [
+      "71696"
+     ]
     },
     {
      "name": "Asperg",
      "breite": 48.9058,
-     "laenge": 9.1408
+     "laenge": 9.1408,
+     "plz": [
+      "71679"
+     ]
     },
     {
      "name": "Markgröningen",
      "breite": 48.9047,
-     "laenge": 9.0808
+     "laenge": 9.0808,
+     "plz": [
+      "71706"
+     ]
     },
     {
      "name": "Freiberg am Neckar",
      "breite": 48.9325,
-     "laenge": 9.2
+     "laenge": 9.2,
+     "plz": [
+      "71691"
+     ]
     },
     {
      "name": "Marbach am Neckar",
      "breite": 48.9394,
-     "laenge": 9.2569
+     "laenge": 9.2569,
+     "plz": [
+      "71672"
+     ]
     },
     {
      "name": "Bietigheim-Bissingen",
      "breite": 48.9667,
      "laenge": 9.1333,
-     "karte": "o"
+     "karte": "o",
+     "plz": [
+      "74321"
+     ]
     },
     {
      "name": "Sachsenheim",
      "breite": 48.9597,
-     "laenge": 9.0656
+     "laenge": 9.0656,
+     "plz": [
+      "74343"
+     ]
     },
     {
      "name": "Vaihingen an der Enz",
      "breite": 48.9333,
      "laenge": 8.9667,
      "karte": "l",
-     "kurz": "Vaihingen/Enz"
+     "kurz": "Vaihingen/Enz",
+     "plz": [
+      "71665"
+     ]
     }
-   ]
+   ],
+   "id": "ludwigsburg"
   },
   {
    "name": "Rems-Murr-Kreis",
@@ -117,53 +201,84 @@
     {
      "name": "Fellbach",
      "breite": 48.8094,
-     "laenge": 9.2758
+     "laenge": 9.2758,
+     "plz": [
+      "70734",
+      "70736"
+     ]
     },
     {
      "name": "Waiblingen",
      "breite": 48.8303,
      "laenge": 9.3169,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "71332",
+      "71334",
+      "71336"
+     ]
     },
     {
      "name": "Kernen im Remstal",
      "breite": 48.7967,
-     "laenge": 9.3392
+     "laenge": 9.3392,
+     "plz": [
+      "71394"
+     ]
     },
     {
      "name": "Weinstadt",
      "breite": 48.8136,
-     "laenge": 9.3703
+     "laenge": 9.3703,
+     "plz": [
+      "71384"
+     ]
     },
     {
      "name": "Remshalden",
      "breite": 48.8133,
-     "laenge": 9.4342
+     "laenge": 9.4342,
+     "plz": [
+      "73630"
+     ]
     },
     {
      "name": "Schwaikheim",
      "breite": 48.8775,
-     "laenge": 9.3486
+     "laenge": 9.3486,
+     "plz": [
+      "71409"
+     ]
     },
     {
      "name": "Winnenden",
      "breite": 48.8761,
      "laenge": 9.3978,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "71364"
+     ]
     },
     {
      "name": "Backnang",
      "breite": 48.9464,
      "laenge": 9.4306,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "71522"
+     ]
     },
     {
      "name": "Schorndorf",
      "breite": 48.8053,
      "laenge": 9.5275,
-     "karte": "u"
+     "karte": "u",
+     "plz": [
+      "73614"
+     ]
     }
-   ]
+   ],
+   "id": "rems-murr"
   },
   {
    "name": "Landkreis Esslingen",
@@ -173,63 +288,101 @@
      "breite": 48.7397,
      "laenge": 9.3108,
      "karte": "r",
-     "kurz": "Esslingen"
+     "kurz": "Esslingen",
+     "plz": [
+      "73728",
+      "73730",
+      "73732",
+      "73733",
+      "73734"
+     ]
     },
     {
      "name": "Ostfildern",
      "breite": 48.7228,
-     "laenge": 9.2631
+     "laenge": 9.2631,
+     "plz": [
+      "73760"
+     ]
     },
     {
      "name": "Leinfelden-Echterdingen",
      "breite": 48.6928,
-     "laenge": 9.1428
+     "laenge": 9.1428,
+     "plz": [
+      "70771"
+     ]
     },
     {
      "name": "Filderstadt",
      "breite": 48.6667,
      "laenge": 9.2167,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "70794"
+     ]
     },
     {
      "name": "Neuhausen auf den Fildern",
      "breite": 48.6844,
-     "laenge": 9.2744
+     "laenge": 9.2744,
+     "plz": [
+      "73765"
+     ]
     },
     {
      "name": "Denkendorf",
      "breite": 48.6958,
-     "laenge": 9.3167
+     "laenge": 9.3167,
+     "plz": [
+      "73770"
+     ]
     },
     {
      "name": "Plochingen",
      "breite": 48.7117,
-     "laenge": 9.4192
+     "laenge": 9.4192,
+     "plz": [
+      "73207"
+     ]
     },
     {
      "name": "Wendlingen am Neckar",
      "breite": 48.6747,
-     "laenge": 9.3817
+     "laenge": 9.3817,
+     "plz": [
+      "73240"
+     ]
     },
     {
      "name": "Wernau (Neckar)",
      "breite": 48.6886,
-     "laenge": 9.4214
+     "laenge": 9.4214,
+     "plz": [
+      "73249"
+     ]
     },
     {
      "name": "Nürtingen",
      "breite": 48.6267,
      "laenge": 9.3353,
-     "karte": "r"
+     "karte": "r",
+     "plz": [
+      "72622"
+     ]
     },
     {
      "name": "Kirchheim unter Teck",
      "breite": 48.6483,
      "laenge": 9.4511,
      "karte": "r",
-     "kurz": "Kirchheim"
+     "kurz": "Kirchheim",
+     "plz": [
+      "73230"
+     ]
     }
-   ]
+   ],
+   "id": "esslingen"
   },
   {
    "name": "Landkreis Böblingen",
@@ -238,61 +391,99 @@
      "name": "Leonberg",
      "breite": 48.8,
      "laenge": 9.0167,
-     "karte": "l"
+     "karte": "l",
+     "plz": [
+      "71229"
+     ]
     },
     {
      "name": "Sindelfingen",
      "breite": 48.7133,
      "laenge": 9.0028,
-     "karte": "l"
+     "karte": "l",
+     "plz": [
+      "71063",
+      "71065",
+      "71067",
+      "71069"
+     ]
     },
     {
      "name": "Böblingen",
      "breite": 48.6833,
      "laenge": 9.0167,
-     "karte": "l"
+     "karte": "l",
+     "plz": [
+      "71032",
+      "71034"
+     ]
     },
     {
      "name": "Renningen",
      "breite": 48.7656,
-     "laenge": 8.9339
+     "laenge": 8.9339,
+     "plz": [
+      "71272"
+     ]
     },
     {
      "name": "Magstadt",
      "breite": 48.7428,
-     "laenge": 8.965
+     "laenge": 8.965,
+     "plz": [
+      "71106"
+     ]
     },
     {
      "name": "Schönaich",
      "breite": 48.6589,
-     "laenge": 9.0631
+     "laenge": 9.0631,
+     "plz": [
+      "71101"
+     ]
     },
     {
      "name": "Waldenbuch",
      "breite": 48.6383,
-     "laenge": 9.1317
+     "laenge": 9.1317,
+     "plz": [
+      "71111"
+     ]
     },
     {
      "name": "Holzgerlingen",
      "breite": 48.6392,
-     "laenge": 9.0108
+     "laenge": 9.0108,
+     "plz": [
+      "71088"
+     ]
     },
     {
      "name": "Weil im Schönbuch",
      "breite": 48.6217,
-     "laenge": 9.0631
+     "laenge": 9.0631,
+     "plz": [
+      "71093"
+     ]
     },
     {
      "name": "Ehningen",
      "breite": 48.6589,
-     "laenge": 8.9411
+     "laenge": 8.9411,
+     "plz": [
+      "71139"
+     ]
     },
     {
      "name": "Weil der Stadt",
      "breite": 48.7508,
-     "laenge": 8.8711
+     "laenge": 8.8711,
+     "plz": [
+      "71263"
+     ]
     }
-   ]
+   ],
+   "id": "boeblingen"
   },
   {
    "name": "Am Rand des Gebiets",
@@ -302,14 +493,21 @@
      "breite": 48.5367,
      "laenge": 9.2858,
      "karte": "r",
-     "kurz": "Metzingen"
+     "kurz": "Metzingen",
+     "plz": [
+      "72555"
+     ]
     },
     {
      "name": "Ebersbach an der Fils (Landkreis Göppingen)",
      "breite": 48.7158,
-     "laenge": 9.5236
+     "laenge": 9.5236,
+     "plz": [
+      "73061"
+     ]
     }
-   ]
+   ],
+   "id": "rand"
   }
  ]
 }

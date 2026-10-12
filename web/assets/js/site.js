@@ -163,6 +163,124 @@
     });
   }
 
+  /* ---------- Einsatzgebiet: Landkreis-Filter, PLZ-Prüfung, PLZ-Auswahl auf der Karte ----------
+     Alles hier ist Komfort: Ohne JavaScript führen die Orte der Liste und die Karte direkt ins Formular, die
+     PLZ-Prüfung schickt die Eingabe an die Kontaktseite. */
+  var karte = document.querySelector('[data-einsatzkarte]');
+  var kreisFilter = document.querySelector('[data-kreis-filter]');
+  if (karte && kreisFilter) {
+    var setzeKreis = function (id) {
+      kreisFilter.querySelectorAll('button').forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-kreis') === id)); });
+      karte.classList.toggle('kreis-gewaehlt', !!id);
+      karte.querySelectorAll('.ek-ort').forEach(function (o) { o.classList.toggle('im-kreis', !!id && o.getAttribute('data-kreis') === id); });
+    };
+    kreisFilter.addEventListener('click', function (e) {
+      var knopf = e.target.closest('button');
+      if (knopf) setzeKreis(knopf.getAttribute('data-kreis'));
+    });
+  }
+
+  var markiereOrt = function (plz) {
+    if (!karte) return;
+    karte.querySelectorAll('.ist-markiert').forEach(function (o) { o.classList.remove('ist-markiert'); });
+    if (!plz) return;
+    karte.querySelectorAll('[data-plz]').forEach(function (o) {
+      if ((' ' + o.getAttribute('data-plz') + ' ').indexOf(' ' + plz + ' ') > -1) o.classList.add('ist-markiert');
+    });
+  };
+
+  var pruefer = document.querySelector('[data-plz-pruefer]');
+  if (pruefer) {
+    var orte = {};
+    try { orte = JSON.parse(pruefer.getAttribute('data-orte')) || {}; } catch (e) {}
+    var eingabe = pruefer.querySelector('input');
+    var ergebnis = pruefer.querySelector('[data-plz-ergebnis]');
+    pruefer.noValidate = true; // eigene, verständlichere Meldung statt der Browser-Blase
+    var zumFormular = function (wert) {
+      var ziel = new URL(pruefer.getAttribute('action'), window.location.href);
+      ziel.searchParams.set('ort', wert);
+      return ziel.href;
+    };
+    var zeile = function (klasse, text) { var p = document.createElement('p'); p.className = klasse; p.textContent = text; return p; };
+    var knopf = function (href, text) {
+      var a = document.createElement('a');
+      a.className = 'knopf knopf--primaer'; a.href = href; a.textContent = text + ' ';
+      var pfeil = document.createElement('span'); pfeil.className = 'pfeil'; pfeil.setAttribute('aria-hidden', 'true'); pfeil.textContent = '→';
+      a.appendChild(pfeil);
+      return a;
+    };
+    pruefer.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var plz = eingabe.value.replace(/\D/g, '');
+      ergebnis.textContent = '';
+      markiereOrt('');
+      if (plz.length !== 5) {
+        ergebnis.appendChild(zeile('plz-hinweis', 'Bitte geben Sie eine fünfstellige Postleitzahl ein.'));
+        eingabe.focus();
+        return;
+      }
+      var treffer = orte[plz];
+      if (treffer) {
+        var ort = plz + ' ' + treffer[0];
+        ergebnis.appendChild(zeile('plz-ok', treffer[1] > 0
+          ? ort + ' gehört zu unserem Einsatzgebiet – etwa ' + treffer[1] + ' km Luftlinie ab Stuttgart-Mitte.'
+          : ort + ' gehört zu unserem Einsatzgebiet.'));
+        ergebnis.appendChild(knopf(zumFormular(ort), 'Anfrage mit ' + ort + ' stellen'));
+        markiereOrt(plz);
+      } else {
+        ergebnis.appendChild(zeile('plz-hinweis', 'Die Postleitzahl ' + plz + ' steht nicht in unserer Liste. Fragen Sie trotzdem an – wir sagen Ihnen, ob wir zu Ihnen kommen.'));
+        ergebnis.appendChild(knopf(zumFormular(plz), 'Anfrage mit PLZ ' + plz + ' stellen'));
+      }
+    });
+  }
+
+  // Orte mit mehreren Postleitzahlen: Auswahl direkt an der Karte statt Sprung zur Liste
+  if (karte) {
+    var flaeche = karte.querySelector('.tafel-flaeche');
+    var wahl = null, ausloeser = null;
+    var schliessen = function () {
+      if (!wahl) return;
+      wahl.remove(); wahl = null;
+      document.removeEventListener('keydown', aufEscape);
+      document.removeEventListener('pointerdown', aussen, true);
+      markiereOrt('');
+    };
+    var aufEscape = function (e) { if (e.key === 'Escape') schliessen(); };
+    var aussen = function (e) { if (wahl && !wahl.contains(e.target) && !(ausloeser && ausloeser.contains(e.target))) schliessen(); };
+    karte.addEventListener('click', function (e) {
+      var ort = e.target.closest('.ek-ort');
+      if (!ort) return;
+      var ziel = ort.getAttribute('href') || '';
+      if (ziel.charAt(0) !== '#') return; // ein Ort, eine PLZ: direkt ins Formular
+      var liste = document.querySelector(ziel + ' .plz-liste');
+      if (!liste) return;
+      e.preventDefault();
+      schliessen();
+      ausloeser = ort;
+      wahl = document.createElement('div');
+      wahl.className = 'karte-wahl';
+      wahl.setAttribute('role', 'dialog');
+      wahl.setAttribute('aria-label', 'Postleitzahl wählen: ' + ort.getAttribute('data-ort'));
+      var titel = document.createElement('p'); titel.className = 'karte-wahl-titel'; titel.textContent = ort.getAttribute('data-ort');
+      var text = document.createElement('p'); text.className = 'karte-wahl-text'; text.textContent = 'Ihre Postleitzahl:';
+      var zu = document.createElement('button'); zu.type = 'button'; zu.className = 'karte-wahl-zu'; zu.setAttribute('aria-label', 'Auswahl schließen'); zu.textContent = '×';
+      zu.addEventListener('click', schliessen);
+      wahl.appendChild(zu); wahl.appendChild(titel); wahl.appendChild(text); wahl.appendChild(liste.cloneNode(true));
+      flaeche.appendChild(wahl);
+      // neben den Punkt setzen, innerhalb der Fläche halten
+      var f = flaeche.getBoundingClientRect(), p = ort.querySelector('.zg-punkt').getBoundingClientRect();
+      var x = p.left - f.left + p.width / 2, y = p.top - f.top + p.height / 2;
+      var b = wahl.offsetWidth, h = wahl.offsetHeight;
+      var links = x + 16 + b > f.width ? x - 16 - b : x + 16;
+      wahl.style.left = Math.max(8, Math.min(links, f.width - b - 8)) + 'px';
+      wahl.style.top = Math.max(8, Math.min(y - h / 2, f.height - h - 8)) + 'px';
+      markiereOrt(ort.getAttribute('data-plz').split(' ')[0]);
+      var erster = wahl.querySelector('a'); if (erster) erster.focus({ preventScroll: true });
+      document.addEventListener('keydown', aufEscape);
+      document.addEventListener('pointerdown', aussen, true);
+    });
+  }
+
   /* ---------- Anfrageformular ---------- */
   var form = document.querySelector('form[data-anfrage]');
   if (form) anfrageformular(form);
@@ -189,6 +307,9 @@
     }
     var anliegen = (parameter.get('anliegen') || '').replace(/[^\wäöüÄÖÜß .,\-]/g, '').slice(0, 80);
     if (anliegen && !feld('nachricht').value) feld('nachricht').value = anliegen + ': ';
+    // ?ort=73760 Ostfildern (Seite „Einsatzgebiet“) füllt „PLZ oder Ort“
+    var ortVorgabe = (parameter.get('ort') || '').replace(/[^\wäöüÄÖÜß .,()\-]/g, '').slice(0, 60).trim();
+    if (ortVorgabe && feld('ort') && !feld('ort').value) feld('ort').value = ortVorgabe;
 
     // Rückruf: Zeitfenster nur zeigen, wenn gewünscht
     function rueckrufAnzeigen() { if (rueckrufZeit) rueckrufZeit.hidden = !rueckruf.checked; }

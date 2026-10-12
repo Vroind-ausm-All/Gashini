@@ -105,6 +105,16 @@ gerade, gedämpft, mit Gewicht. Nichts federt, nichts dreht sich um seiner selbs
    das vollständige Schema mit einer gewöhnlichen Liste da. Dazu färbt sich der Leitsatz Wort für Wort ein
    (von #84888D – 3,2 : 1, genug für große Schrift – zur eigenen Farbe) und der Ablauf bekommt eine Fortschrittslinie.
 
+**Tiefe (Maus, ergänzend zu den Signature Motions):** Im Seitenkopf liegen hinter dem Inhalt zwei weiche
+Lichtflächen, feine Konstruktionslinien im Achsmaß-Rhythmus mit einer gestrichelten Schräge und ein kurzes gelbes
+Band. Sie sind nur rechts der Textspalte und oberhalb von Bildunterschriften sichtbar (CSS-Masken) und verschieben
+sich bei Mausbewegung um wenige Pixel gegeneinander (Lichtfläche bis 22 px, Linien bis 8 px). Auf den
+Leistungskarten neigt sich nur die Bildfläche (höchstens 3,5°), das Bild gleitet leicht dagegen, ein Schatten
+gibt Tiefe; Titel, Text und Link bleiben ruhig. Technik: `gsap.quickTo` auf transform-Werte, ausgelöst nur von
+Mausbewegungen – ruht die Maus, ruht alles; keine Schleife, kein Canvas, kein WebGL. Nur bei
+`(hover: hover) and (pointer: fine)` und erlaubter Bewegung; auf Touch-Geräten, bei reduzierter Bewegung, auf
+Kontakt- und Rechtsseiten gibt es weder Ebene noch Bewegung (Kontaktseiten: keine Ebene).
+
 **Ruhezonen:** Formulare, Rechtstexte, FAQ-Antworten, Fußbereich und jeweils mindestens ein Abschnitt pro
 Seite bewegen sich nie.
 

@@ -46,6 +46,11 @@ ErrorDocument 404 /404.html
   # HSTS bewusst ohne includeSubDomains und ohne preload – erst ergänzen, wenn alle Subdomains HTTPS sprechen
   Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
   Header always unset X-Powered-By
+  # Tab-Icon: eine eingebettete Farbregel schaltet das G bei dunkler Browser-Oberfläche auf Kalkweiß.
+  # Nur für diese eine Datei Inline-Stil erlauben – sonst nichts (keine Skripte, keine Nachladungen).
+  <FilesMatch "^icon-g\.svg$">
+    Header always set Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'"
+  </FilesMatch>
 </IfModule>
 
 <IfModule mod_deflate.c>

@@ -19,7 +19,8 @@ Dieses Dokument ergänzt, wie die Marke auf der Website und in den Vorlagen dies
 | Hauptvariante negativ | dunkler Hintergrund | **Fuß**, Flyer, Fahrzeug-Seitenfläche |
 | Gestapelt (`logo-gestapelt*.svg`) | Fahrzeugheck, Kleidung, Banner | Rückendruck Arbeitskleidung |
 | Kompakt (`logo-kompakt*.svg`) | Fahrzeugtür, Stempel, schmale Flächen | **Kopf unter 960 px** und im verdichteten Kopf beim Scrollen |
-| Signet (`signet*.svg`) | Profilbild, App-Icon, Aufkleber; gelbe Variante für Auffälliges | Favicon, Ersatzbild ohne Foto, JSON-LD-Logo |
+| Signet (`signet*.svg`) | Profilbild, App-Icon, Aufkleber; gelbe Variante für Auffälliges | Ersatzbild ohne Foto, JSON-LD-Logo |
+| Website-Icon (abgeleitet: `src/assets/icon/`, erzeugt mit `npm run icon` in `scripts/werkzeuge/3d/`) | – | Auf Wunsch des Betreibers nur das **G** des Signets, ohne Band und ohne Kachel: Browser-Tab in Anthrazit, bei dunkler Browser-Oberfläche in Kalkweiß; Home-Bildschirm (iOS) kalkweißes G auf Anthrazit. Die Glyphe ist unverändert übernommen. Im Tab zeigt der Browser das Icon mit 16 px – unter der Signet-Mindestgröße von 24 px; das legt der Browser fest |
 
 **Regeln (Markenblatt):** Die Wortmarke steht nie ohne Gewerkezeile – fehlt der Platz, steht das Signet allein.
 Schutzraum ringsum mindestens die Höhe des gelben Bandes (0,07 × Signetkante). Mindestgrößen digital: Signet 24 px,
