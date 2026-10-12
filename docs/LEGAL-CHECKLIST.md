@@ -56,6 +56,16 @@ Legende: ✅ technisch umgesetzt · 📄 dokumentiert · 👤 vom Betreiber zu b
 | Brand- und Schallschutz | nur mit nachgewiesener Qualifikation und geprüften Systemen; auf der Website ausgeschlossen, solange nicht bestätigt | 👤 |
 | Netzwerk / Vermittlung | Form der Zusammenarbeit klären: Subunternehmer (Gashini haftet), Koordination, oder Empfehlung (Kunde beauftragt direkt). Bei Subunternehmern muss der Partner selbst die nötige Eintragung haben | 👤 ⚖️ |
 
+Die Einordnung je Tätigkeit steht zusätzlich maschinenlesbar in **`data/taetigkeiten.json`** (intern, wird nicht
+veröffentlicht): Ausführung (selbst/Partner/offen), rechtliche Einordnung mit offenem Punkt, Suchintention, Landingpage
+und Status. Öffentlich beworben werden nur die vier Einträge mit `"status": "veroeffentlicht"` (Trockenbau, Reparatur,
+Hausmeisterservice, Koordination). **Vorbereitet, aber nicht veröffentlicht:** Bodenbeläge, Gebäudereinigung,
+Entrümpelung, Umzugshilfe (bisherige Website bzw. Druckvorlagen – ob sie weiter angeboten werden, ist offen).
+**Nicht beworben:** Maler-, Fliesen- und Parkettarbeiten (Anlage A, nur über eingetragene Partner). Weitere
+Tätigkeiten des Auftraggebers sind **noch nicht übermittelt**; sie kommen zuerst nach `"nachzureichen"` und erst nach
+Klärung der Punkte oben auf die Website. `tests/pruefen.py` prüft den Aufbau der Datei, dass nur freigegebene
+Tätigkeiten eine Landingpage haben, nachgereichte nie als veröffentlicht gelten und die Datei nicht im Webordner landet.
+
 ## 4. Werbung und Wettbewerb (UWG)
 
 | Thema | Status |

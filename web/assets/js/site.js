@@ -163,32 +163,208 @@
     });
   }
 
-  /* ---------- Einsatzgebiet: Landkreis-Filter, PLZ-Prüfung, PLZ-Auswahl auf der Karte ----------
-     Alles hier ist Komfort: Ohne JavaScript führen die Orte der Liste und die Karte direkt ins Formular, die
-     PLZ-Prüfung schickt die Eingabe an die Kontaktseite. */
+  /* ---------- Einsatzgebiet: Auswahl auf Karte und Liste, Landkreise, Ortssuche, PLZ-Prüfung ----------
+     Ohne JavaScript sind Kartenpunkte und Liste normale Links ins Formular. Mit JavaScript wählt ein Klick (oder die
+     Eingabetaste) einen Ort bzw. Landkreis aus, hebt ihn hervor und zeigt die passende Anfrage. Eine Postleitzahl wird
+     nur vorbelegt, wenn sie eindeutig und geprüft ist – sonst wählt der Besucher sie selbst. Alles per textContent. */
   var karte = document.querySelector('[data-einsatzkarte]');
+  var auswahl = document.querySelector('[data-ort-auswahl]');
   var kreisFilter = document.querySelector('[data-kreis-filter]');
-  if (karte && kreisFilter) {
-    var setzeKreis = function (id) {
-      kreisFilter.querySelectorAll('button').forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-kreis') === id)); });
-      karte.classList.toggle('kreis-gewaehlt', !!id);
-      karte.querySelectorAll('.ek-ort').forEach(function (o) { o.classList.toggle('im-kreis', !!id && o.getAttribute('data-kreis') === id); });
-    };
-    kreisFilter.addEventListener('click', function (e) {
-      var knopf = e.target.closest('button');
-      if (knopf) setzeKreis(knopf.getAttribute('data-kreis'));
-    });
-  }
-
-  var markiereOrt = function (plz) {
-    if (!karte) return;
-    karte.querySelectorAll('.ist-markiert').forEach(function (o) { o.classList.remove('ist-markiert'); });
-    if (!plz) return;
-    karte.querySelectorAll('[data-plz]').forEach(function (o) {
-      if ((' ' + o.getAttribute('data-plz') + ' ').indexOf(' ' + plz + ' ') > -1) o.classList.add('ist-markiert');
-    });
+  var element = function (tag, klasse, text) { var el = document.createElement(tag); if (klasse) el.className = klasse; if (text) el.textContent = text; return el; };
+  var pfeil = function (a) { var s = element('span', 'pfeil', '→'); s.setAttribute('aria-hidden', 'true'); a.appendChild(document.createTextNode(' ')); a.appendChild(s); return a; };
+  var kontaktLink = function (werte) {
+    var ziel = new URL((auswahl && auswahl.getAttribute('data-kontakt')) || '../kontakt/#anfrage', window.location.href);
+    Object.keys(werte).forEach(function (k) { if (werte[k]) ziel.searchParams.set(k, werte[k]); });
+    return ziel.href;
   };
 
+  if (karte && auswahl) {
+    var gebiet = { kreise: {} };
+    try { gebiet = JSON.parse(auswahl.getAttribute('data-gebiet')) || gebiet; } catch (e) {}
+    var punkte = Array.prototype.slice.call(karte.querySelectorAll('.ek-ort, .ek-mitte'));
+    var leer = auswahl.innerHTML;
+
+    var markieren = function (fn) {
+      punkte.forEach(function (p) { p.classList.remove('ist-gewaehlt', 'im-kreis'); });
+      karte.classList.remove('kreis-gewaehlt');
+      if (fn) fn();
+    };
+    var kreisKnoepfe = function (id) {
+      if (!kreisFilter) return;
+      kreisFilter.querySelectorAll('button').forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-kreis') === id)); });
+    };
+    var aufheben = function () {
+      markieren(); kreisKnoepfe('');
+      auswahl.innerHTML = leer;
+      auswahl.classList.remove('hat-auswahl');
+    };
+    var auswahlKopf = function (art, titel) {
+      auswahl.textContent = '';
+      auswahl.classList.add('hat-auswahl');
+      auswahl.appendChild(element('p', 'auswahl-art', art));
+      auswahl.appendChild(element('p', 'auswahl-titel', titel));
+    };
+    var fuss = function () {
+      var weg = element('button', 'auswahl-weg', 'Auswahl aufheben');
+      weg.type = 'button';
+      weg.addEventListener('click', function () { aufheben(); var erster = punkte[0]; if (erster) erster.focus({ preventScroll: true }); });
+      auswahl.appendChild(weg);
+    };
+    var sichtbarMachen = function () {
+      // Auswahl liegt unter der Karte (Handy) oder daneben (Desktop): nur scrollen, wenn sie kaum sichtbar ist –
+      // dann so, dass sie in der oberen Hälfte steht (unten liegt auf dem Handy die Schnellkontakt-Leiste)
+      var r = auswahl.getBoundingClientRect();
+      if (r.top > window.innerHeight - 180 || r.bottom < 60) {
+        window.scrollBy({ top: r.top - window.innerHeight * 0.35, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    };
+
+    var waehleOrt = function (punkt, ohneScroll) {
+      var name = punkt.getAttribute('data-ort');
+      var plzListe = (punkt.getAttribute('data-plz') || '').split(' ').filter(Boolean);
+      var geprueft = punkt.getAttribute('data-geprueft') === '1';
+      var km = parseInt(punkt.getAttribute('data-km'), 10);
+      var kreisId = punkt.getAttribute('data-kreis') || '';
+      var kreis = gebiet.kreise[kreisId];
+      markieren(function () { punkt.classList.add('ist-gewaehlt'); });
+      kreisKnoepfe('');
+      var istStadt = punkt.classList.contains('ek-mitte');
+      auswahlKopf(istStadt ? 'Alle Stadtbezirke' : [kreis ? kreis.name : '', km > 0 ? 'etwa ' + km + ' km ab Stuttgart-Mitte' : ''].filter(Boolean).join(' · '), name);
+      var link = pfeil(element('a', 'knopf knopf--primaer auswahl-anfrage', 'Projekt in ' + name + ' anfragen'));
+      var gewaehltePlz = plzListe.length === 1 && geprueft ? plzListe[0] : '';
+      var setzeLink = function () { link.href = kontaktLink({ ort: name, plz: gewaehltePlz }); };
+      if (!istStadt && plzListe.length && !(plzListe.length === 1 && geprueft)) {
+        auswahl.appendChild(element('p', 'auswahl-text', plzListe.length > 1 ? 'Ihre Postleitzahl (optional):' : 'Postleitzahl übernehmen (optional):'));
+        var gruppe = element('div', 'auswahl-plz');
+        gruppe.setAttribute('role', 'group');
+        gruppe.setAttribute('aria-label', 'Postleitzahl für ' + name);
+        plzListe.forEach(function (z) {
+          var b = element('button', '', z);
+          b.type = 'button';
+          b.setAttribute('aria-pressed', 'false');
+          b.addEventListener('click', function () {
+            gewaehltePlz = gewaehltePlz === z ? '' : z;
+            gruppe.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.textContent === gewaehltePlz)); });
+            link.textContent = 'Projekt in ' + (gewaehltePlz ? gewaehltePlz + ' ' : '') + name + ' anfragen'; pfeil(link);
+            setzeLink();
+          });
+          gruppe.appendChild(b);
+        });
+        auswahl.appendChild(gruppe);
+      } else if (gewaehltePlz) {
+        auswahl.appendChild(element('p', 'auswahl-text', 'Postleitzahl ' + gewaehltePlz + ' wird eingetragen.'));
+      } else if (istStadt) {
+        var bezirke = element('a', 'textlink', 'Stadtbezirk in der Liste wählen');
+        bezirke.href = '#kreis-stuttgart';
+        auswahl.appendChild(bezirke);
+      }
+      setzeLink();
+      auswahl.appendChild(link);
+      fuss();
+      if (!ohneScroll) sichtbarMachen();
+    };
+
+    var waehleKreis = function (id) {
+      var kreis = gebiet.kreise[id];
+      if (!kreis) return aufheben();
+      markieren(function () {
+        karte.classList.add('kreis-gewaehlt');
+        punkte.forEach(function (p) { if (p.getAttribute('data-kreis') === id) p.classList.add('im-kreis'); });
+      });
+      kreisKnoepfe(id);
+      auswahlKopf(kreis.kreis ? 'Landkreis · ' + kreis.orte.length + ' Orte' : kreis.orte.length + ' Orte', kreis.name);
+      auswahl.appendChild(element('p', 'auswahl-text', 'Ihren Ort wählen:'));
+      var liste = element('ul', 'auswahl-orte');
+      kreis.orte.forEach(function (name) {
+        var punkt = punkte.filter(function (p) { return p.getAttribute('data-ort') === name; })[0];
+        if (!punkt) return;
+        var li = element('li'), b = element('button', '', name);
+        b.type = 'button';
+        b.addEventListener('mouseenter', function () { punkt.classList.add('ist-vorschau'); });
+        b.addEventListener('mouseleave', function () { punkt.classList.remove('ist-vorschau'); });
+        b.addEventListener('click', function () { punkt.classList.remove('ist-vorschau'); waehleOrt(punkt, true); var a = auswahl.querySelector('.auswahl-plz button, .auswahl-anfrage'); if (a) a.focus(); });
+        li.appendChild(b); liste.appendChild(li);
+      });
+      auswahl.appendChild(liste);
+      if (kreis.kreis) {
+        var a = pfeil(element('a', 'knopf knopf--sekundaer auswahl-anfrage', 'Projekt im ' + kreis.name + ' anfragen'));
+        a.href = kontaktLink({ kreis: kreis.name });
+        auswahl.appendChild(a);
+      }
+      fuss();
+    };
+
+    // Karte: Klick wählt aus (statt sofort zu springen); Pfeiltasten wechseln den Punkt (roving tabindex)
+    var fokus = function (i) {
+      var n = (i + punkte.length) % punkte.length;
+      punkte.forEach(function (p, j) { p.setAttribute('tabindex', j === n ? '0' : '-1'); });
+      punkte[n].focus();
+    };
+    karte.addEventListener('click', function (e) {
+      var punkt = e.target.closest('.ek-ort, .ek-mitte');
+      if (!punkt) return;
+      e.preventDefault();
+      punkte.forEach(function (p) { p.setAttribute('tabindex', p === punkt ? '0' : '-1'); });
+      waehleOrt(punkt);
+    });
+    karte.addEventListener('keydown', function (e) {
+      var punkt = e.target.closest('.ek-ort, .ek-mitte');
+      if (!punkt) return;
+      var i = punkte.indexOf(punkt);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); fokus(i + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); fokus(i - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); fokus(0); }
+      else if (e.key === 'End') { e.preventDefault(); fokus(punkte.length - 1); }
+      else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); waehleOrt(punkt); }
+      else if (e.key === 'Escape') { aufheben(); }
+    });
+
+    if (kreisFilter) {
+      kreisFilter.addEventListener('click', function (e) {
+        var knopf = e.target.closest('button');
+        if (!knopf) return;
+        var id = knopf.getAttribute('data-kreis');
+        if (knopf.getAttribute('aria-pressed') === 'true') aufheben(); else waehleKreis(id);
+      });
+      // Vorschau beim Überfahren der Kreis-Knöpfe
+      kreisFilter.addEventListener('mouseover', function (e) {
+        var knopf = e.target.closest('button'); if (!knopf) return;
+        var id = knopf.getAttribute('data-kreis');
+        punkte.forEach(function (p) { p.classList.toggle('kreis-vorschau', p.getAttribute('data-kreis') === id); });
+      });
+      kreisFilter.addEventListener('mouseleave', function () { punkte.forEach(function (p) { p.classList.remove('kreis-vorschau'); }); });
+    }
+  }
+
+  // Ortssuche über der Liste
+  var suche = document.querySelector('[data-ort-suche]');
+  var gruppen = document.querySelector('[data-ortsgruppen]');
+  if (suche && gruppen) {
+    suche.hidden = false;
+    var feldSuche = suche.querySelector('input');
+    var stand = suche.querySelector('.ort-suche-stand');
+    var keinTreffer = suche.querySelector('.ort-suche-leer');
+    var keinLink = suche.querySelector('[data-ort-suche-anfrage]');
+    var normal = function (s) {
+      return s.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+    };
+    var eintraege = Array.prototype.slice.call(gruppen.querySelectorAll('.ort-eintrag'));
+    var filtern = function () {
+      var q = normal(feldSuche.value);
+      var treffer = 0;
+      eintraege.forEach(function (li) { var ja = !q || li.getAttribute('data-suche').indexOf(q) > -1; li.hidden = !ja; if (ja) treffer++; });
+      gruppen.querySelectorAll('.ortsgruppe').forEach(function (g) { g.hidden = !!q && !g.querySelector('.ort-eintrag:not([hidden])'); });
+      stand.textContent = q ? (treffer === 1 ? '1 Ort gefunden' : treffer + ' Orte gefunden') : '';
+      keinTreffer.hidden = !q || treffer > 0;
+      if (q && !treffer) {
+        var roh = feldSuche.value.trim();
+        keinLink.href = kontaktLink(/^\d{5}$/.test(roh) ? { plz: roh } : /^[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß .()\-]{1,59}$/.test(roh) ? { ort: roh } : {});
+      }
+    };
+    feldSuche.addEventListener('input', filtern);
+  }
+
+  // PLZ-Prüfung
   var pruefer = document.querySelector('[data-plz-pruefer]');
   if (pruefer) {
     var orte = {};
@@ -196,88 +372,29 @@
     var eingabe = pruefer.querySelector('input');
     var ergebnis = pruefer.querySelector('[data-plz-ergebnis]');
     pruefer.noValidate = true; // eigene, verständlichere Meldung statt der Browser-Blase
-    var zumFormular = function (wert) {
-      var ziel = new URL(pruefer.getAttribute('action'), window.location.href);
-      ziel.searchParams.set('ort', wert);
-      return ziel.href;
-    };
-    var zeile = function (klasse, text) { var p = document.createElement('p'); p.className = klasse; p.textContent = text; return p; };
-    var knopf = function (href, text) {
-      var a = document.createElement('a');
-      a.className = 'knopf knopf--primaer'; a.href = href; a.textContent = text + ' ';
-      var pfeil = document.createElement('span'); pfeil.className = 'pfeil'; pfeil.setAttribute('aria-hidden', 'true'); pfeil.textContent = '→';
-      a.appendChild(pfeil);
-      return a;
-    };
+    var knopfLink = function (href, text) { var a = pfeil(element('a', 'knopf knopf--primaer', text)); a.href = href; return a; };
     pruefer.addEventListener('submit', function (e) {
       e.preventDefault();
       var plz = eingabe.value.replace(/\D/g, '');
       ergebnis.textContent = '';
-      markiereOrt('');
+      if (karte) karte.querySelectorAll('.ist-markiert').forEach(function (p) { p.classList.remove('ist-markiert'); });
       if (plz.length !== 5) {
-        ergebnis.appendChild(zeile('plz-hinweis', 'Bitte geben Sie eine fünfstellige Postleitzahl ein.'));
+        ergebnis.appendChild(element('p', 'plz-hinweis', 'Bitte geben Sie eine fünfstellige Postleitzahl ein.'));
         eingabe.focus();
         return;
       }
-      var treffer = orte[plz];
-      if (treffer) {
-        var ort = plz + ' ' + treffer[0];
-        ergebnis.appendChild(zeile('plz-ok', treffer[1] > 0
-          ? ort + ' gehört zu unserem Einsatzgebiet – etwa ' + treffer[1] + ' km Luftlinie ab Stuttgart-Mitte.'
-          : ort + ' gehört zu unserem Einsatzgebiet.'));
-        ergebnis.appendChild(knopf(zumFormular(ort), 'Anfrage mit ' + ort + ' stellen'));
-        markiereOrt(plz);
+      var t = orte[plz];
+      if (t) {
+        ergebnis.appendChild(element('p', 'plz-ok', plz + ' (' + t[0] + ') gehört zu unserem Einsatzgebiet' + (t[1] > 0 ? ' – etwa ' + t[1] + ' km Luftlinie ab Stuttgart-Mitte.' : '.')));
+        // Die eingegebene PLZ stammt vom Besucher; den Ortsnamen dazu nur, wenn die Zuordnung geprüft ist
+        ergebnis.appendChild(knopfLink(kontaktLink(t[2] ? { ort: t[0], plz: plz } : { plz: plz }), 'Projekt in ' + plz + ' ' + t[0] + ' anfragen'));
+        if (karte) karte.querySelectorAll('[data-plz]').forEach(function (p) {
+          if ((' ' + p.getAttribute('data-plz') + ' ').indexOf(' ' + plz + ' ') > -1) p.classList.add('ist-markiert');
+        });
       } else {
-        ergebnis.appendChild(zeile('plz-hinweis', 'Die Postleitzahl ' + plz + ' steht nicht in unserer Liste. Fragen Sie trotzdem an – wir sagen Ihnen, ob wir zu Ihnen kommen.'));
-        ergebnis.appendChild(knopf(zumFormular(plz), 'Anfrage mit PLZ ' + plz + ' stellen'));
+        ergebnis.appendChild(element('p', 'plz-hinweis', 'Die Postleitzahl ' + plz + ' steht nicht in unserer Liste. Fragen Sie trotzdem an – wir sagen Ihnen, ob wir zu Ihnen kommen.'));
+        ergebnis.appendChild(knopfLink(kontaktLink({ plz: plz }), 'Anfrage mit PLZ ' + plz + ' stellen'));
       }
-    });
-  }
-
-  // Orte mit mehreren Postleitzahlen: Auswahl direkt an der Karte statt Sprung zur Liste
-  if (karte) {
-    var flaeche = karte.querySelector('.tafel-flaeche');
-    var wahl = null, ausloeser = null;
-    var schliessen = function () {
-      if (!wahl) return;
-      wahl.remove(); wahl = null;
-      document.removeEventListener('keydown', aufEscape);
-      document.removeEventListener('pointerdown', aussen, true);
-      markiereOrt('');
-    };
-    var aufEscape = function (e) { if (e.key === 'Escape') schliessen(); };
-    var aussen = function (e) { if (wahl && !wahl.contains(e.target) && !(ausloeser && ausloeser.contains(e.target))) schliessen(); };
-    karte.addEventListener('click', function (e) {
-      var ort = e.target.closest('.ek-ort');
-      if (!ort) return;
-      var ziel = ort.getAttribute('href') || '';
-      if (ziel.charAt(0) !== '#') return; // ein Ort, eine PLZ: direkt ins Formular
-      var liste = document.querySelector(ziel + ' .plz-liste');
-      if (!liste) return;
-      e.preventDefault();
-      schliessen();
-      ausloeser = ort;
-      wahl = document.createElement('div');
-      wahl.className = 'karte-wahl';
-      wahl.setAttribute('role', 'dialog');
-      wahl.setAttribute('aria-label', 'Postleitzahl wählen: ' + ort.getAttribute('data-ort'));
-      var titel = document.createElement('p'); titel.className = 'karte-wahl-titel'; titel.textContent = ort.getAttribute('data-ort');
-      var text = document.createElement('p'); text.className = 'karte-wahl-text'; text.textContent = 'Ihre Postleitzahl:';
-      var zu = document.createElement('button'); zu.type = 'button'; zu.className = 'karte-wahl-zu'; zu.setAttribute('aria-label', 'Auswahl schließen'); zu.textContent = '×';
-      zu.addEventListener('click', schliessen);
-      wahl.appendChild(zu); wahl.appendChild(titel); wahl.appendChild(text); wahl.appendChild(liste.cloneNode(true));
-      flaeche.appendChild(wahl);
-      // neben den Punkt setzen, innerhalb der Fläche halten
-      var f = flaeche.getBoundingClientRect(), p = ort.querySelector('.zg-punkt').getBoundingClientRect();
-      var x = p.left - f.left + p.width / 2, y = p.top - f.top + p.height / 2;
-      var b = wahl.offsetWidth, h = wahl.offsetHeight;
-      var links = x + 16 + b > f.width ? x - 16 - b : x + 16;
-      wahl.style.left = Math.max(8, Math.min(links, f.width - b - 8)) + 'px';
-      wahl.style.top = Math.max(8, Math.min(y - h / 2, f.height - h - 8)) + 'px';
-      markiereOrt(ort.getAttribute('data-plz').split(' ')[0]);
-      var erster = wahl.querySelector('a'); if (erster) erster.focus({ preventScroll: true });
-      document.addEventListener('keydown', aufEscape);
-      document.addEventListener('pointerdown', aussen, true);
     });
   }
 
@@ -307,9 +424,24 @@
     }
     var anliegen = (parameter.get('anliegen') || '').replace(/[^\wäöüÄÖÜß .,\-]/g, '').slice(0, 80);
     if (anliegen && !feld('nachricht').value) feld('nachricht').value = anliegen + ': ';
-    // ?ort=73760 Ostfildern (Seite „Einsatzgebiet“) füllt „PLZ oder Ort“
-    var ortVorgabe = (parameter.get('ort') || '').replace(/[^\wäöüÄÖÜß .,()\-]/g, '').slice(0, 60).trim();
-    if (ortVorgabe && feld('ort') && !feld('ort').value) feld('ort').value = ortVorgabe;
+    // Seite „Einsatzgebiet“: ?ort=Kornwestheim&plz=70806 bzw. ?kreis=Landkreis%20Ludwigsburg füllen „PLZ oder Ort“.
+    // Nur gültige Werte: PLZ fünfstellig, Ort aus Buchstaben (auch Bindestrich, Klammern), Kreis in bekannter Form.
+    // Die alte Form ?ort=73760%20Ostfildern bleibt lesbar. Der Besucher kann alles ändern.
+    var lese = function (n) { return (parameter.get(n) || '').replace(/\s+/g, ' ').trim(); };
+    var plzVorgabe = lese('plz');
+    var ortVorgabe = lese('ort');
+    var altform = ortVorgabe.match(/^(\d{5}) (.+)$/);
+    if (altform) { if (!plzVorgabe) plzVorgabe = altform[1]; ortVorgabe = altform[2]; }
+    if (!/^\d{5}$/.test(plzVorgabe)) plzVorgabe = '';
+    if (!/^[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß .()\-]{0,59}$/.test(ortVorgabe)) ortVorgabe = '';
+    var kreisVorgabe = lese('kreis');
+    if (!/^(Landkreis [A-ZÄÖÜ][A-Za-zäöüß\-]{2,30}|[A-ZÄÖÜ][A-Za-zäöüß]+(-[A-ZÄÖÜ][A-Za-zäöüß]+)*-Kreis)$/.test(kreisVorgabe)) kreisVorgabe = '';
+    var ortWert = [plzVorgabe, ortVorgabe].filter(Boolean).join(' ') || kreisVorgabe;
+    if (ortWert && feld('ort') && !feld('ort').value) {
+      feld('ort').value = ortWert;
+      var ortHinweis = form.querySelector('#f-ort-hinweis');
+      if (ortHinweis) ortHinweis.hidden = false;
+    }
 
     // Rückruf: Zeitfenster nur zeigen, wenn gewünscht
     function rueckrufAnzeigen() { if (rueckrufZeit) rueckrufZeit.hidden = !rueckruf.checked; }

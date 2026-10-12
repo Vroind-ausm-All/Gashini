@@ -328,15 +328,49 @@ def t_lokal():
             for ort in orte:
                 assert not re.search(r"\b%s\b" % re.escape(ort), m.group(1)), "Ortsname „%s“ im Alt-Text eines Symbolbilds: %s" % (ort, rel)
     assert os.path.isfile(os.path.join(web, "einsatzgebiet", "index.html")), "Seite „Einsatzgebiet“ fehlt"
-    # Jeder Ort führt ins Formular: eine PLZ → Link mit ?ort=PLZ Ort, mehrere → Auswahl mit je einem Link pro PLZ
+    # Jeder Ort führt ins Formular (?ort=…), jede PLZ hat einen eigenen Link (?ort=…&plz=…); jeder Landkreis (?kreis=…).
+    # Automatisch eingetragen wird eine PLZ nur, wenn sie eindeutig und geprüft ist – ein Kreis bekommt nie eine PLZ.
+    import urllib.parse
     seite = io.open(os.path.join(web, "einsatzgebiet", "index.html"), encoding="utf-8").read()
+    links = [urllib.parse.parse_qs(urllib.parse.urlparse(h.replace("&amp;", "&")).query)
+             for h in re.findall(r'href="[^"]*kontakt/\?([^"#]*)', seite) for h in ["?" + h]]
     for k in gebiet["kreise"]:
         for o in k["orte"]:
+            name = re.sub(r"\s*\(Landkreis [^)]*\)$", "", o["name"])
+            assert any(l.get("ort") == [name] for l in links), "Kein Formular-Link für " + name
             for z in o["plz"]:
-                assert "kontakt/?ort=" + z + "%20" in seite, "Kein Formular-Link mit PLZ %s (%s)" % (z, o["name"])
-    assert "data-plz-pruefer" in seite and "data-kreis-filter" in seite, "PLZ-Prüfung oder Landkreis-Filter fehlt"
+                assert any(l.get("ort") == [name] and l.get("plz") == [z] for l in links), "Kein Formular-Link mit PLZ %s (%s)" % (z, name)
+            if not o.get("plz_geprueft", gebiet.get("plz_geprueft", False)) or len(o["plz"]) != 1:
+                ohne = [l for l in links if l.get("ort") == [name] and "plz" in l]
+                assert all(len(l["plz"]) == 1 for l in ohne), "Mehrdeutige PLZ: " + name
+        if k["id"] != "rand":
+            assert any(l.get("kreis") == [k["name"]] and "plz" not in l for l in links), "Kein Kreis-Link: " + k["name"]
+    assert not any("kreis" in l and "plz" in l for l in links), "Landkreis-Link mit PLZ"
+    for marke in ("data-plz-pruefer", "data-kreis-filter", "data-ort-auswahl", "data-ort-suche"):
+        assert marke in seite, "Bedienelement fehlt: " + marke
 
-@pruefung("Tiefe (Maus-Parallax): nur dekorativ (aria-hidden), nie auf Kontakt- und Rechtsseiten, im Skript an Maus und erlaubte Bewegung gebunden")
+@pruefung("Tätigkeiten (data/taetigkeiten.json): Aufbau gültig, Landingpage nur für veröffentlichte und bestehende Seiten, Datei nicht im Webordner")
+def t_taetigkeiten():
+    import json
+    d = json.load(io.open(os.path.join(WURZEL, "data", "taetigkeiten.json"), encoding="utf-8"))
+    werte = {"ausfuehrung": {"selbst", "partner", "offen"}, "suchintention": {"eigen", "teil"},
+             "status": {"veroeffentlicht", "vorbereitet", "nicht_beworben", "ausgeschlossen"}}
+    ids = set()
+    for e in d["taetigkeiten"] + d["nachzureichen"]:
+        assert e["id"] not in ids, "Tätigkeit doppelt: " + e["id"]
+        ids.add(e["id"])
+        for feld, erlaubt in werte.items():
+            assert e[feld] in erlaubt, "%s: %s=%r" % (e["id"], feld, e[feld])
+        assert e["recht"]["status"] in ("geklaert", "offen"), e["id"]
+        if e["landingpage"]:
+            assert e["status"] == "veroeffentlicht", "Landingpage für nicht freigegebene Tätigkeit: " + e["id"]
+            assert os.path.isfile(os.path.join(WURZEL, "web", e["landingpage"], "index.html")), "Landingpage fehlt: " + e["landingpage"]
+    for e in d["nachzureichen"]:
+        assert e["status"] != "veroeffentlicht", "Nachgereichte Tätigkeit ohne Prüfung veröffentlicht: " + e["id"]
+    for wurzel, _, dateien in os.walk(os.path.join(WURZEL, "web")):
+        assert "taetigkeiten.json" not in dateien, "Interne Tätigkeitsliste im Webordner"
+
+@pruefung("Tiefe (Maus-Parallax): nur dekorativ (aria-hidden), nie auf Kontakt- und Rechtsseiten, an Maus und erlaubte Bewegung gebunden, pro Bild gebündelt, ohne Dauerschleife")
 def t_tiefe():
     web = os.path.join(WURZEL, "web")
     for rel, pfad, _ in seiten(web):
@@ -347,10 +381,13 @@ def t_tiefe():
             assert 'aria-hidden="true"' in m.group(0), "Tiefen-Ebene nicht aria-hidden: " + rel
     js = io.open(os.path.join(web, "assets", "js", "bewegung.js"), encoding="utf-8").read()
     assert "(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)" in js, "Parallax nicht an Maus und erlaubte Bewegung gebunden"
-    assert "requestAnimationFrame" not in js.split("// ---------- Tiefe")[1].split("// ---------- Wandaufbau")[0], "Parallax mit Dauerschleife"
+    tiefe = js.split("// ---------- Tiefe")[1].split("// ---------- Wandaufbau")[0]
+    assert "setInterval" not in tiefe and "gsap.ticker" not in tiefe and "repeat:" not in tiefe, "Parallax mit Dauerschleife"
+    assert "window.requestAnimationFrame(function () { geplant = false;" in tiefe, "Zeigerbewegungen nicht pro Bild gebündelt"
 
 @pruefung("Marke: Logos aus dem Logo-Paket (gleiche Maße), Website-Icon nur aus dem G, Hausfarben statt Ziegelrot, Archivo als einzige Schrift")
 def t_marke():
+    import json, struct
     web = os.path.join(WURZEL, "web")
     paket = {"logo-hauptvariante-klein.svg": "svg/logo-hauptvariante-klein.svg", "logo-hauptvariante-negativ.svg": "svg/logo-hauptvariante-negativ.svg",
              "logo-kompakt.svg": "svg/logo-kompakt.svg", "signet.svg": "svg/signet.svg"}
@@ -361,16 +398,25 @@ def t_marke():
         assert re.findall(r'fill="(#[0-9A-Fa-f]{6})"', a) == re.findall(r'fill="(#[0-9A-Fa-f]{6})"', b), "Logo-Farben verändert: " + ziel
         assert len(re.findall(r"<path", a)) == len(re.findall(r"<path", b)), "Logo-Pfade verändert: " + ziel
     assert os.path.isfile(os.path.join(web, "favicon.ico")), "favicon.ico fehlt im Wurzelverzeichnis"
-    # Website-Icon: nur das G des Signets – dieselbe Glyphe, nur Hausfarben, auf jeder Seite eingebunden
+    # Website-Icon: nur das G des Signets (dieselbe Glyphe) in Kalkweiß auf Anthrazit, alle Größen, Manifest
     signet = io.open(os.path.join(WURZEL, "brand", "svg", "signet.svg"), encoding="utf-8").read()
     g_signet = re.search(r'<g fill="#F4F2ED"><path transform="[^"]+" d="([^"]+)"', signet).group(1)
     icon = io.open(os.path.join(web, "assets", "icon", "icon-g.svg"), encoding="utf-8").read()
     assert re.findall(r' d="([^"]+)"', icon) == [g_signet], "Icon enthält nicht genau die G-Glyphe des Signets"
-    assert set(c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}", icon)) <= {"#1E2124", "#F4F2ED"}, "Icon mit fremden Farben"
-    assert io.open(os.path.join(web, "favicon.ico"), "rb").read() == io.open(os.path.join(WURZEL, "src", "assets", "icon", "favicon.ico"), "rb").read(), \
-        "favicon.ico ist nicht das G-Icon"
+    assert re.findall(r'fill="(#[0-9A-Fa-f]{6})"', icon) == ["#1E2124", "#F4F2ED"], "Icon nicht Kalkweiß auf Anthrazit"
+    assert "#FFC93C" not in icon.upper() and "<text" not in icon and "<style" not in icon, "Icon mit Band, Schrift oder Stil"
+    for name, groesse in (("icon-g-32.png", 32), ("icon-g-180.png", 180), ("icon-g-192.png", 192), ("icon-g-512.png", 512)):
+        kopf_png = io.open(os.path.join(web, "assets", "icon", name), "rb").read(24)
+        assert kopf_png[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", kopf_png[16:24]) == (groesse, groesse), "Icon falsch: " + name
+    ico = io.open(os.path.join(web, "favicon.ico"), "rb").read()
+    assert ico == io.open(os.path.join(WURZEL, "src", "assets", "icon", "favicon.ico"), "rb").read(), "favicon.ico ist nicht das G-Icon"
+    assert struct.unpack("<HHH", ico[:6]) == (0, 1, 3) and [ico[6 + 16 * i] for i in range(3)] == [16, 32, 48], "favicon.ico ohne 16/32/48 px"
+    manifest = json.load(io.open(os.path.join(web, "manifest.webmanifest"), encoding="utf-8"))
+    for eintrag in manifest["icons"]:
+        assert os.path.isfile(os.path.join(web, eintrag["src"])), "Manifest-Icon fehlt: " + eintrag["src"]
+    assert {e["sizes"] for e in manifest["icons"]} == {"192x192", "512x512"}, "Manifest ohne 192/512"
     htaccess = io.open(os.path.join(web, ".htaccess"), encoding="utf-8").read()
-    assert 'FilesMatch "^icon-g\\.svg$"' in htaccess, "CSP-Ausnahme für das Tab-Icon fehlt in .htaccess"
+    assert "unsafe-inline" not in htaccess, "CSP mit unsafe-inline"
     css = io.open(os.path.join(web, "assets", "css", "site.css"), encoding="utf-8").read()
     for alt in ("#B5391C", "#8E2A12", "Instrument Sans", "IBM Plex"):
         assert alt.lower() not in css.lower(), "Alte CI im Stylesheet: " + alt
@@ -380,7 +426,8 @@ def t_marke():
     assert schriften == ["archivo-var.woff2"], "Unerwartete Schriftdateien: %s" % schriften
     for rel, pfad, _ in seiten(web):
         html = io.open(pfad, encoding="utf-8").read()
-        assert "assets/icon/icon-g.svg" in html and "assets/icon/icon-g-180.png" in html, "Seite ohne G-Icon: " + rel
+        for ref in ("favicon.ico", "assets/icon/icon-g.svg", "assets/icon/icon-g-32.png", "assets/icon/icon-g-180.png", "manifest.webmanifest"):
+            assert ref + '"' in html, "Seite ohne Icon-Verweis %s: %s" % (ref, rel)
         if 'class="kopf"' in html:
             assert "marke/logo-hauptvariante-klein.svg" in html and "marke/logo-kompakt.svg" in html, "Kopf ohne Logo-Varianten: " + rel
         if 'class="fuss"' in html:
@@ -388,7 +435,7 @@ def t_marke():
 
 def main():
     for t in (t_wiederholbar, t_drift, t_zusammenspiel, t_produktion_sperrt, t_links, t_grundlagen,
-              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_lokal, t_tiefe, t_marke):
+              t_csp, t_vorschau, t_indexierbar, t_keine_entwuerfe, t_geheimnisse, t_vorschau_bloecke, t_bewegung, t_bildherkunft, t_bewegtbilder, t_lokal, t_taetigkeiten, t_tiefe, t_marke):
         t()
     for b in bestanden: print("  ✓", b)
     for h in hinweise: print("  ·", h)

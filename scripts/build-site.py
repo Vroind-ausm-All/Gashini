@@ -90,7 +90,7 @@ def rel(von, ziel):
     return ergebnis + abfrage + anker
 
 def links_aufloesen(text, von):
-    return re.sub(r'(href|src|action|data-gross|data-modul)="@/([^"]*)"',
+    return re.sub(r'(href|src|action|data-gross|data-modul|data-kontakt)="@/([^"]*)"',
                   lambda m: '%s="%s"' % (m.group(1), rel(von, m.group(2))), text)
 
 def srcset_aufloesen(text, von):
@@ -334,7 +334,7 @@ def leistungskarten(von, ebene="h3"):
                          groessen="(min-width: 760px) 33vw, 100vw", ki=True, fokus="rechts"), False),
     ]
     return '<ul class="leistungskarten">%s</ul>' % "".join(
-        '<li class="leistungskarte" data-zeigen><div class="leistungskarte-bild%s"><span class="leistungskarte-nr" aria-hidden="true">%s</span>%s</div>'
+        '<li class="leistungskarte" data-zeigen><div class="leistungskarte-bild%s"><span class="leistungskarte-nr" aria-hidden="true">%s</span>%s<span class="karte-licht" aria-hidden="true"></span></div>'
         '<%s><a href="@/%s">%s</a></%s><p>%s</p><span class="mehr" aria-hidden="true">Mehr erfahren <span class="pfeil">→</span></span></li>'
         % (" leistungskarte-bild--zeichnung" if zeichnung else "", nr, bild, ebene, ziel, esc(titel), ebene, esc(text))
         for ziel, nr, titel, text, bild, zeichnung in karten)
@@ -523,7 +523,8 @@ def kontaktformular():
   <div class="formular-reihe formular-reihe--zwei">
     <div class="feld">
       <label for="f-ort">PLZ oder Ort<span class="optional">optional</span></label>
-      <input id="f-ort" name="ort" type="text" autocomplete="postal-code" maxlength="100" aria-describedby="f-ort-fehler">
+      <input id="f-ort" name="ort" type="text" autocomplete="postal-code" maxlength="100" aria-describedby="f-ort-hinweis f-ort-fehler">
+      <p class="hilfe" id="f-ort-hinweis" hidden>Aus dem Einsatzgebiet übernommen – Sie können die Angabe jederzeit ändern.</p>
       <p class="fehlertext" id="f-ort-fehler" data-fehler-fuer="ort"></p>
     </div>
     <div class="feld">
@@ -556,78 +557,110 @@ def kontaktwege():
             '</ul>')
 
 # ------------------------------------------------------------------ Einsatzgebiet (data/einsatzgebiet.json)
-def ort_slug(name):
-    s = name.lower()
-    for a, b in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
-        s = s.replace(a, b)
-    return re.sub(r"[^a-z0-9]+", "-", re.sub(r"\s*\(.*\)$", "", s)).strip("-")
-
 def ort_name(o):
     """Ortsname ohne Klammerzusatz („Metzingen (Landkreis Reutlingen)“ → „Metzingen“, „Wernau (Neckar)“ bleibt)."""
     return re.sub(r"\s*\(Landkreis [^)]*\)$", "", o["name"])
 
-def anfrage_link(ort):
-    """Link ins Anfrageformular, Feld „PLZ oder Ort“ vorbelegt (site.js liest ?ort=)."""
-    return "@/kontakt/?ort=%s#anfrage" % urllib.parse.quote(ort)
+def such_text(*teile):
+    """Suchschlüssel für die Ortssuche: klein, Umlaute ausgeschrieben (site.js normalisiert die Eingabe genauso)."""
+    s = " ".join(teile).lower()
+    for a, b in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
+        s = s.replace(a, b)
+    return re.sub(r"[^a-z0-9 ]+", " ", s)
+
+def anfrage_link(ort=None, plz=None, kreis=None):
+    """Link ins Anfrageformular: ?ort=…&plz=…#anfrage bzw. ?kreis=…#anfrage. site.js prüft die Werte und füllt
+    damit das Feld „PLZ oder Ort“; ohne JavaScript bleibt es ein normaler Link zur Kontaktseite."""
+    teile = [("ort", ort), ("plz", plz), ("kreis", kreis)]
+    abfrage = "&amp;".join("%s=%s" % (k, urllib.parse.quote(v)) for k, v in teile if v)
+    return "@/kontakt/" + ("?" + abfrage if abfrage else "") + "#anfrage"
+
+def plz_geprueft(o):
+    """PLZ eines Orts gilt erst als geprüft, wenn data/einsatzgebiet.json es sagt (je Ort oder für die ganze Datei)."""
+    return bool(o.get("plz_geprueft", EINSATZ.get("plz_geprueft", False)))
+
+def plz_fest(o):
+    """Die PLZ, die automatisch eingetragen werden darf: nur eine einzige, geprüfte."""
+    plz = o.get("plz", [])
+    return plz[0] if len(plz) == 1 and plz_geprueft(o) else None
 
 def ort_ziel(o, kreis=None):
-    """Ein Ort mit einer PLZ führt direkt ins Formular, einer mit mehreren zur Auswahl in der Liste."""
-    plz = o.get("plz", [])
-    if len(plz) == 1:
-        return anfrage_link("%s %s" % (plz[0], ort_name(o)))
-    return "#ort-" + ort_slug(o["name"])
+    return anfrage_link(ort=ort_name(o), plz=plz_fest(o))
+
+def km_zum_mittelpunkt(o):
+    m = EINSATZ["mittelpunkt"]
+    return int(round(zg.luftlinie_km((m["breite"], m["laenge"]), (o["breite"], o["laenge"]))))
 
 def einsatz_orte_html():
-    """Alle Orte als Listen: Stuttgarter Stadtbezirke, dann je Landkreis. Jeder Ort ist ein Link ins Anfrageformular
-    mit vorbelegter PLZ; Orte mit mehreren PLZ klappen eine Auswahl auf. Ohne JavaScript und Karte voll nutzbar."""
-    bezirke = "".join('<li><a class="ort-link" href="%s">%s</a></li>' % (anfrage_link("Stuttgart-" + b if not b.startswith("Stuttgart") else b), esc(b))
-                      for b in EINSATZ["stadtbezirke"])
+    """Ortsliste: Stadtbezirke, dann je Landkreis. Jeder Ort ist ein Link ins Formular („Projekt in … anfragen“), dazu
+    seine Postleitzahlen als eigene Links – der Besucher wählt seine PLZ selbst; automatisch eingetragen wird sie nur,
+    wenn sie eindeutig und geprüft ist. Ohne JavaScript und ohne Karte vollständig nutzbar."""
+    def eintrag(anzeige, ort, plz_liste=(), fest=None, kreis_name=""):
+        haupt = ('<a class="ort-link" href="%s" aria-label="Projekt in %s anfragen">%s</a>'
+                 % (anfrage_link(ort=ort, plz=fest), esc(ort), esc(anzeige)))
+        zusatz = ""
+        if plz_liste and not fest:
+            zusatz = '<span class="ort-plz">%s</span>' % "".join(
+                '<a href="%s" aria-label="Projekt in %s anfragen, Postleitzahl %s">%s</a>' % (anfrage_link(ort=ort, plz=z), esc(ort), z, z)
+                for z in plz_liste)
+        elif fest:
+            zusatz = '<span class="ort-plz ort-plz--fest">%s</span>' % fest
+        return '<li class="ort-eintrag" data-suche="%s">%s%s</li>' % (esc(such_text(anzeige, ort, kreis_name, *plz_liste)), haupt, zusatz)
+    bezirke = "".join(eintrag(b, b if b.startswith("Stuttgart") else "Stuttgart-" + b, kreis_name="Stuttgart") for b in EINSATZ["stadtbezirke"])
     bloecke = ['<div class="ortsgruppe" id="kreis-stuttgart"><h3>Stuttgart</h3><p class="gedaempft">Alle %d Stadtbezirke – '
                'die Postleitzahl ergänzen Sie im Formular.</p><ul class="ortsliste">%s</ul></div>' % (len(EINSATZ["stadtbezirke"]), bezirke)]
     for k in EINSATZ["kreise"]:
-        punkte = []
-        for o in k["orte"]:
-            plz = o.get("plz", [])
-            if len(plz) == 1:
-                punkte.append('<li><a class="ort-link" href="%s">%s <span class="plz">%s</span></a></li>'
-                              % (ort_ziel(o), esc(o["name"]), plz[0]))
-            else:
-                wahl = "".join('<li><a href="%s">%s</a></li>' % (anfrage_link("%s %s" % (z, ort_name(o))), z) for z in plz)
-                punkte.append('<li><details class="ort-wahl" id="ort-%s"><summary>%s <span class="plz">%d PLZ</span></summary>'
-                              '<ul class="plz-liste" aria-label="Postleitzahlen von %s">%s</ul></details></li>'
-                              % (ort_slug(o["name"]), esc(o["name"]), len(plz), esc(ort_name(o)), wahl))
-        bloecke.append('<div class="ortsgruppe" id="kreis-%s"><h3>%s</h3><ul class="ortsliste">%s</ul></div>'
-                       % (k["id"], esc(k["name"]), "".join(punkte)))
-    return '<div class="ortsgruppen">%s</div>' % "".join(bloecke)
+        punkte = "".join(eintrag(o["name"], ort_name(o), o.get("plz", []), plz_fest(o), k["name"]) for o in k["orte"])
+        kreislink = ""
+        if k["id"] != "rand":
+            kreislink = ('<a class="textlink kreis-link" href="%s">Projekt im %s anfragen <span class="pfeil" aria-hidden="true">→</span></a>'
+                         % (anfrage_link(kreis=k["name"]), esc(k["name"])))
+        bloecke.append('<div class="ortsgruppe" id="kreis-%s"><h3>%s</h3><ul class="ortsliste">%s</ul>%s</div>'
+                       % (k["id"], esc(k["name"]), punkte, kreislink))
+    return '<div class="ortsgruppen" data-ortsgruppen>%s</div>' % "".join(bloecke)
+
+def ort_suche_html():
+    """Suchfeld für die Ortsliste – nur mit JavaScript sichtbar (ohne ist die Liste vollständig ausgeklappt)."""
+    return ('<div class="ort-suche" data-ort-suche hidden><label for="ort-suche-eingabe">Ort, Stadtbezirk oder PLZ suchen</label>'
+            '<input id="ort-suche-eingabe" type="search" autocomplete="off" spellcheck="false" placeholder="z. B. Kornwestheim" '
+            'aria-describedby="ort-suche-stand"><p class="ort-suche-stand" id="ort-suche-stand" aria-live="polite"></p>'
+            '<p class="ort-suche-leer" hidden>Kein Ort gefunden. Gehört Ihr Ort trotzdem dazu? '
+            '<a class="textlink" href="%s" data-ort-suche-anfrage>Fragen Sie einfach an <span class="pfeil" aria-hidden="true">→</span></a></p></div>'
+            % anfrage_link())
 
 def einsatz_karte_html():
     return ('<figure class="tafel tafel--karte" data-einsatzkarte><div class="tafel-flaeche">%s</div><figcaption>%s</figcaption></figure>'
-            % (zg.einsatzkarte(EINSATZ, ort_ziel),
-               esc("Schematische Karte: Luftlinie ab %s-Mitte, Lage der Orte vereinfacht. Ein Klick auf einen Ort öffnet das "
-                   "Anfrageformular mit dessen Postleitzahl. Alle Orte stehen auch in der Liste darunter." % EINSATZ["mittelpunkt"]["name"])))
+            % (zg.einsatzkarte(EINSATZ, ort_ziel, km_zum_mittelpunkt, plz_geprueft, anfrage_link(ort=EINSATZ["mittelpunkt"]["name"])),
+               esc("Schematische Karte: Luftlinie ab %s-Mitte, Lage der Orte vereinfacht. Ort anklicken oder mit den Pfeiltasten "
+                   "wählen – darunter erscheint die Anfrage für diesen Ort. Alle Orte stehen auch in der Liste." % EINSATZ["mittelpunkt"]["name"])))
 
 def kreis_filter_html():
-    knoepfe = ['<button type="button" aria-pressed="true" data-kreis="">Alle</button>']
-    knoepfe += ['<button type="button" aria-pressed="false" data-kreis="%s">%s</button>' % (k["id"], esc(k["name"].replace("Landkreis ", "Kreis ")))
-                for k in EINSATZ["kreise"]]
-    return ('<div class="kreis-filter" role="group" aria-label="Landkreis auf der Karte hervorheben" data-kreis-filter>%s</div>'
-            % "".join(knoepfe))
+    knoepfe = ['<button type="button" aria-pressed="false" data-kreis="%s">%s</button>' % (k["id"], esc(k["name"].replace("Landkreis ", "Kreis ")))
+               for k in EINSATZ["kreise"]]
+    return ('<div class="kreis-filter" role="group" aria-label="Landkreis wählen" data-kreis-filter>%s</div>' % "".join(knoepfe))
+
+def ort_auswahl_html():
+    """Feld für die aktuelle Auswahl (Ort oder Landkreis) mit der passenden Anfrage. Ohne JavaScript ein Hinweis."""
+    kreise = {k["id"]: {"name": k["name"], "kreis": k["id"] != "rand", "orte": [ort_name(o) for o in k["orte"]]} for k in EINSATZ["kreise"]}
+    return ('<div class="ort-auswahl" data-ort-auswahl data-kontakt="@/kontakt/#anfrage" data-gebiet="%s" aria-live="polite">'
+            '<p class="ort-auswahl-leer">Wählen Sie Ihren Ort – auf der Karte, über einen Landkreis oder in der Liste weiter unten. '
+            'Die Anfrage öffnet sich dann mit Ihrem Ort.</p></div>'
+            % esc(json.dumps({"kreise": kreise}, ensure_ascii=False, separators=(",", ":"), sort_keys=True)))
 
 def plz_pruefer_html():
-    """Postleitzahl prüfen: bekannte PLZ → Ort und Entfernung, dann weiter ins Formular (PLZ vorbelegt). Ohne
-    JavaScript schickt das Formular die Eingabe direkt an die Kontaktseite."""
+    """Postleitzahl prüfen: bekannte PLZ → Ort und Entfernung, dann weiter ins Formular (die eingegebene PLZ wird
+    übernommen, der Ort nur, wenn die Zuordnung geprüft ist). Ohne JavaScript geht die Eingabe direkt ins Formular."""
     m = EINSATZ["mittelpunkt"]
-    orte = {z: [m["name"], 0, ""] for z in m.get("plz", [])}
+    orte = {z: [m["name"], 0, 1 if EINSATZ.get("plz_geprueft") else 0] for z in m.get("plz", [])}
     for k in EINSATZ["kreise"]:
         for o in k["orte"]:
-            km = int(round(zg.luftlinie_km((m["breite"], m["laenge"]), (o["breite"], o["laenge"]))))
             for z in o.get("plz", []):
-                orte[z] = [ort_name(o), km, o["name"]]
+                orte[z] = [ort_name(o), km_zum_mittelpunkt(o), 1 if plz_geprueft(o) else 0]
     return ('<form class="plz-pruefer" action="@/kontakt/#anfrage" method="get" data-plz-pruefer data-orte="%s">'
             '<label for="plz-eingabe">Liegt Ihr Objekt im Einsatzgebiet?</label>'
             '<p class="hilfe" id="plz-hilfe">Postleitzahl eingeben – wir zeigen sofort, ob sie dazugehört, und tragen sie ins '
             'Anfrageformular ein.</p>'
-            '<div class="plz-zeile"><input id="plz-eingabe" name="ort" type="text" inputmode="numeric" autocomplete="postal-code" '
+            '<div class="plz-zeile"><input id="plz-eingabe" name="plz" type="text" inputmode="numeric" autocomplete="postal-code" '
             'maxlength="5" pattern="[0-9]{5}" placeholder="z. B. 70563" required aria-describedby="plz-hilfe plz-ergebnis">'
             '<button class="knopf knopf--primaer" type="submit">Prüfen</button></div>'
             '<div class="plz-ergebnis" id="plz-ergebnis" aria-live="polite" data-plz-ergebnis></div></form>'
@@ -701,6 +734,8 @@ BAUSTEINE = {
     "einsatzorte": lambda von, a: einsatz_orte_html(),
     "kreis-filter": lambda von, a: kreis_filter_html(),
     "plz-pruefer": lambda von, a: plz_pruefer_html(),
+    "ort-auswahl": lambda von, a: ort_auswahl_html(),
+    "ort-suche": lambda von, a: ort_suche_html(),
     "einsatzgebiet-band": lambda von, a: einsatz_band_html(a["titel"], a["text"]),
     "leistungskarten": lambda von, a: leistungskarten(von, **a),
     "projekte-vorschau": lambda von, a: projekte_vorschau(von),
@@ -922,7 +957,9 @@ def seite_rendern(meta, inhalt, quelle):
 <meta name="theme-color" content="#F4F2ED">
 <link rel="icon" href="@/favicon.ico" sizes="48x48">
 <link rel="icon" href="@/assets/icon/icon-g.svg" type="image/svg+xml">
+<link rel="icon" href="@/assets/icon/icon-g-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="@/assets/icon/icon-g-180.png">
+<link rel="manifest" href="@/manifest.webmanifest">
 <link rel="preload" href="@/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 %s<link rel="stylesheet" href="@/assets/css/site.css">
 %s
@@ -1060,6 +1097,13 @@ def main():
             shutil.copy(von, os.path.join(OUT, "assets", "marke", ziel))
     # Website-Icon nur aus dem G (scripts/werkzeuge/3d/icon-g.mjs); das Signet-Favicon des Logo-Pakets bleibt für Druck & Co.
     shutil.copy(os.path.join(SRC, "assets", "icon", "favicon.ico"), os.path.join(OUT, "favicon.ico"))
+    # Web-Manifest: Name und G-Icons (192/512) für Home-Bildschirm und Android; keine App-Funktionen
+    schreiben(os.path.join(OUT, "manifest.webmanifest"), json.dumps({
+        "name": "Gashini Dienstleistungen", "short_name": "Gashini", "start_url": "./", "display": "browser",
+        "background_color": "#F4F2ED", "theme_color": "#1E2124",
+        "icons": [{"src": "assets/icon/icon-g-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+                  {"src": "assets/icon/icon-g-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]},
+        ensure_ascii=False, indent=1) + "\n")
     shutil.copytree(os.path.join(SRC, "api"), os.path.join(OUT, "api"),
                     ignore=shutil.ignore_patterns("konfiguration*.php", "*.log"))
     shutil.copy(os.path.join(SRC, "server", "htaccess"), os.path.join(OUT, ".htaccess"))

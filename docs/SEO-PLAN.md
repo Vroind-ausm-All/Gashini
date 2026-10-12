@@ -29,6 +29,7 @@ richtigen – und um Anfragen aus dem Gebiet, das der Betrieb tatsächlich anfä
 | Titel und H1 | „Stuttgart“ im Titel jeder Leistungsseite und der Startseite, in der H1 aller drei Leistungsseiten | `src/seiten/*.html` |
 | Beschreibungen | jede Seite mit eigener Beschreibung (130–160 Zeichen), Ortsbezug, wo er passt | Kopfdaten der Seiten |
 | Seite „Einsatzgebiet“ | `/einsatzgebiet/`: Karte (eigene Zeichnung, Ringe 10/20/30 km), alle 23 Stadtbezirke, 47 Orte nach Landkreis, Leistungen, Fragen | `src/seiten/einsatzgebiet.html`, `data/einsatzgebiet.json` |
+| Bedienbares Einsatzgebiet | Landkreis, Stadtbezirk oder Ort wählen (Karte, Knöpfe, Suche, Tastatur) → „Projekt in … anfragen“ → `/kontakt/?ort=…[&plz=…]#anfrage` bzw. `?kreis=…`. Alle Ziele sind gewöhnliche Links im HTML (auch ohne JavaScript). Die Parameter-Adressen stehen nicht in der Sitemap; die Kontaktseite verweist per Canonical auf `/kontakt/`, es entstehen also keine Doppelseiten | `scripts/build-site.py`, `src/assets/js/site.js` |
 | Abschnitt „Einsatzgebiet“ | auf Startseite und den drei Leistungsseiten mit **eigener** Überschrift („Trockenbau in Stuttgart und Umgebung“ …) und eigenem Satz, dazu neun größere Orte und der Link zur Gebietsseite | Baustein `[[einsatzgebiet-band]]` |
 | Interne Links | Fußbereich („Einsatzgebiet Stuttgart & Umgebung“) auf jeder Seite, mobiles Menü, Kontaktseite, FAQ | `scripts/build-site.py` |
 | Strukturierte Daten | Unternehmen mit Einsatzgebiet, je Leistungsseite ein `Service`, Brotkrumen, FAQ (Abschnitt 5) | Generator und `scripts/firmendaten.py` |

@@ -19,14 +19,17 @@ faq_jsonld: einsatzgebiet
 
 <section class="abschnitt" aria-labelledby="karte-titel">
   <div class="rahmen raster einsatz-karte-raster">
-    <div class="sp-kopf">
+    <div class="sp-kopf einsatz-kopf">
       <p class="label">Karte</p>
       <h2 id="karte-titel">Rund 30 Kilometer um Stuttgart</h2>
-      <p class="gedaempft">Gemessen als Luftlinie ab Stuttgart-Mitte; die Ringe zeigen 10, 20 und 30 Kilometer. Klicken Sie auf Ihren Ort – das Anfrageformular öffnet sich mit der passenden Postleitzahl. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p>
+      <p class="gedaempft">Gemessen als Luftlinie ab Stuttgart-Mitte; die Ringe zeigen 10, 20 und 30 Kilometer. Wählen Sie einen Landkreis oder Ihren Ort – die Anfrage öffnet sich dann mit Ihrem Ort. Liegt Ihr Objekt etwas außerhalb, fragen Sie trotzdem – bei größeren oder wiederkehrenden Aufträgen finden wir oft eine Lösung.</p>
       [[kreis-filter]]
+    </div>
+    <div class="sp-inhalt einsatz-karte">[[einsatzkarte]]</div>
+    <div class="sp-kopf einsatz-auswahl">
+      [[ort-auswahl]]
       [[plz-pruefer]]
     </div>
-    <div class="sp-inhalt">[[einsatzkarte]]</div>
   </div>
 </section>
 
@@ -36,9 +39,10 @@ faq_jsonld: einsatzgebiet
       <div>
         <p class="label">Orte</p>
         <h2 id="orte-titel" data-zeilen>Städte und Gemeinden im Einsatzgebiet</h2>
-        <p class="einleitung">Ein Klick auf den Ort öffnet das Anfrageformular mit eingetragener Postleitzahl; bei Städten mit mehreren Postleitzahlen wählen Sie Ihre aus. Ihr Ort fehlt? Die Liste nennt die größeren Städte und Gemeinden – kleinere Orte dazwischen gehören genauso dazu.</p>
+        <p class="einleitung">Ein Klick auf den Ort öffnet das Anfrageformular mit Ihrem Ort; die Postleitzahl daneben übernimmt auch sie. Ihr Ort fehlt? Die Liste nennt die größeren Städte und Gemeinden – kleinere Orte dazwischen gehören genauso dazu.</p>
       </div>
     </div>
+    [[ort-suche]]
     [[einsatzorte]]
     <p class="redaktion">[FREIGABE ERFORDERLICH: Liste prüfen – werden alle genannten Orte tatsächlich angefahren? Orte am Rand (Metzingen, Ebersbach an der Fils) bei Bedarf in data/einsatzgebiet.json streichen. Postleitzahlen dort einmal mit dem amtlichen Verzeichnis abgleichen.]</p>
   </div>

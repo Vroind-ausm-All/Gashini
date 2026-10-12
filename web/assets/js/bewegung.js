@@ -183,12 +183,28 @@
   });
 
   // ---------- Tiefe: Maus-Parallax im Seitenkopf und auf Leistungskarten
-  // Nur mit Maus (hover + feiner Zeiger) und erlaubter Bewegung. Es läuft nichts dauerhaft: Jede Bewegung der Maus
-  // setzt ein kurzes Nachgleiten (quickTo) in Gang, ruht die Maus, ruht alles. Verschoben werden nur transform-Werte
-  // weniger Elemente hinter dem Inhalt; Texte und Formularfelder bewegen sich nie.
+  // Nur mit Maus (hover + feiner Zeiger) und erlaubter Bewegung. Zeigerbewegungen werden pro Bild gebündelt
+  // (requestAnimationFrame, nur angestoßen von einer Bewegung – keine Dauerschleife). Gelesen wird je Bild höchstens
+  // ein gespeichertes Maß (Fenster beim Größenwechsel, Karte beim Betreten), geschrieben nur transform/opacity über
+  // gsap.quickTo. Ruht die Maus, ruht alles. Texte und Formularfelder bewegen sich nie.
   mm.add('(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)', function () {
     var aufraeumen = [];
     var folgen = function (el, eigenschaft, dauer) { return gsap.quickTo(el, eigenschaft, { duration: dauer, ease: 'power3.out' }); };
+    var fenster = { b: window.innerWidth, h: window.innerHeight };
+    var masse = function () { fenster.b = window.innerWidth; fenster.h = window.innerHeight; };
+    window.addEventListener('resize', masse, { passive: true });
+    aufraeumen.push(function () { window.removeEventListener('resize', masse); });
+
+    // eine gebündelte Ausführung pro Bild, nur nach einer Zeigerbewegung
+    var buendeln = function (arbeit) {
+      var geplant = false, letztes = null;
+      return function (e) {
+        letztes = e;
+        if (geplant) return;
+        geplant = true;
+        window.requestAnimationFrame(function () { geplant = false; arbeit(letztes); });
+      };
+    };
 
     document.querySelectorAll('[data-tiefe]').forEach(function (tiefe) {
       var kopf = tiefe.parentElement;
@@ -198,56 +214,67 @@
       var sichtbar = true;
       var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (e) { sichtbar = e[0].isIntersecting; }) : null;
       if (io) io.observe(kopf);
-      var bewegen = function (e) {
-        if (!sichtbar || e.pointerType !== 'mouse') return;
-        var nx = e.clientX / window.innerWidth - .5, ny = e.clientY / window.innerHeight - .5;
+      var bewegen = buendeln(function (e) {
+        var nx = e.clientX / fenster.b - .5, ny = e.clientY / fenster.h - .5;
         ebenen.forEach(function (l) { l.x(nx * 44 * l.f); l.y(ny * 28 * l.f); });
-      };
+      });
+      var aufBewegung = function (e) { if (sichtbar && e.pointerType === 'mouse') bewegen(e); };
       var zurueck = function () { ebenen.forEach(function (l) { l.x(0); l.y(0); }); };
-      window.addEventListener('pointermove', bewegen, { passive: true });
+      window.addEventListener('pointermove', aufBewegung, { passive: true });
       document.documentElement.addEventListener('pointerleave', zurueck);
       aufraeumen.push(function () {
-        window.removeEventListener('pointermove', bewegen);
+        window.removeEventListener('pointermove', aufBewegung);
         document.documentElement.removeEventListener('pointerleave', zurueck);
         if (io) io.disconnect();
         gsap.set(tiefe.querySelectorAll('[data-tiefe-ebene]'), { clearProps: 'transform' });
       });
     });
 
-    // Leistungskarten: Nur die Bildfläche neigt sich (höchstens 3,5°), das Bild gleitet leicht dagegen – Titel,
-    // Text und Link bleiben ruhig. Der Kartenlink liegt weiter über allem und bleibt klickbar.
+    // Leistungskarten: Die Bildfläche neigt sich (höchstens 3,5°), das Bild gleitet leicht dagegen, ein weicher
+    // Lichtfleck folgt dem Zeiger versetzt. Titel, Text und Link bleiben ruhig; der Kartenlink bleibt klickbar.
     document.querySelectorAll('.leistungskarte').forEach(function (karte) {
       var flaeche = karte.querySelector('.leistungskarte-bild');
       var bild = flaeche && flaeche.querySelector('img');
       if (!bild) return;
+      var licht = flaeche.querySelector('.karte-licht');
       gsap.set(flaeche, { transformPerspective: 900 });
       var rx = folgen(flaeche, 'rotationX', .7), ry = folgen(flaeche, 'rotationY', .7), bx = folgen(bild, 'x', .9), by = folgen(bild, 'y', .9);
-      var drin = function (e) {
-        if (e.pointerType !== 'mouse') return;
-        var r = karte.getBoundingClientRect();
-        var nx = Math.max(-.5, Math.min(.5, (e.clientX - r.left) / r.width - .5));
-        var ny = Math.max(-.5, Math.min(.5, (e.clientY - r.top) / r.height - .5));
+      var lx = licht ? folgen(licht, 'x', 1.1) : null, ly = licht ? folgen(licht, 'y', 1.1) : null;
+      var rahmen = null, bildRahmen = null;
+      var messen = function () { rahmen = karte.getBoundingClientRect(); bildRahmen = flaeche.getBoundingClientRect(); };
+      var neuMessen = function () { rahmen = null; };
+      var drin = buendeln(function (e) {
+        if (!rahmen) messen();
+        var nx = Math.max(-.5, Math.min(.5, (e.clientX - rahmen.left) / rahmen.width - .5));
+        var ny = Math.max(-.5, Math.min(.5, (e.clientY - rahmen.top) / rahmen.height - .5));
         ry(nx * 7); rx(-ny * 7); bx(-nx * 16); by(-ny * 16);
-      };
+        // Licht versetzt zum Zeiger (etwas weniger weit), innerhalb der Bildfläche
+        if (lx) { lx((nx * .7 + .5) * bildRahmen.width); ly((ny * .7 + .5) * bildRahmen.height); }
+      });
+      var aufBewegung = function (e) { if (e.pointerType === 'mouse') drin(e); };
       var rein = function (e) {
         if (e.pointerType !== 'mouse') return;
+        messen();
         karte.classList.add('in-tiefe');
         gsap.to(bild, { scale: 1.07, duration: .8, overwrite: 'auto' });
+        window.addEventListener('scroll', neuMessen, { passive: true });
       };
       var raus = function () {
         karte.classList.remove('in-tiefe');
         rx(0); ry(0); bx(0); by(0);
         gsap.to(bild, { scale: 1, duration: .8, overwrite: 'auto' });
+        window.removeEventListener('scroll', neuMessen);
       };
       karte.addEventListener('pointerenter', rein);
-      karte.addEventListener('pointermove', drin, { passive: true });
+      karte.addEventListener('pointermove', aufBewegung, { passive: true });
       karte.addEventListener('pointerleave', raus);
       aufraeumen.push(function () {
         karte.removeEventListener('pointerenter', rein);
-        karte.removeEventListener('pointermove', drin);
+        karte.removeEventListener('pointermove', aufBewegung);
         karte.removeEventListener('pointerleave', raus);
+        window.removeEventListener('scroll', neuMessen);
         karte.classList.remove('in-tiefe');
-        gsap.set([flaeche, bild], { clearProps: 'transform' });
+        gsap.set([flaeche, bild].concat(licht ? [licht] : []), { clearProps: 'transform' });
       });
     });
 

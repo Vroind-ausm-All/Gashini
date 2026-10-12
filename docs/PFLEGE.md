@@ -11,6 +11,7 @@ Für alles hier reichen ein Texteditor und drei Befehle. Programmierkenntnisse s
 |---|---|
 | Telefon, Adresse, E-Mail, Einsatzgebiet ändern | `data/firmendaten.env` |
 | Orte im Einsatzgebiet, Radius, Karte | `data/einsatzgebiet.json` (siehe unten) |
+| eine Tätigkeit des Auftraggebers erfassen und rechtlich prüfen (intern, nicht öffentlich) | `data/taetigkeiten.json` (siehe `docs/LEGAL-CHECKLIST.md`, Abschnitt 3) |
 | einen Text auf einer Seite ändern | `src/seiten/<seite>.html` |
 | eine häufige Frage ergänzen oder ändern | `data/faq.json` |
 | ein Projekt veröffentlichen | `data/projekte.json` + Bilder in `src/assets/bilder/projekte/<slug>/` |
@@ -64,8 +65,9 @@ Wiederkehrende Bausteine werden mit doppelten eckigen Klammern eingefügt:
 | `[[foto id="…" motiv="…" format="…" licht="…"]]` | eigenes Foto, sonst Ersatzbild plus Fotobriefing (nur Vorschau) |
 | `[[faq-gruppen]]` | alle Fragen nach Thema (Seite „Fragen & Ablauf“) |
 | `[[kontaktformular]]`, `[[kontaktwege]]`, `[[ablauf]]` | wie auf den bestehenden Seiten |
-| `[[einsatzkarte]]`, `[[einsatzorte]]` | Karte und Ortslisten der Seite „Einsatzgebiet“ (aus `data/einsatzgebiet.json`); jeder Ort führt ins Anfrageformular mit eingetragener PLZ |
-| `[[kreis-filter]]`, `[[plz-pruefer]]` | Landkreis-Knöpfe (heben die Orte auf der Karte hervor) und PLZ-Prüfung mit Weiterleitung ins Formular |
+| `[[einsatzkarte]]`, `[[einsatzorte]]` | Karte und Ortslisten der Seite „Einsatzgebiet“ (aus `data/einsatzgebiet.json`); jeder Ort, jede PLZ und jeder Landkreis ist ein Link ins Anfrageformular |
+| `[[kreis-filter]]`, `[[ort-auswahl]]` | Landkreis-Knöpfe und das Auswahlfeld neben der Karte („Projekt in … anfragen“) |
+| `[[ort-suche]]`, `[[plz-pruefer]]` | Suchfeld über der Ortsliste (filtert beim Tippen) und PLZ-Prüfung mit Weiterleitung ins Formular; beide erscheinen erst mit JavaScript |
 | `[[einsatzgebiet-band titel="…" text="…"]]` | Abschnitt „Einsatzgebiet“ mit größeren Orten und Link – je Seite mit eigener Überschrift und eigenem Satz |
 
 Kopfdaten für Suchmaschinen: `dienst: Name | Leistungsart` erzeugt auf Leistungsseiten die strukturierten Daten
@@ -92,7 +94,7 @@ Die Website nutzt schlanke Kopien unter `assets/marke/`, die der Generator bei j
 austauschen – Dateinamen beibehalten – und neu bauen. Die Hausfarben stehen als Tokens am Anfang von `site.css`;
 Signalgelb nie als Textfarbe auf hellem Grund verwenden.
 
-Das **Website-Icon** (Browser-Tab, Home-Bildschirm) besteht nur aus dem G des Signets. Es liegt in
+Das **Website-Icon** (Browser-Tab, Home-Bildschirm, `manifest.webmanifest`) besteht nur aus dem G des Signets – kalkweiß auf Anthrazit. Es liegt in
 `src/assets/icon/` und wird mit `npm run icon` in `scripts/werkzeuge/3d/` aus `brand/svg/signet.svg` neu erzeugt –
 etwa nach einem neuen Logo-Paket.
 
@@ -147,9 +149,18 @@ In `data/faq.json` einen Eintrag kopieren:
 
 `data/einsatzgebiet.json` enthält Mittelpunkt, Radius, die Stuttgarter Stadtbezirke und die Orte je Landkreis mit
 Koordinaten (Ortsmitte, z. B. aus Wikipedia) und Postleitzahlen (`"plz"`). Daraus entstehen die Seite
-`/einsatzgebiet/`, die Karte, die PLZ-Prüfung und die strukturierten Daten (`areaServed`). Ein Klick auf einen Ort
-öffnet `kontakt/?ort=PLZ Ort#anfrage`; das Feld „PLZ oder Ort“ ist dann ausgefüllt. Hat ein Ort mehrere
-Postleitzahlen, wählt der Besucher seine aus. Ein Ort entfernen: Eintrag löschen. Ein Ort ergänzen: Eintrag kopieren, Name und
+`/einsatzgebiet/`, die Karte, die PLZ-Prüfung und die strukturierten Daten (`areaServed`).
+
+Links ins Formular haben drei Formen: `kontakt/?ort=Kornwestheim#anfrage`, `kontakt/?ort=Kornwestheim&plz=70806#anfrage`
+und `kontakt/?kreis=Landkreis%20Ludwigsburg#anfrage` (ein Landkreis bekommt nie eine PLZ). Das Feld „PLZ oder Ort“ ist
+dann vorausgefüllt, mit dem Hinweis, dass die Angabe geändert werden kann. Ungültige Werte (keine fünfstellige PLZ,
+Sonderzeichen, zu lang, unbekannte Kreisbezeichnung) übernimmt das Formular nicht.
+
+**Postleitzahlen:** `"plz_geprueft": false` bedeutet, dass die PLZ noch nicht mit dem amtlichen Verzeichnis abgeglichen
+sind. Solange das so ist, trägt ein Klick auf einen Ort **nur den Ortsnamen** ein; die PLZ wählt der Besucher selbst
+(Knöpfe im Auswahlfeld, Links in der Ortsliste) oder er gibt sie in der PLZ-Prüfung ein. Nach dem Abgleich
+`"plz_geprueft": true` setzen – dann übernimmt ein Klick bei Orten mit genau einer PLZ diese automatisch; bei mehreren
+PLZ bleibt es bei der Auswahl. Ein Ort entfernen: Eintrag löschen. Ein Ort ergänzen: Eintrag kopieren, Name und
 Koordinaten anpassen; `"karte": "r"` (bzw. `l`, `o`, `u`) beschriftet ihn auf der Karte, sonst erscheint nur ein Punkt.
 Liegt ein Ort weiter als der Radius vom Mittelpunkt entfernt, bricht der Build mit einer Meldung ab.
 

@@ -110,8 +110,15 @@ Lichtflächen, feine Konstruktionslinien im Achsmaß-Rhythmus mit einer gestrich
 Band. Sie sind nur rechts der Textspalte und oberhalb von Bildunterschriften sichtbar (CSS-Masken) und verschieben
 sich bei Mausbewegung um wenige Pixel gegeneinander (Lichtfläche bis 22 px, Linien bis 8 px). Auf den
 Leistungskarten neigt sich nur die Bildfläche (höchstens 3,5°), das Bild gleitet leicht dagegen, ein Schatten
-gibt Tiefe; Titel, Text und Link bleiben ruhig. Technik: `gsap.quickTo` auf transform-Werte, ausgelöst nur von
-Mausbewegungen – ruht die Maus, ruht alles; keine Schleife, kein Canvas, kein WebGL. Nur bei
+gibt Tiefe; Titel, Text und Link bleiben ruhig. Über der Bildfläche wandert ein weicher Lichtakzent (radialer
+Verlauf, nur Deckkraft und Position) mit dem Zeiger. Technik: `gsap.quickTo` auf transform-Werte, ausgelöst nur von
+Mausbewegungen und pro Bild gebündelt (`requestAnimationFrame` – mehrere Zeigerereignisse eines Bildes ergeben
+eine Rechnung); Fenster- und Kartenmaße werden beim Betreten bzw. nach Scroll und Größenänderung gemessen, nie im
+Bewegungspfad. Ruht die Maus, ruht alles; keine Schleife, kein Canvas, kein WebGL, keine neue Bibliothek.
+
+**Karte „Einsatzgebiet“:** Punkte reagieren auf Überfahren und Fokus (vergrößert, dunkleres Gelb, Name erscheint),
+der gewählte Ort wird groß und gelb mit anthrazitfarbener Kontur, bei gewähltem Landkreis treten die übrigen Orte
+zurück. Alles über `transform` und Farbe, ohne Übergang bei reduzierter Bewegung. Nur bei
 `(hover: hover) and (pointer: fine)` und erlaubter Bewegung; auf Touch-Geräten, bei reduzierter Bewegung, auf
 Kontakt- und Rechtsseiten gibt es weder Ebene noch Bewegung (Kontaktseiten: keine Ebene).
 
