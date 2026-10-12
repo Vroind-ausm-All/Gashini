@@ -71,6 +71,14 @@ Was der Workflow dabei absichert:
 > gehört der Inhalt von `dist/web/` auf eine eigene Domain, und die Checkliste am Ende
 > dieser Datei muss abgearbeitet sein.
 
+**Premium-Relaunch unter `/relaunch/`:** Derselbe Workflow baut zusätzlich den Stand aus dem Zweig
+`claude/relaunch-premium` und legt ihn unter `https://vroind-ausm-all.github.io/Gashini/relaunch/` ab. Er wird
+automatisch gestartet, sobald auf dem Relaunch-Zweig der Workflow „Prüfen und Vorschau“ grün ist, und nimmt genau
+den geprüften Commit. Für Kunden-Präsentationen
+den Link mit `?ansicht=kunde` verschicken – dann sind Redaktionshinweise ausgeblendet:
+`https://vroind-ausm-all.github.io/Gashini/relaunch/?ansicht=kunde`. Das Anfrageformular sendet dort nichts
+(GitHub Pages führt kein PHP aus).
+
 Soll die Vorschau wieder verschwinden: Settings → Pages → *Source* auf **None** stellen.
 
 ## Seitenstruktur

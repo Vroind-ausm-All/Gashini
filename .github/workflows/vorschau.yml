@@ -2,6 +2,13 @@ name: Vorschau auf GitHub Pages
 
 # Baut den Webauftritt und stellt ihn als nicht indexierbare Vorschau bereit.
 # Einmalig nötig: Repository → Settings → Pages → Source auf "GitHub Actions" stellen.
+#
+# Zwei Stände unter einer Adresse:
+#   /            bisheriger Auftritt aus diesem Zweig
+#   /relaunch/   Premium-Relaunch aus claude/relaunch-premium. Ist dort „Prüfen und Vorschau“ grün, startet
+#                jener Workflow diesen hier per workflow_dispatch mit dem geprüften Commit (Eingabe „relaunch“).
+#                Von Hand: Actions → diesen Workflow → „Run workflow“ (ohne Eingabe: aktueller Stand des Zweigs).
+# Deployt wird immer aus diesem Zweig, weil nur er in die Umgebung github-pages veröffentlichen darf.
 
 on:
   push:
@@ -13,6 +20,11 @@ on:
       - 'scripts/**'
       - '.github/workflows/vorschau.yml'
   workflow_dispatch:
+    inputs:
+      relaunch:
+        description: Commit oder Zweig des Relaunchs für /relaunch/
+        required: false
+        default: claude/relaunch-premium
 
 permissions:
   contents: read
@@ -35,6 +47,24 @@ jobs:
 
       - name: Als Vorschau kennzeichnen und für Suchmaschinen sperren
         run: python3 scripts/vorschau-markieren.py dist/web
+
+      - name: Relaunch auschecken
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.relaunch || 'claude/relaunch-premium' }}
+          path: relaunch-quelle
+
+      - name: Relaunch bauen und unter /relaunch/ ablegen
+        working-directory: relaunch-quelle
+        run: |
+          python3 scripts/build-site.py
+          python3 scripts/firmendaten.py
+          python3 scripts/vorschau-markieren.py dist/web
+          # Formular-Backend (PHP) und Server-Dateien laufen auf GitHub Pages nicht – nicht mitveröffentlichen
+          rm -rf dist/web/api dist/web/.htaccess dist/web/robots.txt
+          mkdir -p ../dist/web/relaunch
+          cp -R dist/web/. ../dist/web/relaunch/
+          echo "Relaunch-Stand: $(git rev-parse --short HEAD)"
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
