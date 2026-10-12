@@ -1,8 +1,10 @@
 name: Prüfen und Vorschau
 
-# Prüft jeden Stand (Generator-Drift, Links, Seitengrundlagen, Formular-Backend, Browser)
-# und veröffentlicht den Hauptzweig als nicht indexierbare Vorschau auf GitHub Pages.
-# Einmalig nötig: Repository → Settings → Pages → Source auf "GitHub Actions".
+# Prüft jeden Stand (Generator-Drift, Links, Seitengrundlagen, Formular-Backend, Browser).
+# Ist ein Push auf claude/relaunch-premium grün, startet der letzte Job die Pages-Vorschau im Hauptzweig: Dort
+# baut „Vorschau auf GitHub Pages“ den bisherigen Auftritt unter / und diesen geprüften Stand unter /relaunch/
+# (https://vroind-ausm-all.github.io/Gashini/relaunch/). Deployt wird nur aus dem Hauptzweig, weil nur er in die
+# Umgebung github-pages veröffentlichen darf.
 
 on:
   push:
@@ -75,31 +77,14 @@ jobs:
           name: browser-bericht
           path: ${{ runner.temp }}/bericht
 
-  vorschau-bauen:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/claude/affectionate-pascal-xxw1o2'
+  pages-ausloesen:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/claude/relaunch-premium'
     needs: [pruefen, browser]
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Bauen und als Vorschau kennzeichnen
-        run: |
-          python3 scripts/build-site.py
-          python3 scripts/firmendaten.py
-          python3 scripts/vorschau-markieren.py dist/web
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/web
-
-  vorschau-veroeffentlichen:
-    needs: vorschau-bauen
-    runs-on: ubuntu-latest
     permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      actions: write
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Pages-Vorschau mit diesem Stand neu veröffentlichen (/relaunch/)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run vorschau.yml --repo "$GITHUB_REPOSITORY" --ref claude/affectionate-pascal-xxw1o2 -f relaunch="$GITHUB_SHA"

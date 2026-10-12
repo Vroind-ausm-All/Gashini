@@ -158,6 +158,37 @@ try {
     await ctx.close();
   }
 
+  // ---------------------------------------------------------------- Eingebettete Vorschau (z. B. claude.ai)
+  // Nachgestellt: Die einbettende Seite stellt nach jedem Laden die Scroll-Position der vorigen Seite wieder her.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const p = await ctx.newPage();
+    const host = new URL('__einbettung.html', haupt.basis).href;
+    await p.route(host, r => r.fulfill({ contentType: 'text/html', body: '<!doctype html><meta charset="utf-8">'
+      + '<style>html,body{margin:0;height:100%}iframe{border:0;width:100%;height:100%;display:block}</style>'
+      + '<iframe id="f" src="' + haupt.basis + '"></iframe><script>var f=document.getElementById("f"),letzte=0;'
+      + 'f.addEventListener("load",function(){var w=f.contentWindow,z=letzte;setTimeout(function(){w.scrollTo(0,z)},150);'
+      + 'w.addEventListener("scroll",function(){letzte=w.scrollY})});</script>' }));
+    await p.goto(host, { waitUntil: 'networkidle' });
+    const rahmen = () => p.frames().find(fr => fr !== p.mainFrame());
+    const runter = async () => { await p.mouse.move(640, 400); for (let i = 0; i < 30; i++) { await p.mouse.wheel(0, 400); await p.waitForTimeout(25); } await p.waitForTimeout(400); };
+    await p.waitForTimeout(600);
+    await runter();
+    const vorher = await rahmen().evaluate(() => Math.round(window.scrollY));
+    await rahmen().click('.fuss a[href$="einsatzgebiet/"]');
+    await p.waitForTimeout(2200);
+    const link = await rahmen().evaluate(() => Math.round(window.scrollY));
+    await runter();
+    await rahmen().evaluate(() => [...document.querySelectorAll('a[href$="kontakt/#anfrage"]')].pop().click());
+    await p.waitForTimeout(2200);
+    const anker = await rahmen().evaluate(() => Math.round(document.getElementById('anfrage').getBoundingClientRect().top));
+    await runter();
+    const selbst = await rahmen().evaluate(() => Math.round(window.scrollY));
+    pruefe('Eingebettete Vorschau, die die alte Scroll-Position wiederherstellt: neue Seite oben, Sprungmarke am Ziel, eigenes Scrollen sofort möglich',
+      vorher > 1000 && link === 0 && anker >= -5 && anker < 250 && selbst > 1000, { vorher, link, anker, selbst });
+    await ctx.close();
+  }
+
   // ---------------------------------------------------------------- Barrierefreiheit (axe-core)
   for (const b of [1440, 375]) {
     const ctx = await browser.newContext({ viewport: { width: b, height: 900 } });

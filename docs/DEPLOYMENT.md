@@ -16,9 +16,27 @@ data/firmendaten*.env ──► scripts/firmendaten.py ───►  dist/web/  
 | Offene Angaben | sichtbar in `[eckigen Klammern]` | **Abbruch**, `dist/` wird gelöscht |
 | Suchmaschinen | `vorschau-markieren.py`: `noindex` je Seite, `Disallow: /` | indexierbar, Sitemap, `Disallow: /api/` |
 | Beispielprojekte | nur mit `ENTWUERFE=1` beim Generator | **Abbruch**, falls enthalten |
-| Ort | GitHub Pages (automatisch aus dem Hauptzweig) | eigener Webspace |
+| Ort | GitHub Pages: dieser Relaunch unter `…github.io/Gashini/relaunch/`, automatisch nach jedem grünen Push (siehe unten) | eigener Webspace |
 
 GitHub Pages kann kein PHP ausführen – **in der Vorschau funktioniert das Formular nicht** und meldet das sichtbar.
+
+### Vorschau-Link für Kunden
+
+`https://vroind-ausm-all.github.io/Gashini/relaunch/?ansicht=kunde`
+
+- `?ansicht=kunde` schaltet die **Kundenansicht** ein (Redaktionshinweise, Fotobriefings und „Video geplant“ ausgeblendet)
+  und merkt sie sich im Browser für alle weiteren Seiten; `?ansicht=intern` schaltet sie wieder aus. Der Streifen
+  „Vorschau · unveröffentlicht“ bleibt immer sichtbar.
+- Aktualisierung: Ist ein Push auf `claude/relaunch-premium` grün, startet der Job `pages-ausloesen` den Workflow
+  „Vorschau auf GitHub Pages“ im Hauptzweig mit genau diesem Commit. Dort entsteht der bisherige Auftritt unter `/`
+  und dieser Stand unter `/relaunch/`. Von Hand: Actions → „Vorschau auf GitHub Pages“ → *Run workflow*.
+- Öffentlich erreichbar, aber für Suchmaschinen gesperrt (`noindex` je Seite). Kein Beispielprojekt, kein
+  PHP-Backend, keine `.htaccess` in diesem Ordner.
+- **Einmalig nötig:** Repository → Settings → Pages → *Source* auf **GitHub Actions** stellen. Steht dort noch
+  „Deploy from a branch“, veröffentlicht GitHub bei jedem Push auf den Hauptzweig zusätzlich den rohen Zweiginhalt und
+  überschreibt damit die Vorschau samt `/relaunch/` (Stand 12.10.2026 ist das noch so eingestellt).
+- In eingebetteten Vorschauen (z. B. dem Artefakt in claude.ai) hält `site.js` nach einem Seitenwechsel kurz die
+  Position oben, weil die Umgebung sonst die Scroll-Position der vorigen Seite wiederherstellt.
 
 ## Anforderungen an den Webspace
 

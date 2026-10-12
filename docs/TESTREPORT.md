@@ -16,7 +16,7 @@ Auf einem GitHub-Runner liefen alle Suiten grün: Workflow-Lauf
 (statische Prüfungen, Formular-Backend) und `browser` (Abgleich von 3D-Bündel und GSAP mit der Quelle, Browser-Tests)
 erfolgreich.
 Lokal (12.10.2026, nach Bildern, Stuttgart-SEO und Scroll-Fix): statische Prüfungen 17/17, Formular-Backend 30/30,
-Browser-Tests 39/39. Der erste Browser-Lauf brach beim Video-Test ab: Der Test setzte seinen Testclip hinter die erste
+Browser-Tests 39/39. Nach dem Fix für eingebettete Vorschauen (12.10.2026, abends): 17/17, 30/30, **40/40**. Der erste Browser-Lauf brach beim Video-Test ab: Der Test setzte seinen Testclip hinter die erste
 Marke „Symbolbild“ der Startseite – das ist jetzt die erste Leistungskarte, deren Kartenlink den Pause-Knopf überdeckte.
 Der Test zielt jetzt ausdrücklich auf das Bildband; zusätzlich liegt ein Pause-Knopf in Karten über dem Kartenlink.
 Der frühere einmalige Überlauf der Kontaktseite bei 375 px trat in beiden Läufen nicht auf.
@@ -57,12 +57,13 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 39 von 39 bestanden
+### `tests/e2e.mjs` – 40 von 40 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
 | Kein waagerechter Überlauf auf 15 Seiten (neu: Einsatzgebiet) bei 320, 375, 768, 1024, 1440 px | ✓ (5) |
 | **neu:** Seiten öffnen oben – nach einem Link, nach „Zurück“ und nach „Neu laden“ jeweils Scrollposition 0; Sprungmarken wie `kontakt/#anfrage` landen weiterhin am Ziel | ✓ |
+| **neu:** Eingebettete Vorschau (nachgestellt wie in claude.ai: die einbettende Seite stellt nach jedem Laden die Scroll-Position der vorigen Seite wieder her): neue Seite steht oben, `#anfrage` am Formular, eigenes Scrollen sofort möglich | ✓ |
 | Textvergrößerung 200 % bei 375 px ohne Überlauf (Start, Kontakt, Trockenbau) | ✓ |
 | axe-core (WCAG 2.0/2.1/2.2 A+AA, Best Practices) auf 15 Seiten bei 1440 und 375 px, gemessen nach Ende der Einstiegsanimationen | ✓ **0 Funde** jeder Schwere |
 | Sprunglink, sichtbarer Fokus, Mobilmenü per Tastatur | ✓ (3) |
@@ -99,6 +100,8 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | **Kurzvideos** (11.10.2026) mit einem Testclip auf der Startseite | Abspielen, Einblenden, Pause per Maus und Tastatur, Pausieren außerhalb des Sichtbereichs und kein Start bei reduzierter Bewegung geprüft. Der erste automatische Test scheiterte an einer zu kurzen Wartezeit, weil die 3D-Szene den Software-Renderer auslastete; der Test läuft jetzt ohne WebGL und wartet auf den Start statt eine feste Zeit. Echte Clips gibt es noch nicht (Prompts: `docs/MEDIENLISTE.md`) |
 | **KI-Symbolbilder** (12.10.2026) – Startseite, Leistungen, Reparatur, Hausmeister, Trockenbau, Netzwerk, 404 bei 1280 und 390 px | Sechs Bilder eingebunden; Herkunft aus dem C2PA-Nachweis der Originale gelesen (ChatGPT/OpenAI, KI-generiert). Hochformat-Karten der Startseite zeigen mit `fokus="rechts"` den Bildteil mit der Handlung. Eine geplante Formulierung „Protokoll – mit Foto“ wieder entfernt (nicht bestätigte Zusage) |
 | **Einsatzgebiet** (12.10.2026) bei 1280 und 390 px | Karte: Beschriftungen „Waiblingen“ und „Schorndorf“ berührten sich, Kilometerangaben kollidierten mit Ortsnamen – Ringbeschriftung nach Westen unter die Achse verlegt. Alte, unvollständige `Service`-Daten im Seitentext gefunden und durch die erzeugten ersetzt (sonst zwei `Service`-Einträge je Seite). Entfernungen aller 47 Orte nachgerechnet (Luftlinie, 7,6–27,6 km); Herrenberg (30,4 km) und Reutlingen (31,7 km) bewusst nicht aufgenommen |
+| **Seitenstart in der claude.ai-Vorschau** (12.10.2026) | Rückmeldung: Nach einem Link stand die neue Seite unten. Ursache nachgestellt – die Vorschau-Umgebung stellt nach dem Laden die Scroll-Position der vorigen Seite wieder her (im Test 4891 von 4891 px, also ganz unten). Behoben: In eingebetteten Seiten hält `site.js` die Position kurz oben bzw. an der Sprungmarke, bis der Besucher selbst scrollt (höchstens 4 s nach dem Laden). Als eigenständige Website greift das nicht |
+| **Kundenlink auf GitHub Pages** (12.10.2026) – Build unter dem Unterpfad `/Gashini/relaunch/` lokal nachgestellt, alle 15 Seiten geladen, 390 px | Keine fehlenden Dateien, Links funktionieren im Unterordner, `?ansicht=kunde` blendet Redaktionshinweise aus und bleibt beim Seitenwechsel erhalten, `?ansicht=intern` schaltet zurück |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)

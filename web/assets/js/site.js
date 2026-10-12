@@ -104,8 +104,36 @@
     if (window.location.hash && window.location.hash.length > 1) return;
     try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
   };
+  // Eingebettete Vorschauen (z. B. claude.ai) stellen nach dem Laden die Scroll-Position der vorigen Seite wieder
+  // her – die neue Seite stünde dann unten. Deshalb hält die Seite dort kurz die Position oben bzw. an der
+  // Sprungmarke, bis der Besucher selbst scrollt, tippt oder eine Taste drückt (spätestens 4 s nach dem Laden).
+  // Als eigenständige Website nicht nötig.
+  var eingebettet = false;
+  try { eingebettet = window.self !== window.top; } catch (e) { eingebettet = true; }
+  var obenHalten = function () {
+    if (!eingebettet) return;
+    var marke = window.location.hash && window.location.hash.length > 1 ? window.location.hash.slice(1) : '';
+    var eingaben = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
+    var pruefen = function () {
+      if (!marke) { if ((window.scrollY || window.pageYOffset) > 0) nachOben(); return; }
+      var ziel = null;
+      try { ziel = document.getElementById(decodeURIComponent(marke)); } catch (e) {}
+      if (!ziel) return;
+      try { ziel.scrollIntoView({ block: 'start', behavior: 'instant' }); } catch (e) { ziel.scrollIntoView(true); }
+    };
+    var ende = function () {
+      window.removeEventListener('scroll', pruefen);
+      eingaben.forEach(function (n) { window.removeEventListener(n, ende, true); });
+    };
+    window.addEventListener('scroll', pruefen, { passive: true });
+    eingaben.forEach(function (n) { window.addEventListener(n, ende, { capture: true, passive: true }); });
+    var spaeter = function () { window.setTimeout(ende, 4000); };
+    if (document.readyState === 'complete') spaeter(); else window.addEventListener('load', spaeter);
+    window.setTimeout(ende, 12000);
+  };
   nachOben();
-  window.addEventListener('pageshow', function (e) { if (e.persisted) nachOben(); });
+  obenHalten();
+  window.addEventListener('pageshow', function (e) { if (e.persisted) { nachOben(); obenHalten(); } });
 
   var jahr = document.getElementById('jahr');
   if (jahr) jahr.textContent = String(new Date().getFullYear());
@@ -120,6 +148,13 @@
     };
     var gespeichert = false;
     try { gespeichert = window.localStorage.getItem('gashini-kundenansicht') === '1'; } catch (e) {}
+    // Link für Kunden: …/?ansicht=kunde schaltet die Kundenansicht ein und merkt sie sich für die weiteren Seiten
+    // (…/?ansicht=intern schaltet sie wieder aus).
+    var gewuenscht = (window.location.search.match(/[?&]ansicht=(kunde|intern)\b/) || [])[1];
+    if (gewuenscht) {
+      gespeichert = gewuenscht === 'kunde';
+      try { window.localStorage.setItem('gashini-kundenansicht', gespeichert ? '1' : '0'); } catch (e) {}
+    }
     setzeAnsicht(gespeichert);
     schalter.addEventListener('click', function () {
       var an = schalter.getAttribute('aria-pressed') !== 'true';
