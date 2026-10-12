@@ -17,12 +17,15 @@ Auf einem GitHub-Runner liefen alle Suiten grün: Workflow-Lauf
 erfolgreich.
 Lokal (12.10.2026, nach Bildern, Stuttgart-SEO und Scroll-Fix): statische Prüfungen 17/17, Formular-Backend 30/30,
 Browser-Tests 39/39. Nach dem Fix für eingebettete Vorschauen (12.10.2026, abends): 17/17, 30/30, 40/40. Nach
-bedienbarem Einsatzgebiet, G-Icon und Maus-Parallax: **18/18, 30/30, 42/42**, axe ohne Funde. Der erste Browser-Lauf brach beim Video-Test ab: Der Test setzte seinen Testclip hinter die erste
+bedienbarem Einsatzgebiet, G-Icon und Maus-Parallax: 18/18, 30/30, 42/42. Nach Auswahlfeld, Formular-Links mit
+`ort`/`plz`/`kreis`, G-Icon als Kachel und gebündelten Hover-Effekten (Zweig `claude/einsatzgebiet-icon-hover`):
+**19/19, 30/30, 48/48**, axe ohne Funde. Der erste Browser-Lauf dieses Stands fand waagerechten Überlauf auf
+`/einsatzgebiet/` bei 320, 375 und 768 px (PLZ-Reihen von Orten wie Ludwigsburg brachen nicht um) – behoben, zweiter Lauf grün. Der erste Browser-Lauf brach beim Video-Test ab: Der Test setzte seinen Testclip hinter die erste
 Marke „Symbolbild“ der Startseite – das ist jetzt die erste Leistungskarte, deren Kartenlink den Pause-Knopf überdeckte.
 Der Test zielt jetzt ausdrücklich auf das Bildband; zusätzlich liegt ein Pause-Knopf in Karten über dem Kartenlink.
 Der frühere einmalige Überlauf der Kontaktseite bei 375 px trat in beiden Läufen nicht auf.
 
-### `tests/pruefen.py` – 18 von 18 bestanden
+### `tests/pruefen.py` – 19 von 19 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
@@ -35,11 +38,12 @@ Der frühere einmalige Überlauf der Kontaktseite bei 375 px trat in beiden Läu
 | Keine Beispielprojekte und Platzhalterbilder im Standard-Build; keine privaten Daten im Repository | ✓ (2) |
 | **neu:** Vorschau-Blöcke (Fotobriefings) entfallen in Produktion; offene Angaben erscheinen in der Vorschau als markierte Spanne, nie im Seitentitel | ✓ |
 | **neu:** GSAP-Dateien, Bewegungsskript und 3D-Bündel vorhanden, ohne `eval`/`new Function` (CSP); Wandaufbau hat eine Zeichnung als Rückfall; Rechtstexte laden keine Bewegungsskripte | ✓ |
-| **neu:** Marke: Web-Logos entsprechen dem Logo-Paket (viewBox, Farben, Pfadanzahl), `favicon.ico` vorhanden, keine Ziegelrot- oder Altschrift-Reste, Hausfarben gesetzt, Archivo einzige Schriftdatei, Kopf und Fuß mit den richtigen Varianten; **neu:** Website-Icon enthält genau die G-Glyphe des Signets in Hausfarben, `favicon.ico` ist das G-Icon, jede Seite bindet SVG- und Home-Bildschirm-Icon ein, die CSP-Ausnahme gilt nur für `icon-g.svg` | ✓ |
+| **neu:** Marke: Web-Logos entsprechen dem Logo-Paket (viewBox, Farben, Pfadanzahl), `favicon.ico` vorhanden, keine Ziegelrot- oder Altschrift-Reste, Hausfarben gesetzt, Archivo einzige Schriftdatei, Kopf und Fuß mit den richtigen Varianten; **neu:** Website-Icon enthält genau die G-Glyphe des Signets in Hausfarben, `favicon.ico` ist das G-Icon, Farben `#1E2124`/`#F4F2ED`, kein Band, kein Text; PNG 32/180/192/512 in richtiger Größe, ICO mit 16/32/48 px, Manifest-Icons vorhanden, jede Seite bindet ICO, SVG, PNG 32, Apple-Touch-Icon und Manifest ein; keine `unsafe-inline`-Ausnahme mehr | ✓ |
 | **neu:** Kurzvideos: stumm, ohne `autoplay`-Attribut und ohne Bedienleiste, immer über einem gekennzeichneten Standbild, Videodateien vorhanden; Hinweis „Video geplant“ nur in Vorschau-Blöcken | ✓ |
 | Herkunft jeder Visualisierung und jedes Symbolbilds dokumentiert; keine davon als Projektbild; Symbolbilder im Build mit Alt-Text „Symbolbild: …“ bzw. „Symbolbild (KI-generiert): …“ und passender sichtbarer Marke; **neu:** Kennzeichnung „KI-generiert“ stimmt mit `HERKUNFT.md` überein; nie auf „Über uns“ oder bei den Projekten | ✓ |
-| **neu:** Lokale SEO: „Stuttgart“ in Titel und H1 der drei Leistungsseiten und im Titel der Startseite; jedes JSON-LD gültig; genau ein `Service` je Leistungsseite mit 30-km-Gebiet und Verweis auf das Unternehmen; Seite „Einsatzgebiet“ vorhanden und von jeder indexierbaren Seite verlinkt; keine Ortsnamen in Alt-Texten von Symbolbildern; **jede der 97 Postleitzahlen** hat einen Formular-Link, PLZ-Prüfung und Landkreis-Filter vorhanden. Der Generator bricht zusätzlich ab, wenn ein Ort außerhalb von 30 km eingetragen ist | ✓ |
-| **neu:** Tiefe (Maus-Parallax): Ebene nur dekorativ (`aria-hidden`), nie auf Kontakt-, Rechts- und Fehlerseiten; im Skript an Maus und erlaubte Bewegung gebunden, ohne Dauerschleife | ✓ |
+| **neu:** Lokale SEO: „Stuttgart“ in Titel und H1 der drei Leistungsseiten und im Titel der Startseite; jedes JSON-LD gültig; genau ein `Service` je Leistungsseite mit 30-km-Gebiet und Verweis auf das Unternehmen; Seite „Einsatzgebiet“ vorhanden und von jeder indexierbaren Seite verlinkt; keine Ortsnamen in Alt-Texten von Symbolbildern; jeder Ort hat einen Formular-Link `?ort=…`, **jede der 97 Postleitzahlen** einen Link `?ort=…&plz=…`, Landkreis-Links nie mit `plz`; PLZ-Prüfung, Landkreis-Filter, Auswahlfeld und Ortssuche vorhanden. Der Generator bricht zusätzlich ab, wenn ein Ort außerhalb von 30 km eingetragen ist | ✓ |
+| **neu:** Tiefe (Maus-Parallax): Ebene nur dekorativ (`aria-hidden`), nie auf Kontakt-, Rechts- und Fehlerseiten; im Skript an Maus und erlaubte Bewegung gebunden, Zeigerereignisse pro Bild gebündelt (`requestAnimationFrame`), ohne Dauerschleife | ✓ |
+| **neu:** Tätigkeiten (`data/taetigkeiten.json`): Felder und Werte gültig, keine doppelten Einträge, Landingpage nur für veröffentlichte Tätigkeiten und vorhanden, nachgereichte nie veröffentlicht, Datei nicht im Webordner | ✓ |
 
 ### `tests/formular_test.py` – 30 von 30 bestanden
 
@@ -59,13 +63,16 @@ Gegen einen echten `php -S`-Server; Mails werden als Datei abgelegt bzw. an eine
 | Ohne JavaScript 303 bzw. sichere 422-Seite; Header `nosniff`/`no-store` | ✓ (3) |
 | Mengenlimit 429, keine IP im Klartext; SMTP-Dialog; SMTP nicht erreichbar → 502 | ✓ (4) |
 
-### `tests/e2e.mjs` – 42 von 42 bestanden
+### `tests/e2e.mjs` – 48 von 48 bestanden
 
 | Prüfung | Ergebnis |
 |---|---|
 | Kein waagerechter Überlauf auf 15 Seiten (neu: Einsatzgebiet) bei 320, 375, 768, 1024, 1440 px | ✓ (5) |
 | **neu:** Seiten öffnen oben – nach einem Link, nach „Zurück“ und nach „Neu laden“ jeweils Scrollposition 0; Sprungmarken wie `kontakt/#anfrage` landen weiterhin am Ziel | ✓ |
-| **neu:** Einsatzgebiet bedienbar – Landkreis-Knopf hebt genau seine Orte hervor; PLZ-Prüfung nennt Ort und verlinkt ins Formular, zu kurze Eingabe wird verständlich gemeldet; Ort mit mehreren PLZ öffnet eine Auswahl an der Karte (Escape schließt); Klick auf einen Ort öffnet das Formular mit „71229 Leonberg“ im Feld „PLZ oder Ort“ | ✓ |
+| **neu:** Einsatzgebiet – Ort wählen hebt ihn hervor und zeigt „Projekt in … anfragen“; PLZ nur auf Wunsch, Waiblingen (mehrere PLZ) zur Auswahl; Landkreis Ludwigsburg bietet seine 14 Orte und eine Anfrage ohne PLZ; Asperg → Formular mit „71679 Asperg“, Hinweis sichtbar, Feld änderbar | ✓ |
+| **neu:** Direkte Aufrufe des Formulars: `?ort=Kornwestheim&plz=70806` → „70806 Kornwestheim“, `?kreis=Landkreis Ludwigsburg` und `?kreis=Rems-Murr-Kreis` → Kreisname, `?ort=73760 Ostfildern` → „73760 Ostfildern“, `?plz=70563` → „70563“; HTML im Ort, PLZ mit Buchstaben, sechsstellige PLZ, HTML im Kreis und 80 Zeichen langer Ort werden verworfen | ✓ |
+| **neu:** Einsatzgebiet per Tastatur (ein Tab-Halt auf der Karte, Pfeiltasten, Eingabe wählt, Anfrage per Tab erreichbar); Ortssuche „korn“ → Kornwestheim, Korntal-Münchingen, „Atlantis“ → Hinweis mit Anfrage; Handy (Tippen wählt, Anfrage rückt ins Bild); ohne JavaScript ≥ 70 Ortslinks, ≥ 60 PLZ-Links, 47 Kartenlinks, 4 Landkreislinks, Klick auf 73760 → Formular mit Ostfildern und 73760 | ✓ (4) |
+| **neu:** Website-Icon: ICO, SVG, PNG 32, Apple-Touch-Icon und Manifest (192/512) eingebunden und abrufbar | ✓ |
 | **neu:** Tiefe – Lichtflächen und Linien folgen der Maus und kommen danach zur Ruhe (keine Dauerbewegung), Überschrift und Kartentitel bleiben unbewegt, Bildfläche der Leistungskarte neigt sich, Kontaktseite ohne Ebene; bei „Bewegung reduzieren“ bewegt sich nichts | ✓ |
 | **neu:** Eingebettete Vorschau (nachgestellt wie in claude.ai: die einbettende Seite stellt nach jedem Laden die Scroll-Position der vorigen Seite wieder her): neue Seite steht oben, `#anfrage` am Formular, eigenes Scrollen sofort möglich | ✓ |
 | Textvergrößerung 200 % bei 375 px ohne Überlauf (Start, Kontakt, Trockenbau) | ✓ |
@@ -107,6 +114,7 @@ in GitHub Actions sind sie als Artefakt `browser-bericht` herunterladbar.
 | **Seitenstart in der claude.ai-Vorschau** (12.10.2026) | Rückmeldung: Nach einem Link stand die neue Seite unten. Ursache nachgestellt – die Vorschau-Umgebung stellt nach dem Laden die Scroll-Position der vorigen Seite wieder her (im Test 4891 von 4891 px, also ganz unten). Behoben: In eingebetteten Seiten hält `site.js` die Position kurz oben bzw. an der Sprungmarke, bis der Besucher selbst scrollt (höchstens 4 s nach dem Laden). Als eigenständige Website greift das nicht |
 | **Kundenlink auf GitHub Pages** (12.10.2026) – Build unter dem Unterpfad `/Gashini/relaunch/` lokal nachgestellt, alle 15 Seiten geladen, 390 px | Keine fehlenden Dateien, Links funktionieren im Unterordner, `?ansicht=kunde` blendet Redaktionshinweise aus und bleibt beim Seitenwechsel erhalten, `?ansicht=intern` schaltet zurück |
 | **Einsatzgebiet bedienbar, G-Icon, Maus-Parallax** (12.10.2026) bei 1280/1440 und 390 px | Bei gewähltem Landkreis Esslingen überlagerten sich die eingeblendeten Ortsnamen – jetzt nur hervorgehobene Punkte, Namen beim Überfahren. Feine Linien liefen auf der Startseite hinter der Bildlegende – nach unten ausgeblendet, hinter Text bewegt sich nichts. Das ICO bekam zunächst eine helle Kontur für dunkle Tabs; das Markenblatt verbietet Konturen, deshalb ohne. Postleitzahlen aus eigenem Wissen eingetragen, nicht amtlich abgeglichen – siehe „Noch offen“ |
+| **Auswahlfeld, Formular-Links, G-Kachel, Hover** (12.10.2026) bei 1280 und 375/390 px | Hilfsvariable `kopf` im Skript überdeckte die Kopfzeile (Fehler beim Scrollen) – umbenannt. Auswahlfeld lag auf dem Handy hinter der Schnellkontakt-Leiste – rückt jetzt ins obere Drittel. Überlauf der PLZ-Reihen bei schmalen Bildschirmen (siehe oben) – umbrechend. PLZ nicht amtlich abgeglichen, deshalb `plz_geprueft: false`: Ein Klick auf einen Ort trägt nur den Ort ein |
 | Texte | Unbestätigte Leistungsversprechen entfernt („Wenn wir nicht sofort abnehmen, rufen wir zurück“, „halten Termine ein“, „landet bei dem, der auch vorbeikommt“) |
 
 ### Labormessung Ladeverhalten (**kein Lighthouse**)
@@ -148,7 +156,8 @@ kommt** – es beeinflusst LCP nicht.
 |---|---|---|
 | Firmendaten, Anschrift, Domain (Einsatzgebiet Stuttgart + 30 km ist eingetragen) | Betreiber | **ja** – Produktions-Build bricht ab |
 | Google-Unternehmensprofil anlegen, Firmendaten überall gleich (`docs/SEO-PLAN.md`, Abschnitte 7–8) | Betreiber | nein – aber Voraussetzung für Kartenergebnisse |
-| Postleitzahlen in `data/einsatzgebiet.json` gegen das amtliche Verzeichnis prüfen (bei mehreren PLZ pro Stadt besonders) | Betreiber | nein – falsche PLZ ließen sich im Formular noch ändern |
+| Postleitzahlen in `data/einsatzgebiet.json` gegen das amtliche Verzeichnis prüfen, danach `"plz_geprueft": true` | Betreiber | nein – bis dahin wählt der Besucher die PLZ selbst, im Formular änderbar |
+| Tätigkeiten: weitere des Auftraggebers noch nicht übermittelt; vorbereitete (Bodenbeläge, Gebäudereinigung, Entrümpelung, Umzugshilfe) und nicht beworbene (Maler, Fliesen, Parkett) klären (`data/taetigkeiten.json`) | Betreiber + Kammer | nein – nichts davon ist veröffentlicht |
 | 8 offene Punkte auf 7 Seiten (Leistungsumfang, Abgrenzung, Alltagsfälle, Pflegeplan, Netzwerk-Gewerke, Erreichbarkeit, Ortsliste Einsatzgebiet) | Betreiber | **ja** |
 | Hoster, Formular-Konfiguration, **Testanfrage mit Foto und Rückruf über das Live-Formular** | Betreiber | **ja** – bis dahin meldet das Formular „noch nicht eingerichtet“ |
 | Header, Kompression, Weiterleitungen und Upload-Grenzen auf dem Live-Server prüfen | Technik | ja |

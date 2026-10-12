@@ -16,7 +16,9 @@
 <meta name="theme-color" content="#F4F2ED">
 <link rel="icon" href="../favicon.ico" sizes="48x48">
 <link rel="icon" href="../assets/icon/icon-g.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/icon/icon-g-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/icon/icon-g-180.png">
+<link rel="manifest" href="../manifest.webmanifest">
 <link rel="preload" href="../assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/frueh.js"></script>
@@ -113,7 +115,8 @@
   <div class="formular-reihe formular-reihe--zwei">
     <div class="feld">
       <label for="f-ort">PLZ oder Ort<span class="optional">optional</span></label>
-      <input id="f-ort" name="ort" type="text" autocomplete="postal-code" maxlength="100" aria-describedby="f-ort-fehler">
+      <input id="f-ort" name="ort" type="text" autocomplete="postal-code" maxlength="100" aria-describedby="f-ort-hinweis f-ort-fehler">
+      <p class="hilfe" id="f-ort-hinweis" hidden>Aus dem Einsatzgebiet übernommen – Sie können die Angabe jederzeit ändern.</p>
       <p class="fehlertext" id="f-ort-fehler" data-fehler-fuer="ort"></p>
     </div>
     <div class="feld">

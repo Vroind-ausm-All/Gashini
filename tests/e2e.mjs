@@ -158,31 +158,123 @@ try {
     await ctx.close();
   }
 
-  // ---------------------------------------------------------------- Einsatzgebiet: Landkreis, PLZ, Klick → Formular mit PLZ
+  // ---------------------------------------------------------------- Einsatzgebiet: Auswahl → Anfrage mit Ort und PLZ
   {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const p = await ctx.newPage();
+    const fehlerJs = []; p.on('pageerror', e => fehlerJs.push(e.message));
     await p.goto(haupt.basis + 'einsatzgebiet/', { waitUntil: 'networkidle' });
     await p.locator('[data-kreis-filter]').scrollIntoViewIfNeeded();
-    await p.click('[data-kreis-filter] button[data-kreis="boeblingen"]');
-    const kreis = await p.evaluate(() => ({ im: document.querySelectorAll('.ek-ort.im-kreis').length, soll: document.querySelectorAll('.ek-ort[data-kreis="boeblingen"]').length }));
-    await p.fill('#plz-eingabe', '71229'); await p.click('.plz-pruefer button[type=submit]');
-    const plz = await p.evaluate(() => ({ text: document.querySelector('[data-plz-ergebnis]').textContent, link: (document.querySelector('[data-plz-ergebnis] a') || {}).href || '',
-      markiert: [...document.querySelectorAll('.ek-ort.ist-markiert')].map(e => e.getAttribute('data-ort')) }));
-    await p.fill('#plz-eingabe', '12'); await p.click('.plz-pruefer button[type=submit]');
-    const falsch = await p.evaluate(() => document.querySelector('[data-plz-ergebnis]').textContent);
-    await p.click('[data-kreis-filter] button[data-kreis=""]');
+    const panel = () => p.evaluate(() => { const a = document.querySelector('.auswahl-anfrage');
+      return { titel: (document.querySelector('.auswahl-titel') || {}).textContent || '', cta: a ? a.textContent.replace(/\s+/g, ' ').trim() : '', href: a ? a.getAttribute('href') : '',
+        plz: [...document.querySelectorAll('.auswahl-plz button')].map(b => b.textContent), orte: document.querySelectorAll('.auswahl-orte button').length,
+        gewaehlt: [...document.querySelectorAll('.ek-ort.ist-gewaehlt')].map(x => x.getAttribute('data-ort')) }; });
+    // 1. Ort auf der Karte → hervorgehoben, Anfrage „Projekt in Kornwestheim anfragen“, PLZ optional wählbar
+    await p.locator('.ek-ort[data-ort="Kornwestheim"] .ek-treffer').click({ force: true });
+    const ort = await panel();
+    await p.click('.auswahl-plz button:has-text("70806")');
+    const ortPlz = await panel();
+    // 2. Mehrdeutige PLZ: Waiblingen bietet alle drei zur Wahl, keine ist vorgewählt
     await p.locator('.ek-ort[data-ort="Waiblingen"] .ek-treffer').click({ force: true });
-    const wahl = await p.evaluate(() => [...document.querySelectorAll('.karte-wahl a')].map(a => a.textContent));
+    const mehrdeutig = await panel();
+    // 3. Landkreis → seine Orte, Kreis-Anfrage ohne PLZ, aus der Liste ein Ort
+    await p.click('[data-kreis-filter] button[data-kreis="ludwigsburg"]');
+    const kreis = await panel();
+    const imKreis = await p.evaluate(() => document.querySelectorAll('.ek-ort.im-kreis').length);
+    await p.click('.auswahl-orte button:has-text("Asperg")');
+    const ausKreis = await panel();
+    // 4. Weiter ins Formular: Ort und gewählte PLZ stehen im Feld, Hinweis sichtbar, Feld bleibt änderbar
+    await p.click('.auswahl-plz button:has-text("71679")');
+    await p.click('.auswahl-anfrage'); await p.waitForLoadState('networkidle');
+    const formular = await p.evaluate(() => ({ pfad: location.pathname, ort: document.getElementById('f-ort').value, hinweis: !document.getElementById('f-ort-hinweis').hidden }));
+    await p.fill('#f-ort', '71679 Asperg, Hinterhaus');
+    const aenderbar = await p.inputValue('#f-ort');
+    pruefe('Einsatzgebiet: Ort wählen hebt ihn hervor und zeigt „Projekt in … anfragen“; PLZ nur auf Wunsch, mehrdeutige zur Auswahl; Landkreis bietet seine Orte und eine Anfrage ohne PLZ; im Formular stehen Ort und PLZ und bleiben änderbar',
+      ort.titel === 'Kornwestheim' && ort.cta === 'Projekt in Kornwestheim anfragen →' && /ort=Kornwestheim/.test(ort.href) && !/plz=/.test(ort.href) && ort.gewaehlt.join() === 'Kornwestheim'
+      && /plz=70806/.test(ortPlz.href) && mehrdeutig.plz.join() === '71332,71334,71336' && !/plz=/.test(mehrdeutig.href)
+      && kreis.titel === 'Landkreis Ludwigsburg' && kreis.orte === 14 && imKreis === 14 && /kreis=Landkreis/.test(kreis.href) && !/plz=/.test(kreis.href)
+      && ausKreis.titel === 'Asperg' && formular.pfad.endsWith('/kontakt/') && formular.ort === '71679 Asperg' && formular.hinweis && aenderbar === '71679 Asperg, Hinterhaus' && !fehlerJs.length,
+      { ort, ortPlz, mehrdeutig, kreis, imKreis, ausKreis, formular, fehlerJs });
+
+    // 5. Direkte Aufrufe: gültige Werte werden übernommen, ungültige verworfen (nichts Ausführbares im Feld)
+    const direkt = {};
+    for (const [q, soll] of [['?ort=Kornwestheim&plz=70806', '70806 Kornwestheim'], ['?kreis=Landkreis%20Ludwigsburg', 'Landkreis Ludwigsburg'],
+      ['?kreis=Rems-Murr-Kreis', 'Rems-Murr-Kreis'], ['?ort=73760%20Ostfildern', '73760 Ostfildern'], ['?plz=70563', '70563'],
+      ['?ort=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E&plz=12ab', ''], ['?plz=123456&ort=Waiblingen', 'Waiblingen'],
+      ['?kreis=Landkreis%20%3Cb%3E', ''], ['?ort=' + 'a'.repeat(80), ''], ['?kreis=Landkreis%20Ludwigsburg&plz=71634', '71634']]) {
+      const q2 = await ctx.newPage();
+      await q2.goto(haupt.basis + 'kontakt/' + q + '#anfrage', { waitUntil: 'networkidle' });
+      const ist = await q2.inputValue('#f-ort');
+      const html = await q2.evaluate(() => document.querySelector('form[data-anfrage]').innerHTML.includes('onerror'));
+      direkt[q] = { ist, ok: ist === soll && !html };
+      await q2.close();
+    }
+    pruefe('Kontaktformular: direkte Aufrufe mit gültigen und ungültigen Parametern (ort, plz, kreis) – nur gültige Werte landen im Feld',
+      Object.values(direkt).every(d => d.ok), direkt);
+
+    // 6. Tastatur: ein Kartenpunkt in der Tab-Reihenfolge, Pfeiltasten wechseln, Eingabetaste wählt, Tab erreicht die Anfrage
+    await p.goto(haupt.basis + 'einsatzgebiet/', { waitUntil: 'networkidle' });
+    await p.focus('.ek-ort[tabindex="0"]');
+    const start = await p.evaluate(() => document.activeElement.getAttribute('data-ort'));
+    await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowRight');
+    const zwei = await p.evaluate(() => ({ ort: document.activeElement.getAttribute('data-ort'), label: document.activeElement.getAttribute('aria-label'), tabStopps: document.querySelectorAll('.ek-ort[tabindex="0"], .ek-mitte[tabindex="0"]').length }));
+    await p.keyboard.press('Enter');
+    const gewaehlt = await p.evaluate(() => document.querySelector('.auswahl-titel') && document.querySelector('.auswahl-titel').textContent);
+    let erreicht = false;
+    for (let i = 0; i < 8 && !erreicht; i++) { await p.keyboard.press('Tab'); erreicht = await p.evaluate(() => document.activeElement.classList.contains('auswahl-anfrage')); }
     await p.keyboard.press('Escape');
-    const zu = await p.evaluate(() => !document.querySelector('.karte-wahl'));
-    await p.locator('.ek-ort[data-ort="Leonberg"] .ek-treffer').click({ force: true });
-    await p.waitForLoadState('networkidle');
-    const formular = await p.evaluate(() => ({ pfad: location.pathname, ort: document.getElementById('f-ort').value }));
-    pruefe('Einsatzgebiet bedienbar: Landkreis hebt seine Orte hervor, PLZ-Prüfung mit Ort und Link, Auswahl bei mehreren PLZ, Klick auf Ort öffnet das Formular mit eingetragener PLZ',
-      kreis.im === kreis.soll && kreis.im > 5 && /71229 Leonberg/.test(plz.text) && /ort=71229/.test(plz.link) && plz.markiert.includes('Leonberg')
-      && /fünfstellige/.test(falsch) && wahl.join(',') === '71332,71334,71336' && zu && formular.pfad.endsWith('/kontakt/') && formular.ort === '71229 Leonberg',
-      { kreis, plz, falsch, wahl, zu, formular });
+    pruefe('Einsatzgebiet per Tastatur: ein Tab-Halt auf der Karte, Pfeiltasten wechseln den Ort (mit Beschriftung), Eingabetaste wählt, die Anfrage ist per Tab erreichbar',
+      start && zwei.ort && zwei.ort !== start && /, /.test(zwei.label) && zwei.tabStopps === 1 && gewaehlt === zwei.ort && erreicht, { start, zwei, gewaehlt, erreicht });
+
+    // 7. Ortssuche
+    await p.fill('#ort-suche-eingabe', 'korn');
+    const suche = await p.evaluate(() => [...document.querySelectorAll('.ort-eintrag:not([hidden]) .ort-link')].map(a => a.textContent));
+    await p.fill('#ort-suche-eingabe', 'Atlantis');
+    const leer = await p.evaluate(() => !document.querySelector('.ort-suche-leer').hidden);
+    pruefe('Einsatzgebiet: Ortssuche filtert die Liste (auch Teilwörter) und bietet ohne Treffer trotzdem die Anfrage an',
+      suche.join() === 'Kornwestheim,Korntal-Münchingen' && leer, { suche, leer });
+    await ctx.close();
+  }
+  {
+    // 8. Handy: Tippen wählt, die Auswahl wird sichtbar, kein waagerechter Überlauf
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const p = await ctx.newPage();
+    await p.goto(haupt.basis + 'einsatzgebiet/', { waitUntil: 'networkidle' });
+    await p.locator('.ek-ort[data-ort="Fellbach"]').scrollIntoViewIfNeeded(); await p.waitForTimeout(600);
+    await p.locator('.ek-ort[data-ort="Fellbach"] .ek-treffer').tap({ force: true }); await p.waitForTimeout(900);
+    const handy = await p.evaluate(() => { const r = document.querySelector('.ort-auswahl').getBoundingClientRect();
+      return { titel: document.querySelector('.auswahl-titel').textContent, oben: Math.round(r.top), sichtbar: r.top < innerHeight - 120 && r.bottom > 0, ueber: document.documentElement.scrollWidth - innerWidth }; });
+    pruefe('Einsatzgebiet auf dem Handy: Tippen auf einen Ort wählt ihn, die Anfrage rückt ins Bild, kein Überlauf', handy.titel === 'Fellbach' && handy.sichtbar && handy.ueber <= 1, handy);
+    await ctx.close();
+  }
+  {
+    // 9. Ohne JavaScript: Liste und Karte sind normale Links ins Formular, Kreis-Links ohne PLZ
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    await p.goto(haupt.basis + 'einsatzgebiet/', { waitUntil: 'networkidle' });
+    const ohne = await p.evaluate(() => ({ liste: document.querySelectorAll('.ort-link[href*="kontakt/?ort="]').length, plz: document.querySelectorAll('.ort-plz a[href*="plz="]').length,
+      karte: document.querySelectorAll('.ek-ort[href*="kontakt/?ort="]').length, kreise: document.querySelectorAll('.kreis-link[href*="kreis="]').length,
+      sucheVersteckt: document.querySelector('[data-ort-suche]').hidden, filterVersteckt: getComputedStyle(document.querySelector('[data-kreis-filter]')).display === 'none' }));
+    await p.click('.ort-plz a[href*="plz=73760"]');
+    const ziel = new URL(p.url());
+    pruefe('Einsatzgebiet ohne JavaScript: jeder Ort und jede PLZ ist ein Link ins Formular, Landkreise ohne PLZ, Suche und Filter verborgen',
+      ohne.liste >= 70 && ohne.plz >= 60 && ohne.karte === 47 && ohne.kreise === 4 && ohne.sucheVersteckt && ohne.filterVersteckt
+      && ziel.pathname.endsWith('/kontakt/') && ziel.searchParams.get('ort') === 'Ostfildern' && ziel.searchParams.get('plz') === '73760', { ohne, ziel: ziel.href });
+    await ctx.close();
+  }
+
+  // ---------------------------------------------------------------- Website-Icon
+  {
+    const ctx = await browser.newContext();
+    const p = await ctx.newPage();
+    await p.goto(haupt.basis, { waitUntil: 'networkidle' });
+    const refs = await p.evaluate(() => [...document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"], link[rel="manifest"]')].map(l => l.href));
+    const antworten = {};
+    for (const r of refs) { const a = await p.request.get(r); antworten[r.replace(haupt.basis, '')] = a.status() + ' ' + (a.headers()['content-type'] || ''); }
+    const manifest = await (await p.request.get(haupt.basis + 'manifest.webmanifest')).json();
+    for (const i of manifest.icons) { const a = await p.request.get(haupt.basis + i.src); antworten[i.src] = a.status() + ' ' + (a.headers()['content-type'] || ''); }
+    pruefe('Website-Icon: ICO, SVG, PNG 32, Apple-Touch-Icon und Manifest (192/512) eingebunden und abrufbar',
+      refs.length === 5 && Object.values(antworten).every(v => v.startsWith('200')), antworten);
     await ctx.close();
   }
 

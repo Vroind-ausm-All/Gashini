@@ -6,7 +6,7 @@ Linien 1 px (non-scaling), Flächen in Papiertönen, genau ein Ziegelrot-Akzent 
 Zeichnung, Beschriftung über nummerierte Marken mit HTML-Legende (lesbar auf jedem
 Bildschirm). Elemente mit data-linie werden von bewegung.js nachgezeichnet.
 """
-import math
+import math, re
 
 def _f(v):
     return ("%.1f" % v).rstrip("0").rstrip(".")
@@ -298,12 +298,12 @@ def luftlinie_km(a, b):
     h = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(b[1] - a[1]) / 2) ** 2
     return 2 * 6371.0 * math.asin(math.sqrt(h))
 
-def einsatzkarte(daten, ziel=None):
+def einsatzkarte(daten, ziel=None, entfernung=None, geprueft=None, mitte_ziel=None):
     """Schematische Karte: Ringe in 10-km-Schritten um den Mittelpunkt, Orte als Punkte (für 30 km genau genug:
     Längengrade mit cos(Breite) gestaucht). Dauerhaft beschriftet sind die Orte mit 'karte' in data/einsatzgebiet.json.
-    Mit ziel(ort, kreis) wird jeder Ort ein Link (Kontaktformular mit PLZ bzw. Auswahl bei mehreren PLZ); die übrigen
-    Namen erscheinen dann beim Überfahren. Die interaktive Karte ist aria-hidden – dieselben Ziele stehen als Liste
-    unter der Karte und sind dort per Tastatur und Screenreader erreichbar."""
+    Mit ziel(ort, kreis) wird jeder Ort ein Link ins Anfrageformular (Rückfall ohne JavaScript); die übrigen Namen
+    erscheinen dann beim Überfahren. Die Punkte sind beschriftete Links: genau einer liegt in der Tab-Reihenfolge,
+    site.js wechselt mit den Pfeiltasten zwischen ihnen (roving tabindex) und zeigt beim Wählen die Anfrage an."""
     m = daten["mittelpunkt"]; radius = daten["radius_km"]
     cx, cy, r_px = 320.0, 320.0, 260.0
     s = r_px / radius
@@ -318,6 +318,7 @@ def einsatzkarte(daten, ziel=None):
     # Nordpfeil
     t.append('<path class="zg-linie" d="M40,92 V44 M32,58 L40,44 L48,58"/><text class="zg-text" x="40" y="112" text-anchor="middle">N</text>')
     beschriftung = []
+    erster = [True]
     for kreis in daten["kreise"]:
         for o in kreis["orte"]:
             x, y = pos(o)
@@ -335,20 +336,29 @@ def einsatzkarte(daten, ziel=None):
                 schild = ""
             punkt = '<circle class="zg-punkt" cx="%s" cy="%s" r="4"/>' % (_f(x), _f(y))
             if ziel:
-                t.append('<a class="ek-ort" href="%s" tabindex="-1" data-kreis="%s" data-ort="%s" data-plz="%s">'
-                         '<circle class="ek-treffer" cx="%s" cy="%s" r="15"/>%s%s</a>'
-                         % (ziel(o, kreis), kreis["id"], o["name"], " ".join(o.get("plz", [])), _f(x), _f(y), punkt, schild))
+                ortname = re.sub(r"\s*\(Landkreis [^)]*\)$", "", o["name"])
+                t.append('<a class="ek-ort" href="%s" tabindex="%s" aria-label="%s, %s" data-kreis="%s" data-ort="%s" data-plz="%s" '
+                         'data-km="%s" data-geprueft="%s"><circle class="ek-treffer" cx="%s" cy="%s" r="15"/>%s%s</a>'
+                         % (ziel(o, kreis), "0" if erster[0] else "-1", ortname, kreis["name"], kreis["id"], ortname,
+                            " ".join(o.get("plz", [])), entfernung(o) if entfernung else "", "1" if geprueft and geprueft(o) else "0",
+                            _f(x), _f(y), punkt, schild))
+                erster[0] = False
             else:
                 t.append(punkt)
                 if schild: beschriftung.append(schild)
     t += beschriftung
-    t.append('<g class="ek-mitte" data-plz="%s"><circle class="zg-akzent" cx="%s" cy="%s" r="9"/>'
-             '<text class="zg-text zg-text--ort zg-text--haupt" x="%s" y="%s" text-anchor="middle">%s</text></g>'
-             % (" ".join(m.get("plz", [])), _f(cx), _f(cy), _f(cx), _f(cy + 30), m["name"]))
+    mitte = ('<circle class="ek-treffer" cx="%s" cy="%s" r="18"/><circle class="zg-akzent" cx="%s" cy="%s" r="9"/>'
+             '<text class="zg-text zg-text--ort zg-text--haupt" x="%s" y="%s" text-anchor="middle">%s</text>'
+             % (_f(cx), _f(cy), _f(cx), _f(cy), _f(cx), _f(cy + 30), m["name"]))
+    if ziel:
+        t.append('<a class="ek-mitte" href="%s" tabindex="-1" aria-label="%s, alle Stadtbezirke" data-ort="%s" data-plz="%s" data-km="0">%s</a>'
+                 % (mitte_ziel or "#", m["name"], m["name"], " ".join(m.get("plz", [])), mitte))
+    else:
+        t.append('<g class="ek-mitte">%s</g>' % mitte)
     anzahl = sum(len(k["orte"]) for k in daten["kreise"])
     if ziel:
-        return ('<svg class="zg zg--karte" viewBox="0 0 640 640" aria-hidden="true" focusable="false" '
-                'xmlns="http://www.w3.org/2000/svg">%s</svg>' % "".join(t))
+        return ('<svg class="zg zg--karte" viewBox="0 0 640 640" role="group" aria-label="Karte des Einsatzgebiets: Orte mit den '
+                'Pfeiltasten wechseln, mit der Eingabetaste wählen" xmlns="http://www.w3.org/2000/svg">%s</svg>' % "".join(t))
     return _svg("0 0 640 640", "Einsatzgebiet: %s und %d km Umkreis" % (m["name"], radius),
                 "Schematische Karte. Ringe markieren 10, 20 und %d Kilometer Luftlinie ab %s-Mitte. Punkte zeigen %d Städte und "
                 "Gemeinden im Umkreis, beschriftet sind die größeren. Die vollständige Liste steht unter der Karte."

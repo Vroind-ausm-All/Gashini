@@ -1,5 +1,5 @@
 {
- "_anleitung": "Einsatzgebiet für Seite /einsatzgebiet/, Karte und strukturierte Daten (areaServed). Orte nur eintragen, wenn sie tatsächlich angefahren werden. Koordinaten: Ortsmitte, Dezimalgrad. Der Generator rechnet die Luftlinie zum Mittelpunkt nach und bricht ab, wenn ein Ort außerhalb des Radius liegt. 'karte': Beschriftung auf der Karte (r, l, o, u = rechts, links, oben, unten), weglassen = nur Punkt. 'plz': Postleitzahlen des Orts (mehrere = Auswahl beim Klick); der Mittelpunkt führt alle Stuttgarter Postleitzahlen. 'id' des Kreises steuert den Filter auf der Karte.",
+ "_anleitung": "Einsatzgebiet für Seite /einsatzgebiet/, Karte und strukturierte Daten (areaServed). Orte nur eintragen, wenn sie tatsächlich angefahren werden. Koordinaten: Ortsmitte, Dezimalgrad. Der Generator rechnet die Luftlinie zum Mittelpunkt nach und bricht ab, wenn ein Ort außerhalb des Radius liegt. 'karte': Beschriftung auf der Karte (r, l, o, u = rechts, links, oben, unten), weglassen = nur Punkt. 'plz': Postleitzahlen des Orts (mehrere = Auswahl beim Klick); der Mittelpunkt führt alle Stuttgarter Postleitzahlen. 'id' des Kreises steuert den Filter auf der Karte. 'plz_geprueft' (oben für alle, oder je Ort): erst auf true setzen, wenn die Postleitzahlen mit dem amtlichen Verzeichnis abgeglichen sind. Vorher trägt die Website keine PLZ selbstständig ein, sondern lässt den Besucher seine wählen.",
  "mittelpunkt": {
   "name": "Stuttgart",
   "breite": 48.7758,
@@ -43,6 +43,7 @@
   ]
  },
  "radius_km": 30,
+ "plz_geprueft": false,
  "stadtbezirke": [
   "Stuttgart-Mitte",
   "Stuttgart-Nord",
